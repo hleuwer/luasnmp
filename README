@@ -1,0 +1,285 @@
+
+LuaSNMP 
+=======
+
+
+* LuaSNMP
+  -------
+  
+  LuaSNMP is a binding to the netsnmp library.
+
+  LuaSNMP is basically an update to the LuaMan library developed by
+  Michele E. Lima and Ana Lucia de Moura (ana@telemidia.puc-rio.br).
+
+  LuaSNMP requires the net-snmp library version 5.2.1 or later. The netsnmp library
+  can be downloaded from 
+	  http://www.sourceforge.net
+  See "* LuaSNMP under MS Windows" below for details on issues when using LuaSNMP
+  with Microsoft Windows.
+
+  You must have Lua version 5.0 or later to use it. Lua 5.1.4 is highly recommended
+  Lua can be downloaded from its home page:
+	  http://www.tecgraf.puc-rio.br/lua/
+
+  If you use LuaSNMP with Lua 5.0 you should have the compat-5.1 package properly
+  installed on your system.
+  If you use LuaSNMP with Lua 5.1 you should set the compiler switch COMPAT_H in
+  your makefile.
+
+
+* Documentation
+  -------------
+
+  The original LuaMan documentation (up to version 2.3) can be reached
+  from its home page:
+	  http://www.telemidia.puc-rio.br/~ana/luaman/
+	
+  An updated documentation comes with the LuaSNMP distribution in the doc
+  sub-directory.
+	
+
+* Legal matters
+  -------------
+
+  See the license agreement in the file LICENSE.
+
+
+* Installation
+  ------------
+
+  In order to build LuaSNMP on a Linux, Unix or Cygwin/Mingw based
+  POSIX like system:
+
+  1. Make sure you have Lua (version 5.0 or later).
+
+  2. LuaSNMP comes with a makefile and a simple config file to adopt
+     the make process to your target system.
+
+     Compiler Flags:
+
+     CMU_COMPATIBLE 
+	Notify the netsnmp include files to use some older APIs
+
+     USE_SNMPTRAPD
+	Use the netsnmp standard utility snmptrapd as trap-sink daemon.
+        See * Trap-sink Daemon below for details.
+
+     VFORK
+        Instructs luasnmp to use the more lightweighted vfork instead
+        of the standard fork when starting the straps trap-sink daemon.
+        See * Trap-sink Daemon below for details.
+
+     COMPAT_H
+	Instruct luasnmp to use Lua 5.1. This is automatically chosen if
+	you choose Lua 5.1 in the config file. 
+
+  3. Configure the make environment
+
+     Type
+        configure
+
+     This will copy one of the templates config.cygwin or config.linux to
+     config, which is required by the makefiles.
+
+  4. Compile the package
+
+     Type 
+	make
+
+     If make succeeds you get:
+
+     * a Lua extension library "snmp.so.1.0" in the src sub-directory.
+     * a copy "core.so" of the same Lua extension library in ./snmp
+
+  5. Type "make install" as user root in order to install all relevant
+     files in standard places. The directory /usr/local is the default
+     install prefix.
+
+  6. If you want to compile and use straps as your trap daemon:
+	
+	cd straps; make
+	su root
+	make sinstall
+
+     This will compile and install the scotty straps daemon.
+
+  7. The optional straps daemon also requires root privileges in order
+     to open the snmp-trap port 162/udp. With root permissions type
+     "make sinstall" to install straps setuid root in /usr/local/bin
+
+     Please notice that building and installing the straps daemon is
+     not necessary if the standard netsnmp snmptrapd daemon is
+     installed and running on your system.
+
+     
+* Trap-sink Daemon
+  ----------------
+  LuaSNMP supports the following trap-sink daemons:
+
+  a) snmptrapd 
+
+     It is recommended to use this daemon, as it fully supports SNMP
+     INFORM requests. Add the following line to your
+     /etc/snmp/snmptrapd.conf file in order to get notified by 
+     snmptrapd:
+
+	  traphandle default PATH-TO-LUA/lua \
+	             PATH-TO-LUASNMP/trapd.lua [TRAPDPORT] [LOGFILE] [LOGLEVEL]
+
+     This instructs snmptrapd to execute the trapd.lua script, which will then
+     in fact notify your luasnmp session about traps and informs using standard
+     UDP datagrams on a user configurable port TRAPDPORT (6000 is used by default).
+     
+     Note, that 'trapd.lua' is a normal Lua script, that requires it's environment
+     correctly set, which typically happens by inheritance of the environment of the
+     shell that starts snmptrapd. In particular 'trapd.lua' requires the following
+     standard environment variables (examples):
+
+     For Lua 5.0:
+     LUA_INIT=@/usr/local/share/lua/5.0/compat-5.1.lua
+	Only required for Lua 5.0 as Lua 5.1 does not require compat-5.1.lua.
+
+     For Lua 5.1:
+     LUA_INIT="require 'luarocks.require'"
+        Let Lua find modules installed via luarocks.
+
+     LUA_PATH="./?.lua;./?/?.lua;/usr/local/share/lua/5.x/?.lua;/usr/local/share/lua/5.0/?/?.lua;/usr/local/share/lua/5.x/?/init.lua"
+	Tell Lua where to find Lua modules (required). Note that luarocks path
+	is not included here. With the corresponding setting of the LUA_INIT environment
+	variable modules are first searched in the luarocks module repository and
+	then inthe PATH given via LUA_PATH.
+
+     LUA_CPATH="./?.so;./l?.so;/usr/local/lib/lua/5.0/?.so;/usr/local/lib/lua/5.0/l?.so"
+	Tell Lua where to find C modules (required). See LUA_PATH concerning module
+	search order when luarocks is installed.
+
+     You may also want to write data from the last received trap into a logfile:
+     just provide the full path of the logfile as second argument.
+
+     The third argument defines the level of logging used. See module LuaLogging
+     for details.     
+
+     Note, that you have to set the compiler switch USE_SNMPTRAPD when
+     you compile the luasnmp package.
+
+  b) straps
+
+     This little daemon (from the scotty SNMP application) also listens to port
+     162 in order to capture traps. It then sends the SNMP trap packet to luasnmp
+     for futher processing using UNIX sockets. 
+     However, solicited INFORM notifications are currently not supported, because
+     of restrictions in the net-snmp API (or in my brain, because I couldn't find
+     a clean and simple way to get it to run with the client library of net-snmp).
+
+
+* Environment Variables
+  ---------------------
+
+  The following environment variables are needed for using LuaSNMP:
+
+  1. LUASNMP_STRAPS: points to the location of the trap-sink daemon "straps". 
+  2. LUASNMP_TRAPDPORT: defines the port number to use on UDB socket between
+                        snmptrapd and the trapd.lua script.
+
+* NetSNMP configuration files
+  ---------------------------
+
+  NetSNMP uses a bunch of configuration files at various places. Here is a list of them
+  with some personal notes.
+
+  /etc/snmp/snmpd.conf 	  Main agent configuration containing site specific agent definitions
+  			  that do not contain any secrete information.
+			  (Note, that the temmplate file provided violates this recommendation,
+			  simply remove the createUser directives)
+			  template: etc/snmpd.conf
+
+  /var/lib/snmp/snmpd.conf	  Automatic generated configuration entries, mainly encrypted user
+  				  information
+			  	  template: none
+
+  /usr/share/snmp/snmpd.conf	User specific configuration: which user is allowed to work
+  				how on which part of the MIBtree (rwuser directive)
+				template: etc/share_snmpd.conf
+
+  /etc/snmp/snmp.conf	  Default User and Password. Eases SNMP3 commands.
+  			  template: etc/etc_snmp.conf
+
+  $(HOME)/.snmp/snmp.conf Defaults per user
+  			  template: etc/snmp.conf
+
+  
+* SNMPv3 Considerations
+  ---------------------
+
+  Generally, LuaSNMP has the same prerequisits as the NetSNMP library to get 
+  SNMP version 3 to work. Nevertheless, here are some useful hints to get the
+  test script test.lua into operation for version 3.
+
+  1. Copy the template configuration files:
+     etc/snmpd.conf    		to     /etc/snmpd.conf
+     etc/snmptrapd.conf		to     /etc/snmptrapd.conf
+       You should adopt/select the line configuring the trapd.lua script execution
+       to use the correct path to the Lua executable
+     etc/snmp.conf              to     $(HOME)/.snmp/snmp.conf
+
+  2. Stop the SNMP daemon.
+
+  3. Create SNMP v3 users using the net-snmp-config command as follows:
+     	    net-snmp-config --create-snmpv3-user -a "leuwer2006" leuwer
+     	    net-snmp-config --create-snmpv3-user -a "ronja2006" ronja
+     (The users shown are those used in test.lua.)
+     This add createUser directives to /var/lib/snmpd.conf which are replaced
+     by encrypted keys during snmpd startup.
+
+  4. Create a file /usr/share/snmp/snmpd.conf and add the following lines
+     rwuser leuwer
+     rwuser ronja
+
+  5. Start the SNMP daemon
+
+* LuaSNMP on MS Windows
+  ---------------------
+
+  - Compilation
+	LuaSNMP does not compile against the development files that come with
+    	the net-snmp installer package. It compiles without problems
+	against the configured and installed net-snmp 5.3.0.1 source package.
+
+  - Agents 
+	The provided test script test.lua works fine against the net-snmp agent
+	snmpd built under cygwin.
+	Read requests work fine against Microsoft's SNMP agent. I have taken no
+	effort so far to configure the agent for write-access as well.
+	
+
+  - Trap Forwarding
+	Forwarding using the traphandle directive works fine for SNMP version 1,
+	version 2c and version 3. 
+
+  - MIB Loading
+    Neither snmpd nor the applications load default libs without setting the
+    MIBDIRS environment variable. At least this is what I observed in my net-snmp
+    installation und Cygwin. 
+    Workaround: Set MIBDIRS in your .bashrc file, e.g.:
+    	export MIBDIRS=/usr/local/share/snmp/mibs
+
+  - The distribution comes with a shell script etc/snmpdwin32.sh which automatically
+    installs / starts / stops /removes the daemons as Windows services. It also
+    cares for the correct environment in order to use Lua as language for the
+    trap handle script. The script currently doesn't configure the services to start
+    automatically during startup. Hence you will have to start them manually using
+       snmpdwin32.sh start
+
+  - The script etc/snmpdstart provides an alternative to windows services. It starts
+    the agent and the trap daemon as background processes.
+
+
+* Comments and bug reports
+  ------------------------
+
+  Please send your comments and bug reports to the Lua mailing list.
+
+April 2006 (Dec 2008, July 2009)
+
+Have fun.
+

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:xml="http://www.w3.org/XML/1998/namespace"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:export-ydpi="90.000000"
+   inkscape:export-xdpi="90.000000"
+   inkscape:export-filename="/home/leuwer/lua/lua-5.0/modules/luasnmp/doc/luasnmp2.png"
+   sodipodi:docname="luasnmp.svg"
+   sodipodi:docbase="/home/leuwer/lua/lua-5.0/modules/luasnmp/doc"
+   height="297mm"
+   width="210mm"
+   inkscape:version="0.41"
+   sodipodi:version="0.32"
+   id="svg1340">
+  <metadata
+     id="metadata1345">
+    <rdf:RDF
+       id="RDF1347">
+      <cc:Work
+         id="Work1349"
+         rdf:about="">
+        <dc:format
+           id="format1351">image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+           id="type1353" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs1343" />
+  <sodipodi:namedview
+     inkscape:current-layer="svg1340"
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:cy="856.05921"
+     inkscape:cx="121.36351"
+     inkscape:zoom="3.5534800"
+     inkscape:guide-bbox="true"
+     showguides="true"
+     inkscape:window-height="965"
+     inkscape:window-width="1272"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base">
+    <sodipodi:guide
+       id="guide2133"
+       position="150.03259"
+       orientation="vertical" />
+    <sodipodi:guide
+       id="guide2135"
+       position="744.34076"
+       orientation="horizontal" />
+  </sodipodi:namedview>
+  <path
+     transform="matrix(2.644770,0.000000,0.000000,2.644770,55.24623,43.94115)"
+     d="M 52.001926 45.703259 A 16.162762 16.162762 0 1 1  19.676403,45.703259 A 16.162762 16.162762 0 1 1  52.001926 45.703259 z"
+     sodipodi:ry="16.162762"
+     sodipodi:rx="16.162762"
+     sodipodi:cy="45.703259"
+     sodipodi:cx="35.839165"
+     id="path1363"
+     style="fill:#000072;fill-opacity:1.0000000;fill-rule:evenodd;stroke:none;stroke-width:1.0019774;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-dasharray:1.0019775 1.0019775;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+     sodipodi:type="arc" />
+  <text
+     transform="scale(0.979055,1.021393)"
+     sodipodi:linespacing="100%"
+     id="text2129"
+     y="183.37994"
+     x="118.92507"
+     style="font-size:39.162186;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Nimbus Sans L;text-anchor:start;writing-mode:lr-tb"
+     xml:space="preserve"><tspan
+       y="183.37994"
+       x="118.92507"
+       id="tspan2131"
+       sodipodi:role="line">Lua</tspan></text>
+  <path
+     transform="translate(-0.351366,-7.378652)"
+     d="M 176.73628 151.99098 A 13.176164 13.176164 0 1 1  150.38396,151.99098 A 13.176164 13.176164 0 1 1  176.73628 151.99098 z"
+     sodipodi:ry="13.176164"
+     sodipodi:rx="13.176164"
+     sodipodi:cy="151.99098"
+     sodipodi:cx="163.56012"
+     id="path2137"
+     style="fill:#ffffff;fill-opacity:1.0000000;stroke:none;stroke-width:1.0019774;stroke-miterlimit:4.0000000;stroke-dasharray:1.0019775 1.0019775;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+     sodipodi:type="arc" />
+  <path
+     transform="matrix(1.000002,0.000000,0.000000,0.963729,0.702496,5.977975)"
+     d="M 204.84544 164.81578 A 55.164207 57.623756 0 1 1  94.517021,164.81578 A 55.164207 57.623756 0 1 1  204.84544 164.81578 z"
+     sodipodi:ry="57.623756"
+     sodipodi:rx="55.164207"
+     sodipodi:cy="164.81578"
+     sodipodi:cx="149.68123"
+     id="path2141"
+     style="stroke-linecap:round;fill:none;fill-opacity:1.0000000;stroke:#000000;stroke-width:1.2733040;stroke-miterlimit:4.0000000;stroke-dasharray:5.0932161,5.0932161;stroke-dashoffset:0.25466080;stroke-opacity:1.0000000;marker-start:none"
+     sodipodi:type="arc" />
+  <path
+     transform="translate(26.52800,-36.01485)"
+     d="M 176.73628 151.99098 A 13.176164 13.176164 0 1 1  150.38396,151.99098 A 13.176164 13.176164 0 1 1  176.73628 151.99098 z"
+     sodipodi:ry="13.176164"
+     sodipodi:rx="13.176164"
+     sodipodi:cy="151.99098"
+     sodipodi:cx="163.56012"
+     id="path2139"
+     style="fill:#000072;fill-opacity:1.0000000;stroke:none;stroke-width:1.0019774;stroke-miterlimit:4.0000000;stroke-dasharray:1.0019775 1.0019775;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+     sodipodi:type="arc" />
+  <path
+     id="path2187"
+     d="M 90.896812,152.39932 L 92.022469,152.39932 L 101.59055,153.52498 L 110.59581,134.38881 L 122.13380,123.97648 L 128.88774,119.47385 L 121.28955,108.49869 L 101.87197,125.10214 L 90.896812,152.39932 z "
+     style="fill:#ffffff;fill-opacity:1.0000000;fill-rule:evenodd;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+  <text
+     sodipodi:linespacing="100%"
+     transform="matrix(-0.961755,-0.273914,0.273914,-0.961755,255.5897,366.8607)"
+     id="text2143"
+     style="line-height:99.999922%;writing-mode:lr;text-anchor:start;font-family:Bitstream Vera Sans;stroke-opacity:1.0000000;stroke-linejoin:miter;stroke-linecap:butt;stroke-width:1.0000000px;stroke:none;fill-rule:nonzero;fill-opacity:1.0000000;fill:#000000;font-stretch:normal;font-weight:normal;font-variant:normal;font-style:normal;font-size:13.999989"
+     xml:space="preserve"><textPath
+       id="textPath2182"
+       xlink:href="#path2141">SNMP</textPath></text>
+</svg>

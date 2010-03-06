@@ -1,0 +1,22 @@
+
+LuaSNMP - Frequently asked questions
+====================================
+
+* Questions
+  ---------
+
+1. Why is it LuaSNMP and not LuaMan as the original one ?
+
+
+* Answers
+  -------
+
+1. Why is it LuaSNMP and not LuaMan as the original one ?
+
+   LuaSNMP includes only SNMP related funtions of LuaMAN. It does not
+   include DNS and ICMP networking stuff like LuaMan did. DNS is
+   alread included in the excellent LuaSocket library from Diego
+   Nehab. This library (or an extra one) may be a better home for ICMP
+   as well.
+
+Bye.

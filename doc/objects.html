@@ -1,0 +1,3772 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-gb">
+<head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <title>LuaSNMP - Reference</title>
+  <link media="screen" href="style.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <link media="print" rel="stylesheet" href="styleprint.css" type="text/css" />
+</head>
+
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+<h1></h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="top: 12px; height: 129px; left: 0px; text-align: center; width: 925px;" id="logo"><a name="home2"></a><a href="http://www.lua.org"><img style="border: 0px solid ; left: 0px; top: 6px; width: 115px; height: 118px; float: left;" id="lualogo" alt="www.lua.org" src="luasnmp2.png" hspace="20" /></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="header">
+<h1 style="height: 120px; margin-left: 0px; width: 928px;"><big><big><a name="home"></a><br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LuaSNMP - Reference</big></big> <br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Simple
+Network Management Access with Lua</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="leftnavigation">
+<ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li style="margin-left: 0px; width: 185px;"><a class="current" href="index.html">Home</a>
+  </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="index.html#license">License</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="index.html#features">Features</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="index.html#download">Download</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="index.html#installation">Installation</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="running.html">MANUAL</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li><a href="running.html">Running&nbsp;</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li><a href="#object_names">Object Names</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li><a href="#data_types"><span style="text-decoration: underline;"><span style="font-weight: bold;">Data Types</span></span></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+    <li><a href="#varbinds">Varbinds</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <ul>
+
+
+
+
+
+
+
+
+
+
+      <li><a href="#varbinds_general">General</a></li>
+
+
+
+
+
+
+
+
+
+
+      <li><a href="#varbind_meta">Metamethods</a></li>
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+    <li><a href="#sessions">SNMP Sessions</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+    <li><a href="#trap_handling">Trap Handling</a></li>
+
+
+
+
+
+
+
+
+    <li><a href="mib.html">Access to MIBs</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li><a href="snmp.html">Access to SNMP</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <li><a href="examples.html">Examples</a> </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="index.html#whatsnew">What's New</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="index.html#credits">Credits</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="index.html#links">Links</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><a href="index.html#todo">ToDo</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="content">
+<h1><a name="object_names"></a>Object Names</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Most functions in LuaSNMP accept either object identifiers in pseudo-numerical dot-notation or symbolic object names&nbsp;&nbsp;</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Here are some basic rules:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Object names <span style="font-style: italic;">may</span> have an index suffix, e.g. sysContact.<span style="font-weight: bold;">0</span></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Object identifiers or OIDs <span style="font-style: italic;">must</span> follow a textual dot-notation, e.g. "1.3.6.1.2.1.1.4"</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Object identifiers <span style="font-style: italic;">may</span> have an index suffix, e.g. "1.3.6.1.2.1.1.4.<span style="font-weight: bold;">0</span>"</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Most function accept a mixed notation using node IDs or symbolic names, e.g. iso.org.dod.internet.mgmt.mib-2.<span style="font-weight: bold;">1</span>.sysContact.<span style="font-weight: bold;">0</span></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Any object name or object identifier <span style="font-style: italic;">may</span> be prepended by a module name, separated by a double or a single colon, e.g. <span style="font-weight: bold;">SNMPv2-MIB</span>::sysContact.0 or <span style="font-weight: bold;">SNMPv2-MIB:</span>1.3.6.1.2.1.1.4.0<br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note, that the module name becomes an integral part of an object name. The object will not be found if the module name is wrong.</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+<h1><a name="data_types"></a>Data Types</h1>
+
+
+
+
+
+
+
+
+
+
+<p>LuaSNMP maps SNMP data types to Lua basic types as specified in the
+table below. SNMP basic data types are associated to a set of
+numerical "codes". These numerical codes are used by the LuaSNMP
+functions when identifying the SNMP data type of a given variable
+instance value. Additionally LuaSNMP maintains a database to map the numerical codes to textual type names.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<table style="width: 658px; height: 795px;" border="1" bordercolor="#000000" cellpadding="4" cellspacing="1">
+
+
+
+
+
+
+
+
+
+
+  <tbody>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td bgcolor="#ffffff" valign="top" width="23%">
+      <font size="-1"><b>SNMP Type</b></font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td bgcolor="#ffffff" valign="top" width="26%">
+      <font size="-1"><b>LuaSNMP Code</b></font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td bgcolor="#ffffff" valign="top" width="12%">
+      <font size="-1"><b>Lua Type</b></font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td bgcolor="#ffffff" valign="top" width="38%">
+      <font size="-1"><b>Representation </b></font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">OBJECT IDENTIFIER</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_OBJID (1)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">string</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">Decimal numbers separated by dots (<i>dotted notation</i>). e.g.: "1.3.6.1.2.1.1.5"</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">OCTET STRING</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_OCTETSTR (2)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">string</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">Hexadecimal numbers (00 to ff) separated by colons. <br />
+
+
+
+
+
+
+
+
+
+
+      </font>
+      <font size="-1">e.g.: "00:00:80:a4:32:f3"</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">INTEGER</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_INTEGER (3)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">number</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">&nbsp;</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">NetworkAddress</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_NETADDR (4)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">string</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">Decimal numbers (0 to 255) separated by dots (<i>dotted notation</i>).
+      <br />
+
+
+
+
+
+
+
+
+
+
+      </font><font size="-1">e.g.: "139.82.95.11"</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">IpAddress</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_IPADDR (5)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">string</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">Similar to NetworkAddress.</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">Counter</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_COUNTER (6)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">number</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">&nbsp;</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">Gauge32</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_GAUGE (7)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">number</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">&nbsp;</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">TimeTicks</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_TIMETICKS (8)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">table</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">A table representing a record structure with fields: <i>ticks </i>(raw value)<i>, days, hours, minutes, seconds e deciseconds</i>. Each field contains a numerical value.</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">Opaque</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_OPAQUE (9)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">string</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">Similar to OCTET STRING.</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">NULL</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_NULL (10)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">nil</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1"><b>nil</b></font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="23%">
+      <font size="-1">Counter64</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="26%">
+      <font size="-1">snmp.</font><font size="-1">TYPE_COUNTER64 (11)</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="12%">
+      <font size="-1">number</font></td>
+
+
+
+
+
+
+
+
+
+
+
+      <td valign="top" width="38%">
+      <font size="-1">&nbsp;</font></td>
+
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">Bitstring</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">snmp.</font><font size="-1">TYPE_BITSTRING (12)</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">string</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">Binary number, e.g. "10010001"</font></td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">NsapAddress</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">snmp.</font><font size="-1">TYPE_NSAPADDRESS(13)</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">string</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">UInteger</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">snmp.</font><font size="-1">TYPE_UINTEGER (14)</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">number</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td>s</td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">Uinteger32</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">snmp.</font><font size="-1">TYPE_UNSIGNED32 (15)</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">number</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">Integer32</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">snmp.</font><font size="-1">TYPE_INTEGER32 (16)</font><font size="-1"></font><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">number</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+      <td><font size="-1">Opaque: Float&nbsp;</font></td>
+
+
+      <td><font size="-1">snmp.TYPE_FLOAT (120)</font></td>
+
+
+      <td><font size="-1">number</font></td>
+
+
+      <td><font size="-1"></font></td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><font size="-1">Opaque: Double</font></td>
+
+
+      <td><font size="-1">snmp.TYPE_DOUBLE (121)</font></td>
+
+
+      <td><font size="-1">number</font></td>
+
+
+      <td><font size="-1"></font></td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><font size="-1">Opaque: Integer64</font></td>
+
+
+      <td><font size="-1">snmp.TYPE_INTEGER64 (122)</font></td>
+
+
+      <td><font size="-1">number</font></td>
+
+
+      <td><font size="-1"></font></td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><font size="-1">Opaque: Unsigned64</font></td>
+
+
+      <td><font size="-1">snmp.TYPE_UNSIGNED64 (123)</font></td>
+
+
+      <td><font size="-1">number</font></td>
+
+
+      <td><font size="-1"></font></td>
+
+
+    </tr>
+
+
+    <tr align="center">
+
+
+
+
+
+
+
+
+
+
+      <td colspan="4" rowspan="1">Special type values</td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">NO SUCH OBJECT</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">snmp.NOSUCHOBJECT&nbsp;&nbsp; = 128</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">NO SUCH INSTANCE</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">snmp.NOSUCHINSTANCE = 129<br />
+
+
+
+
+
+
+
+
+
+
+      </font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">END OF MIB VIEW</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1">snmp.ENDOFMIBVIEW&nbsp;&nbsp; = 130</font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+      <td><font size="-1"></font></td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<h1><a name="varbinds"></a>Varbinds</h1>
+
+
+
+
+
+
+
+
+
+
+<h3><a name="varbinds_general"></a>General</h3>
+
+
+
+
+
+
+
+
+
+
+SNMP operations are defined on a list of MIB variable instances called a <i>varbind list</i>. Each element of a varbind list - a <span style="font-weight: bold;">varbind element</span>
+- describes a specific MIB variable instance. A varbind element
+specifies three MIB instance attributes: its <span style="font-weight: bold;">object identifier</span>, its
+<span style="font-weight: bold;">data type</span> and its <span style="font-weight: bold;">value</span>. 
+<p>LuaSNMP represents a <span style="font-weight: bold;">varbind list</span> as a table containing <span style="font-weight: bold;">varbind elements</span>
+indexed by consecutive numerical values, starting with 1. A varbind
+element is represented as a table containing the values of the three
+MIB instance attributes. The strings <b>"oid"</b>,<b> "type"</b> and <b>"value" </b>index the three attributes of a varbind table. LuaSNMP represents the values of the varbind attributes as follows:</p>
+
+
+
+
+
+
+
+
+
+
+<dir>
+
+<p><b>oid</b> - a string containing the <i>object identifier</i> that identifies the MIB instance.</p>
+
+
+
+
+
+
+
+
+
+
+
+<p><b>type</b> - the numerical code associated by LuaMan to the SNMP data type of the MIB instance, as specified in the table above (<a href="#data_types">Data Types</a>).</p>
+
+
+
+
+
+
+
+
+
+
+
+<p><b>value</b>- the value of the MIB instance, represented as specified in the table above (<a href="#data_types">Data Types</a>).</p>
+
+
+
+
+
+
+
+
+
+
+</dir>
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The following example illustrates a LuaSNMP representation of a varbind list:</p>
+
+
+
+
+
+
+
+
+
+
+
+<pre>vlist = {<br /> {oid = "1.3.6.1.2.1.1.4.0", type = TYPE_DISPLAY, value = "Lua"},<br /> {oid = "1.3.6.1.2.1.1.6.0", type = TYPE_DISPLAY, value = "Program" }<br />}<br /></pre>
+
+
+
+
+
+
+
+
+
+
+
+<p>When a previously loaded MIB module contains the description of a
+given MIB variable, LuaSNMP allows a management application to use this
+variable's <span style="font-weight: bold;">MIB label</span> instead of its object identifier, and also to omit the <span style="font-weight: bold;">type</span> attribute, as shown in the example below: </p>
+
+
+
+
+
+
+
+
+
+
+
+<pre>  vb = {oid = "sysContact.0", value = "Ana"}</pre>
+
+
+
+
+
+
+
+
+
+
+
+<p>A management application can also omit the <span style="font-weight: bold;">value</span><span style="font-weight: bold;"> </span>attribute when specifying varbind tables for retrieving - or <i style="font-weight: bold;">getting</i><span style="font-weight: bold;"> </span>- the values of MIB instances. LuaMan functions, however, will always return fully specified varbind tables. </p>
+
+
+
+
+
+
+
+
+
+
+
+<p>It is important to note that varbind tables resulting from SNMPv2 operations can signal exception, or error, conditions (<i>NO SUCH OBJECT, NO SUCH INSTANCE, END OF MIB VIEW</i>) in their <span style="font-weight: bold;">type</span><span style="font-weight: bold;">
+</span>attribute. LuaSNMP represents these exception conditions with the
+numerical codes snmp.NOSUCHOBJECT, snmp.NOSUCHINSTANCE and
+snmp.ENDOFMIBVIEW. </p>
+
+
+
+
+
+
+
+
+
+
+<h3><a name="varbind_meta"></a>Varbind Metamethods</h3>
+
+
+
+
+
+
+
+
+
+
+<p>Every varbind element returned by&nbsp; LuaSNMP has a metatable
+assigned. This metatable allows the following special operation on
+varbind elements:</p>
+
+
+
+
+
+
+
+
+
+
+<h5>Creation of varbind elements</h5>
+
+
+
+
+
+
+
+
+
+
+<p>A varbind element can be created using the function <span style="font-style: italic;"><span style="font-weight: bold;">snmp</span></span><span style="font-weight: bold; font-style: italic;">.newvar(NAME, VALUE). </span>This function returns a new varbind element as Lua table with approriate metamethods set.&nbsp;</p>
+
+
+
+
+
+
+
+
+
+
+<pre>leuwer@goofy:luasnmp$ lua -l snmp -i<br />&gt; vb1=snmp.newvar("ifSpeed.1", 1000)<br />&gt; vb2=snmp.newvar("sysContact.0", "atHome")<br />&gt; vb3=snmp.newvar("ifName.2", "Ethernet")<br />&gt; vb4=snmp.newvar("ifSpeed.2", 2000)<br /></pre>
+
+
+
+
+
+
+
+
+
+
+<h5>Conversion to string:&nbsp;</h5>
+
+
+
+
+
+
+
+
+
+
+<p>When the function tostring(vb) is applied to a varbind element, it
+returns a printable string representation of the varbind element.</p>
+
+
+
+
+
+
+
+
+
+
+<pre>&gt; print(tostring(vb1))<br />IF-MIB::ifSpeed.1 = Gauge32: 1000<br />&gt; print(vb2)<br />SNMPv2-MIB::sysContact.0 = STRING: atHome<br />&gt; print(vb3)<br />IF-MIB::ifName.2 = STRING: Ethernet<br />&gt; print(tostring(vb4))<br />IF-MIB::ifSpeed.2 = Gauge32: 2000<br /></pre>
+
+
+
+
+
+
+
+
+
+
+<h5>Comparision of varbind elements</h5>
+
+
+
+
+
+
+
+
+
+
+<p>A compare operation on varbind elements compares their values. Note
+that the comparison is performed on equivalent Lua type (see Data Types
+above). Comparing varbind elements with values of different Lua types
+leads to an error.</p>
+
+
+
+
+
+
+
+
+
+
+<pre>&gt; =vb1&lt;vb4<br />true<br />&gt; =vb1&lt;=vb4<br />true<br />&gt; =vb1&gt;vb4<br />false<br />&gt; =vb2&lt;vb3<br />false<br />&gt; =vb2&gt;vb3<br />true<br />&gt; =vb1 &lt; vb2<br />./snmp.lua:316: attempt to compare number with string<br />stack traceback:<br />        ./snmp.lua:316: in function &lt;./snmp.lua:316&gt;<br />        stdin:1: in main chunk<br />        [C]: ?</pre>
+
+
+
+
+
+
+
+
+
+
+<h5>Concatenation of varbind elements</h5>
+
+
+
+
+
+
+
+
+
+
+<p>Applying the concatenation operator on varbind elements creates a
+varbind list. Any number of varbinds can be concatenated. Concatenation
+a varbind element and a varbind list creates a new varbind list which
+contains the varbind element and all elements of the varbind list.</p>
+
+
+
+
+
+
+
+
+
+
+<pre>&gt; vlist = vb1..vb2..vb3<br />&gt; table.foreach(vlist, print)<br />1       IF-MIB::ifSpeed.1 = Gauge32: 1000<br />2       SNMPv2-MIB::sysContact.0 = STRING: atHome<br />3       IF-MIB::ifName.2 = STRING: Ethernet<br />&gt;<br /></pre>
+
+
+
+
+
+
+
+
+
+
+om<br />
+
+
+
+
+
+
+
+
+
+
+<h1><a name="sessions"></a>SNMP Sessions</h1>
+
+
+
+
+
+
+
+
+
+
+<p>Similarly to other SNMP APIs, LuaSNMP implements the concept of SNMP
+sessions. Before invoking SNMP operations on an SNMP peer, a management
+application must create, or open, an SNMP session. An SNMP session is a
+special object that stores the configuration parameters that control
+the protocol interactions with an SNMP peer. These configuration
+parameters include the IP address of the SNMP peer, the protocol
+version to be used and authentication information. All invocations of
+SNMP operations must specify an SNMP session.</p>
+
+
+
+
+
+
+
+
+
+
+<p>When creating an SNMP session, an application can also define
+default callback functions for receiving responses to asynchronous SNMP
+operations and for handling notifications (trap and inform messages)
+sent by the associated peer.</p>
+
+
+
+
+
+
+
+
+
+
+<p>The configuration parameters stored in a LuaSNMP&nbsp;session are described below.</p>
+
+
+
+
+
+
+
+
+
+
+<h5>peer = STRING</h5>
+
+
+
+
+
+
+
+
+
+
+
+<p>Defines the network (IP) address of the associated SNMP peer, and
+can be provided either as an IP address in dotted notation (e.g.
+"139.82.95.11") or as a host name that can be translated to an IP
+address.</p>
+
+
+
+
+
+<p>
+
+
+
+The default value for this parameter is "0.0.0.0", and indicates an
+SNMP session that is not associated to a specific peer. This kind of
+"unassociated" SNMP sessions can be used for receiving all
+notifications (traps and informs) sent by the SNMP agents and managers
+on the network (see configuration parameters trap and inform). Note,
+however, that SNMP operations can only be invoked for SNMP sessions
+associated to specific peers.</p>
+
+
+
+
+
+
+
+
+
+
+<h5>version = NUMBER</h5>
+
+
+
+
+
+<p>Defines the SNMP protocol version to be used when interacting with
+the SNMP peer associated to the session. LuaSNMP supports
+SNMPv1,&nbsp;SNMPv2C and SNMPv3. A <span style="font-weight: bold;">default value </span>can be defined with the <span style="font-weight: bold;">defCommunity</span> configuration directive in snmp.conf. The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter
+is <span style="font-weight: bold;">snmp.SNMPv2C</span>. LuaSNMP provides the following constants to define the session's version:&nbsp;</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+
+
+
+
+
+  <li><span style="font-weight: bold;">snmp.SNMPv1 = 1</span></li>
+
+
+
+
+
+  <li><span style="font-weight: bold;"></span><span style="font-weight: bold;">snmp.SNMPv2C = snmp.SNMPv2c = 2</span></li>
+
+
+
+
+
+  <li><span style="font-weight: bold;">snmp.SNMPv3 = 3</span></li>
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+<h5>community = STRING</h5>
+
+
+
+
+
+
+
+
+
+
+<p>Defines the community string to be used for authenticating the SNMP
+messages sent to the associated peer. A <span style="font-weight: bold;">default value </span>can be defined with the <span style="font-weight: bold;">defVersion</span> configuration directive in snmp.conf. The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this
+parameter is <span style="font-weight: bold;">"public"</span>. The community is only used for SNMPv1 and SNMPv2C</p>
+
+
+
+
+
+
+
+
+
+
+<h5>port = NUMBER</h5>
+
+
+
+
+
+
+
+
+
+
+<p>Defines the UDP port used by the associated peer for receiving SNMP requests. A default value can be defined via the <span style="font-weight: bold;">defaultPort</span> configuration directive in <span style="font-weight: bold;">snmp.conf</span>. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is <span style="font-weight: bold;">161</span>.</p>
+
+
+
+
+
+
+
+
+
+
+<h5>retries = NUMBER</h5>
+
+
+
+
+
+
+
+
+
+
+<p>Defines the maximum number of retransmissions of an SNMP message. The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span>&nbsp;is <span style="font-weight: bold;">5.</span></p>
+
+
+
+
+
+
+
+
+
+
+<h5>timeout = NUMBER</h5>
+
+
+
+
+
+
+
+
+
+
+<p>Defines the time (in seconds) to wait for a response to an SNMP
+request. In order to avoid congestion problems, every retransmission of
+a given SNMP request will double the previous timeout value.&nbsp;The
+<span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is<span style="font-weight: bold;"> 1.</span></p>
+
+
+
+
+
+
+
+
+
+
+<h5>callback =FUNCTION</h5>
+
+
+
+
+
+
+
+
+
+
+
+
+<p>This parameter defines a default user function to be invoked when a
+response to an asynchronous SNMP operation is received, or when an
+asynchronous request times out.<br />
+
+
+
+
+
+
+
+
+
+Note, however, that an application can define a specific function
+for processing the response to a given asynchronous request. In this
+case, this specific function overrides the default callback function
+configured for the session.<br />
+
+
+
+
+
+
+
+
+
+The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is <span style="font-weight: bold;">nil</span>, indicating that no
+default function for handling asynchronous responses is defined for the
+session.</p>
+
+
+
+
+
+
+
+
+
+
+<h5>trap = FUNCTION</h5>
+
+
+
+
+
+
+
+
+
+
+
+<p>This parameter defines a user function to be invoked when a trap
+message is received. Note that when a trap message is received, LuaSNMP
+invokes the trap handling functions specified for all SNMP sessions
+associated to the originating agent, and also the trap handling
+functions specified for "unassociated" sessions (peer = "0.0.0.0").&nbsp;<br />
+
+
+
+
+
+
+
+
+
+The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is <span style="font-weight: bold;">nil</span>, indicating that no trap handling function is defined for the session.</p>
+
+
+
+
+
+
+
+
+
+<p>Note, that the trap callback function is also invoked for solicited traps = informs.<br />
+
+
+
+
+
+
+
+
+
+See Trap Handling for more details on trap handling in LuaSNMP.</p>
+
+
+
+
+
+
+
+
+
+<h5>user = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter defines the user name to be used during SNMP version 3 USM based&nbsp; authentication. A <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> can be specified using the&nbsp;<span style="font-weight: bold;">defSecurityName </span>configuration directive in snmp.conf. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;</p>
+
+
+
+
+
+
+
+
+
+<h5>password = STRING&nbsp;<br />
+
+
+
+
+
+
+
+
+
+autPassphrase = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter defines the&nbsp;pass phrase to be used during SNMP
+version 3 USM based authentication. A default value can be specified
+using the <span style="font-weight: bold;">defAuthPassphrase</span> or <span style="font-weight: bold;">defPassphrase</span> configuration directives in <span style="font-weight: bold;">snmp.conf</span>. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;</p>
+
+
+
+
+
+
+
+
+
+<p>Note, that password is used as the pass phrase for both
+authentication and encryption if no dedicated pass phrase is specified
+for encryption.</p>
+
+
+
+
+
+
+
+
+
+<h5>authType = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter defines the <span style="font-weight: bold;">authentication method</span> to be used for SNMP version 3 authentication. Possible values are <span style="font-weight: bold;">"MD5"</span> or <span style="font-weight: bold;">"SHA"</span>. A default value can be specified using the <span style="font-weight: bold;">defAuthType</span> configuration directive in <span style="font-weight: bold;">snmp.conf</span>. If no authentication method is defined LuaSNMP assumes <span style="font-weight: bold;">"MD5"</span> as <span style="font-weight: bold;">default value.</span></p>
+
+
+
+
+
+
+
+
+
+<h5>privType = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter defines the <span style="font-weight: bold;">encryption method</span> to be used for SNMP version 3 PDU encryption. Possible values are <span style="font-weight: bold;">"DES"</span> or <span style="font-weight: bold;">"AES"</span>. A default value can be specified using the <span style="font-weight: bold;">defPrivType</span><span style="font-weight: bold;"> </span>in<span style="font-weight: bold;"> snmp.conf</span>. If no authentication method is defined LuaSNMP assumes <span style="font-weight: bold;">"DES"</span><span style="font-weight: bold;"> </span>as <span style="font-weight: bold;">default value.</span></p>
+
+
+
+
+
+
+
+
+
+<h5>privPassphrase = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter defines the&nbsp;pass phrase to be used during SNMP version
+3 PDU encryption. &nbsp;A default value can be specified using the
+<span style="font-weight: bold;">defPrivPassphrase</span> or <span style="font-weight: bold;">defPassphrase</span> configuration directives in
+<span style="font-weight: bold;">snmp.conf</span>. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;</p>
+
+
+
+
+
+
+
+
+
+<p>Note, that <span style="font-weight: bold;">password</span> is used as the pass phrase for both authentication
+and encryption if no dedicated pass phrase is specified for encryption.</p>
+
+
+
+
+
+
+
+
+
+<h5>securityLevel = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>Defines the security level to be used in SNMP version 3. The parameter can take the following values:</p>
+
+
+
+
+
+
+
+
+
+<p style="margin-left: 40px;"><span style="font-weight: bold;">"noAuthNoPriv"</span> <span style="font-weight: bold;">-</span> LuaSNMP does not require authentication nor does it perform encryption</p>
+
+
+
+
+
+
+
+
+
+<p style="margin-left: 40px;"><span style="font-weight: bold;">"authNoPriv" - </span>LuaSNMP requires authentication but does NOT perform encryption.<br />
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;"><span style="font-weight: bold;">"authPriv" - </span>LuaSNMP requires authentication AND performs encryption</div>
+
+
+
+
+
+
+
+
+
+<p>A <span style="font-weight: bold;">default value</span> can be defined using the <span style="font-weight: bold;">defSecurityLevel</span> configuration directive in snmp.conf. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;<br />
+
+
+
+
+
+
+
+
+
+If no security level is defined during session creation and there is no configuration available via snmp.conf, LuaSNMP defines <span style="font-weight: bold;">"authNoPriv"</span> as default value.<br />
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+
+
+
+
+
+
+<h5>includeroot = BOOLEAN</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter defines whether the SNMP access function <span style="font-weight: bold; font-style: italic;">walk(NODE) </span>shall include the given NODE. Normally, the walk starts with the successor of the given NODE. The default value is <span style="font-weight: bold;">false</span>.</p>
+
+
+
+
+
+
+
+
+
+<h5>sprintvar = FUNCTION</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter instructs LuaSNMP to use the given FUNCTION to convert varbind elements to readable strings.&nbsp; </p>
+
+
+
+
+
+
+
+
+
+<h5>sprintval = FUNCTION</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter instructs LuaSNMP to use the given FUNCTION to convert varbind values to readable strings.&nbsp;</p>
+
+
+
+
+
+
+
+
+
+<h5>context = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter defines the context to which this session shall have access. <span style="font-weight: bold;">Defaults</span> to an empty context <span style="font-weight: bold;">""</span>.</p>
+
+
+
+
+
+
+
+
+
+<h5>contextID = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter sets the context engineID used for SNMPv3 REQUEST
+messages scopedPdu.&nbsp;&nbsp; If not specified, this will default to
+the authoritative <span style="font-weight: bold;">engineID.</span></p>
+
+
+
+
+
+
+
+
+
+<h5>engineID = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter sets&nbsp; the&nbsp; authoritative&nbsp;
+(security)&nbsp; engineID&nbsp; used&nbsp; for&nbsp; SNMPv3
+REQUEST&nbsp; messages.&nbsp;&nbsp; It&nbsp; is&nbsp; typically&nbsp;
+not necessary to specify this, as it will usually be discovered
+automatically.</p>
+
+
+
+
+
+
+
+
+
+<h5>engineBoots = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter is not (yet) supported. It's typically not required because this value is automatically discovered.</p>
+
+
+
+
+
+
+
+
+
+<h5>engineTime = STRING</h5>
+
+
+
+
+
+
+
+
+
+<p>This parameter is not (yet) supported. It's typically not required because this value is automatically discovered.</p>
+
+
+
+
+
+
+
+
+
+
+<h1><a name="trap_handling"></a>Trap Handling</h1>
+
+
+
+
+
+
+
+<p>LuaSNMP handles traps via the&nbsp;<span style="font-weight: bold;">snmptrapd</span> from the NetSNMP library using the <span style="font-weight: bold;">traphandle</span> directive in <span style="font-weight: bold;">snmptrapd.conf(5)</span>.&nbsp;&nbsp;</p>
+
+
+
+
+
+
+
+<p>In order to capture traps in this way&nbsp;you have to configure the
+script trapd.lua provided with LuaSNMP to handle &nbsp;traps via the <span style="font-weight: bold;">traphandle</span> directive. Insert the following line into snmptrapd.conf:</p>
+
+
+
+
+
+
+<pre>traphandle default PATH_TO_LUA/lua50 PATH_TO_TRAPD/trapd.lua [FWDPORT]</pre>
+
+
+
+
+
+
+<p>The script trapd.lua simply forwards all information received by snmptrapd to LuaSNMP using a UDP socket with localhost on&nbsp;<span style="font-weight: bold;">port&nbsp;6000</span>. In order to change the port, set the environment variable&nbsp; <span style="font-weight: bold;">LUASNMP_TRAPDPORT </span>to the desired port number and provide the same number in the traphandle directive in <span style="font-weight: bold;">snmptrapd.conf</span>.</p>
+
+
+
+
+
+
+<p>Note, that for informs the response to the inform message is sent AFTER trapd.lua has finished.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="footer">(c) 2006-2009 Herbert Leuwer, March 2006&nbsp;&nbsp; &nbsp;<a href="mailto:herbert.leuwer@t-online.de">Contact</a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<small><small>
+</small></small>
+</body>
+</html>

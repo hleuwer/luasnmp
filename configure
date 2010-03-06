@@ -1,0 +1,13 @@
+#! /bin/sh
+case `uname` in
+     Linux)
+       cp -i config.linux config
+       echo "Copied: config.linux => config"
+     ;;
+     *)
+       cp -i config.cygwin config
+       echo "Copied: config.cygwin => config"
+     ;;
+esac
+echo 'Please customize the file "config" to your needs.'
+echo 'Then build by executing "make".'
