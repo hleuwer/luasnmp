@@ -94,6 +94,6 @@ static int global_protect(lua_State *L) {
 * Init module
 \*-------------------------------------------------------------------------*/
 int except_open(lua_State *L) {
-    luaL_openlib(L, NULL, func, 0);
+    luaL_register(L, NULL, func);
     return 0;
 }

@@ -1,6 +1,6 @@
 include ../config
 
-OBJS += nm_snmp.o nm_util.o nm_trap.o nm_mib.o except.o
+OBJS += nm_snmp.o nm_util.o nm_trap.o nm_mib.o nm_c64.o except.o
 
 all: $(LUASNMP_SO)
 

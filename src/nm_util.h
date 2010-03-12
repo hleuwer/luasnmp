@@ -70,5 +70,6 @@ u_long f_uptime(void);
 struct variable_list *f_create_infovl(char *trapOID);
 void f_trapconv(struct snmp_pdu *pdu);
 void f_setup_oid(oid * it, size_t * len, u_char * id, size_t idlen, const char *user);
-
+int f_create_counter64(lua_State *L, struct counter64 val);
+#define f_create_integer64(L, val) f_create_counter(L, val)
 #endif

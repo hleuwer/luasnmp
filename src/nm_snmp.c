@@ -27,6 +27,7 @@
 #include "nm_snmp.h"
 #include "nm_mib.h"
 #include "except.h"
+#include "nm_c64.h"
 
 #define MYNAME "snmp"
 #define MYVERSION VERSION
@@ -2963,21 +2964,22 @@ extern const luaL_reg mibfuncs[];
 #define luaopen_snmpcore luaopen_snmp_core
 
 LUALIB_API int luaopen_snmp_core(lua_State *L) {
-  luaL_openlib(L, MYNAME, funcs, 0);
-  lua_pushliteral(L, "version");
+  luaL_register(L, MYNAME, funcs);     /* mtab */
+  lua_pushliteral(L, "version");       /* mtab.version = ... */
   lua_pushliteral(L, MYVERSION);
   lua_rawset(L, -3);
-  lua_pushliteral(L, "_VERSION");
+  lua_pushliteral(L, "_VERSION");      /* mtab._VERSION = ... */
   lua_pushliteral(L, MYVERSION);
   lua_rawset(L, -3);
-  lua_pushliteral(L, "_SYSTEM");
+  lua_pushliteral(L, "_SYSTEM");       /* mtab._SYSTEM = ... */
   lua_pushliteral(L, MYSYSTEM);
   lua_rawset(L, -3);
-  except_open(L);
-  lua_pushliteral(L, "mib");
-  lua_newtable(L);
-  luaL_openlib(L, NULL, mibfuncs, 0);
-  lua_settable(L, -3);
+  except_open(L);                      /* mtab */
+  lua_pushliteral(L, "mib");           /* 'mib', mtab */
+  lua_newtable(L);                     /* tab, 'mib', mtab */
+  luaL_register(L, NULL, mibfuncs);    /* tab.<funcs> ... */
+  lua_settable(L, -3);                 /* mtab */
+  c64_open(L);                         
   return 1;
 }
 /*-----------------------------------------------------------------------------

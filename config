@@ -64,11 +64,12 @@ LUASNMP_SO=snmp.$(EXT).$(VERSION)
 
 # Compiler and Linker
 DEF = -DCMU_COMPATIBLE -DUSE_SNMPTRAPD $(DEFCOMPAT) -DVERSION='"$(VERSION)"' -DSYSTEM='"$(SYSTEM)"'
+NETSNMP_DEF =
 CC = gcc
-ifeq ($(DEBUG),1)
-  CFLAGS = $(shell net-snmp-config --cflags) -I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -ggdb
+ifeq ($(DEBUG), 1)
+  CFLAGS = -I$(LUAINC) -I$(COMPAT)  $(DEF) $(NETSNMP_DEF)  -Wall -ggdb
 else
-  CFLAGS = $(shell net-snmp-config --cflags) -I$(LUAINC) -I$(COMPAT) $(DEF) -pedantic -Wall -O2
+  CFLAGS = $(shell net-snmp-config --cflags) -I$(LUAINC) -I$(COMPAT) $(DEF) -Wall -O2
 endif
 LDFLAGS = $(shell net-snmp-config --ldflags) -O -shared -fpic
 LIBS += $(shell net-snmp-config --libs) -lcrypto

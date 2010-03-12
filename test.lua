@@ -156,6 +156,40 @@ local function get(sess, name)
 end
 
 ----------------------------------------------------------------------
+-- Test counter64 datatype
+----------------------------------------------------------------------
+local function test_counter64()
+   info("COUNTER64 Test ... ")
+   local cn = snmp.counter64
+   local max = cn.pow(2,64)-1
+   local maxt = cn.totable(max)
+   debug("max = " .. tostring(max))
+   assert(tostring(max) == "18446744073709551615")
+   assert((cn.number(1) - 2) == max)
+   assert((maxt.high == 0xffffffff) and (maxt.low == 0xffffffff))
+   local mid = cn.number{high = 0, low = 0xffffffff}
+   assert(mid + 1 == cn.pow(2,32))
+   assert(mid < max)
+   local a, b, c = cn.number(0), mid, max
+   assert(b > a)
+   assert(b <= mid)
+   assert(cn.compare(a,b) == -1)
+   assert(cn.compare(max,a) == 1)
+   assert(cn.compare(mid, mid) == 0)
+   local a = cn.number(123456789)
+   assert(cn.tonumber(a) == 123456789)
+   assert(cn.sqrt(cn.number(49)) == cn.number(7))
+   local a = cn.number{high=1234, low=5678}
+   local d = cn.pow(2,32)
+   assert(cn.tonumber(cn.div(a, d)) == 1234)
+   assert(cn.tonumber(cn.mod(a, d)) == 5678)
+   x,y = cn.divmod(a, d)
+   assert(x == cn.number(1234) and y == cn.number(5678))
+   assert(cn.iszero(cn.number(0)))
+   info("COUNTER64 ok.")
+
+end
+----------------------------------------------------------------------
 -- Asynch request callback
 ----------------------------------------------------------------------
 local function test_cb(vb, status, index, reqid, session, magic)
@@ -1042,6 +1076,7 @@ end
 ----------------------------------------------------------------------
 
 test_mib()
+test_counter64()
 
 if mibonly then return end
 

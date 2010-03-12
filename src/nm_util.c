@@ -8,6 +8,7 @@
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/mib_api.h>
 #include <net-snmp/library/cmu_compat.h>
+#include <net-snmp/library/asn1.h>
 
 #ifndef WIN32
 #include <sys/param.h>
@@ -27,6 +28,7 @@
 #include "nm_snmpdefs.h"
 #include "nm_util.h"
 #include "nm_varbind.h"
+#include "nm_c64.h"
 
 /*-----------------------------------------------------------------------------
  * Local Variables
@@ -462,6 +464,15 @@ static u_char f_cmu_type(int cod_lua) {
 }
 
 /*-----------------------------------------------------------------------------
+ * f_create_counter64
+ *
+ * Create a counter64 instance and push it on the stack.
+ *----------------------------------------------------------------------------*/
+int f_create_counter64(lua_State *L, struct counter64 val) {
+  c64_new(L, val);
+  return 1;
+}
+/*-----------------------------------------------------------------------------
  * f_create_time_table
  *
  * Create a time table from ticks, return table on stack.
@@ -610,24 +621,14 @@ int f_create_vb(lua_State *L, struct variable_list *var) {
   case NM_TYPE_COUNTER64:
   case NM_TYPE_UNSIGNED64:
     {
-      int ul_bits;
-      double val;
-      ul_bits = sizeof(u_long) * 8;
-      val = (var->val.counter64->high) << ul_bits;
-      val += (var->val.counter64->low);
       lua_pushstring(L, "value");
-      lua_pushnumber(L, val);
+      c64_new(L, *(var->val.counter64));
       break;
     }
   case NM_TYPE_INTEGER64:
     {
-      int ul_bits;
-      double val;
-      ul_bits = sizeof(u_long) * 8;
-      val = (var->val.counter64->high) * (2^ul_bits);
-      val += (var->val.counter64->low);
       lua_pushstring(L, "value");
-      lua_pushnumber(L, val);
+      c64_new(L, *(var->val.counter64));
       break;
     }
   case NM_TYPE_FLOAT:
@@ -871,17 +872,10 @@ struct variable_list *f_create_vl(lua_State *L, int prim_type) {
   case NM_TYPE_INTEGER64:
     {
       struct counter64 *var = (struct counter64*) strbuf;
-      double val;
-      u_long hi,lo;
-      int ul_bits = sizeof(u_long) * 8;
-      if (!lua_isnumber(L, -1))
-	return NULL;
-      val = lua_tonumber(L, -1);
-      hi = (u_long) floor(ldexp(val, -ul_bits));
-      lo = (u_long) (val - ldexp(val, ul_bits));
-      *(&var->high) = hi;
-      *(&var->low) = lo;
+      struct counter64 val = c64_get(L, -1);
       len = sizeof(struct counter64);
+      *(&var->high) = val.high;
+      *(&var->low) = val.low;
       break;
     }
 
