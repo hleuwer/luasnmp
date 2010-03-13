@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="en-gb">
-<head>
+<html lang="en-gb"><head><title>LuaSNMP</title>
 
 
 
@@ -23,6 +22,9 @@
 
 
 
+
+
+
   
 
 
@@ -69,7 +71,7 @@
   
   
   
-  <title>LuaSNMP</title>
+  
   <link media="screen" href="style.css" rel="stylesheet" type="text/css" />
 
 
@@ -116,10 +118,7 @@
   
   
   
-  <link media="print" rel="stylesheet" href="styleprint.css" type="text/css" />
-</head>
-
-<body>
+  <link media="print" rel="stylesheet" href="styleprint.css" type="text/css" /></head><body>
 
 
 
@@ -143,7 +142,7 @@
 
 
 
-<div style="top: 12px; height: 129px; left: 0px; text-align: center; width: 925px;" id="logo"><a name="home2"></a><a href="http://www.lua.org"><img style="border: 0px solid ; left: 0px; top: 6px; width: 115px; height: 118px; float: left;" id="lualogo" alt="www.lua.org" src="luasnmp2.png" hspace="20" /></a></div>
+<div style="top: 12px; height: 129px; left: 0px; text-align: center; width: 925px;" id="logo"><a name="home2" /><a href="http://www.lua.org"><img style="border: 0px solid ; left: 0px; top: 6px; width: 115px; height: 118px; float: left;" id="lualogo" alt="www.lua.org" src="luasnmp2.png" hspace="20" /></a></div>
 
 
 
@@ -168,7 +167,7 @@
 
 
 <div id="header">
-<h1 style="height: 120px; margin-left: 0px; width: 928px;"><big><big><a name="home"></a><br />
+<h1 style="height: 120px; margin-left: 0px; width: 928px;"><big><big><a name="home"><br />
 
 
 
@@ -192,7 +191,7 @@
 
 
 
-LuaSNMP</big></big> <br />
+LuaSNMP</a></big><a name="home" /></big><a name="home"> <br />
 
 
 
@@ -216,7 +215,7 @@ LuaSNMP</big></big> <br />
 
 
 Simple
-Network Management Access with Lua</h1>
+Network Management Access with Lua</a></h1>
 
 
 
@@ -289,7 +288,7 @@ Network Management Access with Lua</h1>
 
 
 
-  <li style="margin-left: 0px; width: 185px;"><a class="current" href="index.html">Home</a>
+<a name="home">  </a><li style="margin-left: 0px; width: 185px;"><a class="current" href="index.html">Home</a>
   </li>
 
 
@@ -861,7 +860,7 @@ Network Management Access with Lua</h1>
 
 
 <div id="content">
-<h1><a name="luasnmp"></a>LuaSNMP</h1>
+<h1><a name="luasnmp">LuaSNMP</a></h1>
 
 
 
@@ -947,7 +946,7 @@ stuff.&nbsp;</p>
 
 
 
-<h1><a name="License"></a>License</h1>
+<h1><a name="License">License</a></h1>
 
 
 
@@ -996,7 +995,7 @@ License</a>.</p>
 
 
 
-<h1><a name="features"></a>Features</h1>
+<h1><a name="features">Features</a></h1>
 
 
 
@@ -1132,7 +1131,8 @@ LuaSNMP is divided into two major parts:</p>
 
 
 
-<p style="font-family: Helvetica,Arial,sans-serif; font-weight: bold;">Supported Platforms</p>
+<h1><a name="features">Supported Platforms</a></h1>
+
 
 
 
@@ -1784,7 +1784,7 @@ using Lua metatables.</li>
 
 
 
-<h1><a name="download"></a>Download</h1>
+<h1>Download</h1>
 
 
 
@@ -1833,7 +1833,7 @@ can be&nbsp; downloaded from <a href="http://luaforge.net/">LuaForge</a>.</p>
 
 
 
-<h1><a name="installation"></a>Installation</h1>
+<h1><a name="installation">Installation</a></h1>
 
 
 
@@ -1907,7 +1907,7 @@ need the following components to compile and install LuaSNMP:</p>
 
 
   <li><a href="http://www.lua.org">Lua</a>
-version 5.0 or 5.1</li>
+version 5.1</li>
 
 
 
@@ -1931,9 +1931,7 @@ version 5.0 or 5.1</li>
 
 
 
-  <li><a href="http://www.lua.org">Lua</a> 5.1
-compatibilty package <a href="http://www.keplerproject.org/compat/">Compat-5.1</a>
-release 5 or later (only with Lua 5.0)</li>
+  
 
 
 
@@ -1958,7 +1956,7 @@ release 5 or later (only with Lua 5.0)</li>
 
 
   <li>The <a href="http://net-snmp.sourceforge.net/">Net-SNMP</a>
-library version 5.2.1 or later; recommended: Net-SNMP 5.4.1</li>
+library version 5.4.2 or later; recommended: Net-SNMP 5.4.2</li>
 
 
 
@@ -2049,7 +2047,7 @@ distribution.</p>
 
 
 
-<h1><a name="whatsnew"></a>What's New ?</h1>
+<h1><a name="whatsnew">What's New ?</a></h1>
 
 
 
@@ -2086,8 +2084,78 @@ distribution.</p>
 
 
 
+  </ul>
+<ul>
+  <li>2010-03-13: LuaSNMP version 1.0.6 released</li>
+  <ul>
+    <li>Introduced counter64 as new Lua type to handle 64 bit MIB objects correctly<br />
+
+(thanks to Yuri Kozlov for discovering this lack, see <a href="http://lua-users.org/lists/lua-l/2010-02/msg00477.html">http://lua-users.org/lists/lua-l/2010-02/msg00477.html</a>)<br />
+    </li>
+    <li>Adopted to Net-SNMP version 5.4.2</li>
+    <li>Dropped official Lua 5.0 support (no support in makefiles, no test).</li>
+  </ul>
+</ul>
+<ul>
+  <li>2009-07-05: LuaSNMP version 1.0.5 released</li>
+  <ul>
+<li>Adopted to Net-SNMP version 5.4.1</li><li>Adopted to Lua 5.1.4</li>
+    <li>Minor fixes<br />
+    </li>
+  </ul>
+</ul>
+<ul>
+  <li>2006-06-17: LuaSNMP version 1.0.4 released (still beta)</li>
+  <ul>
+<li>Bugfixes</li><li>Improved failure handling - Now all functions should return a
+non-nil value in case of success or nil plus an error message in case
+of failures. No asserts are used anymore within LuaSNMP.<br />
+
+ATTENTION: The function&nbsp;snmp.close(SESSION) had to be changed. You may have to change your code. Sorry !</li><li>Closely related to the above, LuaSNMP now offers <a href="snmp.html#exceptions">Finalized Exceptions</a> as designed by Diego Nehab for the luasocket library. See <a href="http://lua-users.org/wiki/FinalizedExceptions">here</a> for details.</li>
+  </ul>
+</ul>
+<ul>
+  <li>2006-05-14: LuaSNMP version 1.0.3 released (still beta)</li>
+  <ul>
+<li>Bugfixes</li><li>Additional MIB informational functions mib.indexes, mib.augments and mib.units.</li><li>Support of view based access&nbsp;VACM (create/delete Sec2Group Mapping, Views and Access).</li>
+  </ul>
+</ul>
+<ul>
+  <li>2006-05-06: LuaSNMP version 1.0.2 released (still beta)</li>
+  <ul>
+<li>Various bugfixes.</li><li>Better support of ASN.1 special OPAQUE&nbsp; types (UNSIGNED64, INTEGER64, FLOAT, DOUBLE).</li><li><span style="font-style: italic;">snmp.walk()</span> now returns all&nbsp;objects that could be retrieved before an error occured.</li><li>Support of SNMPv3 user security management (add, clone and delete users, change password on remote machines)</li>
+  </ul>
+</ul>
+<ul>
+  <li>2006-04-18: LuaSNMP version 1.0.1 released (still beta).<br />
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </li>
+  <ul>
+    <li>Minor release providing some bug fixes, improved build environment and&nbsp; deeper testing on Windows/Cygwin platform</li>
+  </ul>
+</ul>
+<ul>
   <li>2006-04-09: LuaSNMP
 version 1.0-beta has been released.</li>
+
 
 
 
@@ -2155,6 +2223,7 @@ version 1.0-beta has been released.</li>
 
 
 
+
 <ul>
 
 
@@ -2165,65 +2234,7 @@ version 1.0-beta has been released.</li>
 
 
 
-  <li>2006-04-18: LuaSNMP version 1.0.1 released (still beta).<br />
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <ul>
-
-
-
-
-
-
-
-
-
-      <li>Minor release providing some bug fixes, improved build environment and&nbsp; deeper testing on Windows/Cygwin platform</li>
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    </ul>
-
-
-
-
-
-
-
-
-
-  </li>
+  
 
 
 
@@ -2260,132 +2271,11 @@ version 1.0-beta has been released.</li>
 
 
 
-<ul>
+<ul />
 
 
 
-
-
-
-  <li>2006-05-06: LuaSNMP version 1.0.2 released (still beta)</li>
-
-
-
-
-
-
-  
-  
-  
-  
-  
-  
-  <ul>
-
-
-
-
-
-
-    <li>Various bugfixes.</li>
-
-
-
-
-
-    <li>Better support of ASN.1 special OPAQUE&nbsp; types (UNSIGNED64, INTEGER64, FLOAT, DOUBLE).</li>
-
-
-
-
-
-
-    <li><span style="font-style: italic;">snmp.walk()</span> now returns all&nbsp;objects that could be retrieved before an error occured.</li>
-
-
-
-
-
-    <li>Support of SNMPv3 user security management (add, clone and delete users, change password on remote machines)</li>
-
-
-
-  
-  
-  
-  </ul>
-
-
-
-</ul>
-
-
-
-<ul>
-
-
-
-  <li>2006-05-14: LuaSNMP version 1.0.3 released (still beta)</li>
-
-
-
-  
-  
-  
-  <ul>
-
-
-
-    <li>Bugfixes</li>
-
-
-
-    <li>Additional MIB informational functions mib.indexes, mib.augments and mib.units.</li>
-
-
-
-    <li>Support of view based access&nbsp;VACM (create/delete Sec2Group Mapping, Views and Access).</li>
-
-
-
-  
-  
-  
-  </ul>
-
-
-  <li>2006-06-17: LuaSNMP version 1.0.4 released (still beta)</li>
-
-
-  
-  
-  <ul>
-
-
-    <li>Bugfixes</li>
-
-    <li>Improved failure handling - Now all functions should return a
-non-nil value in case of success or nil plus an error message in case
-of failures. No asserts are used anymore within LuaSNMP.<br />
-
-ATTENTION: The function&nbsp;snmp.close(SESSION) had to be changed. You may have to change your code. Sorry !</li>
-
-    <li>Closely related to the above, LuaSNMP now offers <a href="snmp.html#exceptions">Finalized Exceptions</a> as designed by Diego Nehab for the luasocket library. See <a href="http://lua-users.org/wiki/FinalizedExceptions">here</a> for details.</li>
-
-
-  
-  
-  </ul>
-  <li>2009-07-05: LuaSNMP version 1.0.5 released</li>
-  <ul>
-    <li>Adopted to Net-SNMP version 5.4.1</li>
-    <li>Adopted to Lua 5.1.4</li>
-    <li>Minor fixes</li>
-  </ul>
-
-
-
-</ul>
+<ul />
 
 
 
@@ -2423,7 +2313,7 @@ ATTENTION: The function&nbsp;snmp.close(SESSION) had to be changed. You may have
 
 
 
-<h1><a name="credits"></a>Credits</h1>
+<h1><a name="credits">Credits</a></h1>
 
 
 
@@ -2514,7 +2404,7 @@ It was fun to extend this piece of software with the features of Lua
 
 
 
-<h1><a name="links"></a>Links</h1>
+<h1><a name="links">Links</a></h1>
 
 
 
@@ -2595,7 +2485,7 @@ It was fun to extend this piece of software with the features of Lua
 
 
 
-<h1><a name="todo"></a>ToDo</h1>
+<h1><a name="todo">ToDo</a></h1>
 
 
 
@@ -2645,7 +2535,7 @@ Please refer to file TODO in the top level directory of LuaSNMP.
 
 
 
-<div id="footer">(c) 2006-2009 Herbert Leuwer, March 2006&nbsp;&nbsp; &nbsp;<a href="mailto:herbert.leuwer@t-online.de">Contact</a></div>
+<div id="footer">(c) 2006-2010 Herbert Leuwer, March 2006&nbsp;&nbsp; &nbsp;<a href="mailto:herbert.leuwer@t-online.de">Contact</a></div>
 
 
 
@@ -2671,5 +2561,4 @@ Please refer to file TODO in the top level directory of LuaSNMP.
 
 <small><small>
 </small></small>
-</body>
-</html>
+</body></html>

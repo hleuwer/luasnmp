@@ -523,8 +523,17 @@ local function test_get(sess)
   if not reqid then 
     debug(err) 
   else 
-    debug("  asynch_get with reqid: %d", reqid)
-    sess:wait()
+     debug("  asynch_get with reqid: %d", reqid)
+     sess:wait()
+  end
+
+  -- normal get for 64 bit value
+  if sess.version ~= snmp.SNMPv1 then
+     info(" Counter64 get  ...")
+     local vb, err, index = snmp.get(sess, "ifHCOutOctets.1")
+     assert(vb, err)
+     debug("  type(val)=%s type=%s val=%s %s", type(vb.value), vb.type, tostring(vb.value), snmp.sprintvar(vb))
+     assert(type(vb.value) == "userdata")
   end
   info("SNMP GET ok.")
 end

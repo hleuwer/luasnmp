@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="en-gb">
-<head>
+<html lang="en-gb"><head><title>LuaSNMP - Reference</title>
 
 
 
@@ -19,6 +18,10 @@
 
 
 
+
+
+
+
   
 
 
@@ -57,7 +60,7 @@
   
   
   
-  <title>LuaSNMP - Reference</title>
+  
   <link media="screen" href="style.css" rel="stylesheet" type="text/css" />
 
 
@@ -96,11 +99,7 @@
   
   
   
-  <link media="print" rel="stylesheet" href="styleprint.css" type="text/css" />
-</head>
-
-
-<body>
+  <link media="print" rel="stylesheet" href="styleprint.css" type="text/css" /></head><body>
 
 
 
@@ -112,7 +111,7 @@
 
 
 
-<h1></h1>
+<h1>
 
 
 
@@ -132,7 +131,7 @@
 
 
 
-<div style="top: 12px; height: 129px; left: 0px; text-align: center; width: 925px;" id="logo"><a name="home2"></a><a href="http://www.lua.org"><img style="border: 0px solid ; left: 0px; top: 6px; width: 115px; height: 118px; float: left;" id="lualogo" alt="www.lua.org" src="luasnmp2.png" hspace="20" /></a></div>
+<div style="top: 12px; height: 129px; left: 0px; text-align: center; width: 925px;" id="logo"><a name="home2" /><a href="http://www.lua.org"><img style="border: 0px solid ; left: 0px; top: 6px; width: 115px; height: 118px; float: left;" id="lualogo" alt="www.lua.org" src="luasnmp2.png" hspace="20" /></a></div>
 
 
 
@@ -153,7 +152,7 @@
 
 
 <div id="header">
-<h1 style="height: 120px; margin-left: 0px; width: 928px;"><big><big><a name="home"></a><br />
+<h1 style="height: 120px; margin-left: 0px; width: 928px;"><big><big><a name="home"><br />
 
 
 
@@ -173,7 +172,7 @@
 
 
 
-LuaSNMP - Reference</big></big> <br />
+LuaSNMP - Reference</a></big><a name="home" /></big><a name="home"> <br />
 
 
 
@@ -193,7 +192,7 @@ LuaSNMP - Reference</big></big> <br />
 
 
 Simple
-Network Management Access with Lua</h1>
+Network Management Access with Lua</a></h1>
 
 
 
@@ -254,7 +253,7 @@ Network Management Access with Lua</h1>
 
 
 
-  <li style="margin-left: 0px; width: 185px;"><a class="current" href="index.html">Home</a>
+<a name="home">  </a><li style="margin-left: 0px; width: 185px;"><a class="current" href="index.html">Home</a>
   </li>
 
 
@@ -450,6 +449,10 @@ Network Management Access with Lua</h1>
 
 
     <li><a href="#data_types"><span style="text-decoration: underline;"><span style="font-weight: bold;">Data Types</span></span></a></li>
+    <ul>
+      <li><a href="#datatype_general"><span style="text-decoration: underline;"><span style="font-weight: bold;">General</span></span></a></li>
+      <li><a href="#counter64"><span style="text-decoration: underline;"><span style="font-weight: bold;">Counter64</span></span></a></li>
+    </ul>
 
 
 
@@ -462,7 +465,10 @@ Network Management Access with Lua</h1>
 
 
 
+
+    
     <li><a href="#varbinds">Varbinds</a></li>
+
 
 
 
@@ -781,7 +787,7 @@ Network Management Access with Lua</h1>
 
 
 <div id="content">
-<h1><a name="object_names"></a>Object Names</h1>
+<h1><a name="object_names">Object Names</a></h1>
 
 
 
@@ -795,7 +801,7 @@ Network Management Access with Lua</h1>
 
 
 
-<p>Most functions in LuaSNMP accept either object identifiers in pseudo-numerical dot-notation or symbolic object names&nbsp;&nbsp;</p>
+<p><a name="object_names">Most functions in LuaSNMP accept either object identifiers in pseudo-numerical dot-notation or symbolic object names&nbsp;&nbsp;</a></p>
 
 
 
@@ -809,7 +815,7 @@ Network Management Access with Lua</h1>
 
 
 
-<p>Here are some basic rules:</p>
+<p><a name="object_names">Here are some basic rules:</a></p>
 
 
 
@@ -907,6 +913,7 @@ Network Management Access with Lua</h1>
 
 
 
+
 Note, that the module name becomes an integral part of an object name. The object will not be found if the module name is wrong.</li>
 
 
@@ -934,7 +941,9 @@ Note, that the module name becomes an integral part of an object name. The objec
 
 
 
-<h1><a name="data_types"></a>Data Types</h1>
+<h1>Data Types</h1>
+<h3><a name="datatype_general">General</a></h3>
+
 
 
 
@@ -1871,7 +1880,7 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
       <td valign="top" width="12%">
-      <font size="-1">number</font></td>
+      userdata<font size="-1" /></td>
 
 
 
@@ -1884,7 +1893,7 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
       <td valign="top" width="38%">
-      <font size="-1">&nbsp;</font></td>
+      <font size="-1">see &nbsp;<a href="#counter64">Counter64</a></font></td>
 
 
 
@@ -2018,7 +2027,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
 
@@ -2084,7 +2094,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td>s</td>
+      <td><br />
+</td>
 
 
 
@@ -2150,7 +2161,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
 
@@ -2194,7 +2206,7 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1">snmp.</font><font size="-1">TYPE_INTEGER32 (16)</font><font size="-1"></font><font size="-1"></font></td>
+      <td><font size="-1">snmp.</font><font size="-1">TYPE_INTEGER32 (16)</font><font size="-1"><font size="-1" /></font></td>
 
 
 
@@ -2216,7 +2228,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
 
@@ -2250,7 +2263,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
       <td><font size="-1">number</font></td>
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
     </tr>
@@ -2268,7 +2282,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
       <td><font size="-1">number</font></td>
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
     </tr>
@@ -2286,7 +2301,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
       <td><font size="-1">number</font></td>
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
     </tr>
@@ -2304,7 +2320,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
       <td><font size="-1">number</font></td>
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
     </tr>
@@ -2376,7 +2393,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
 
@@ -2387,7 +2405,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
 
@@ -2453,7 +2472,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
 
@@ -2464,7 +2484,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
 
@@ -2519,7 +2540,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
 
@@ -2530,7 +2552,8 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-      <td><font size="-1"></font></td>
+      <td><font size="-1"><br />
+</font></td>
 
 
 
@@ -2576,7 +2599,127 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-<h1><a name="varbinds"></a>Varbinds</h1>
+<h3><br />
+
+</h3>
+<h3><a name="counter64">Counter64 <br />
+</a></h3>
+<p>The 64 bit wide SNMP type COUNTER64 cannot be
+handled using native Lua types without loosing precision. LuaSNMP
+defines and integrates a user defined type "counter64" to handle this
+situation. This type allows you to create and return&nbsp; varbinds
+containing true 64 bit values.<br />
+</p>
+<p>COUNTER64 is a userdata from the Lua perspective and a metatable
+defining methods for conversions and some arithmetic operations is set
+automatically.<br />
+</p>
+<p>The counter64 data type is managed via a submodule snmp.counter64 which provides the following services:<br />
+</p>
+<p><span style="font-weight: bold;">Creation</span><br />
+</p>
+
+<ul>
+  <li>Creation of a counter64 instance using <span style="font-weight: bold;">counter64.number(val). </span>The instance is a value of type "userdata". <br />
+    <span style="font-weight: bold;">val </span>can be <br />
+  </li>
+  <ul>
+    <li>a Lua number, which is not sufficient to achieve true 64 bit precision</li>
+    <li>an expresssion, that has a counter64 data type as result, e.g.
+counter64.pow(2, 64) - 1 delivers the maximum value
+18446744073709551615.</li>
+    <li>a Lua table providing the fields <span style="font-weight: bold; font-style: italic;">high</span> and <span style="font-weight: bold; font-style: italic;">low </span>as 32 bit numbers<span style="font-weight: bold;" /></li>
+  </ul>
+</ul>
+<span style="font-weight: bold;">
+</span>
+<h3><span style="font-weight: bold;"><p><span style="font-weight: bold;">Conversion Operations</span><br />
+</p></span></h3>
+<ul>
+  <li><span style="font-weight: bold;">Counter64 =&gt; Lua number<br />
+    </span><span style="font-style: italic;">n = counter64.tonumber(val) ==&gt; Lua number type (default: double), e.g. 1.844674407371e+19<br />
+    </span>only 53 bits are maintained.<br />
+    <span style="font-weight: bold;" /></li>
+</ul>
+<span style="font-weight: bold;" />
+<ul>
+  <li><span style="font-weight: bold;">Counter64 =&gt; decimal string<br />
+    </span><span style="font-style: italic;">s = counter64.tostring(val) ==&gt; e.g. "</span>18446744073709551615" (64 bit)<br />
+  </li>
+</ul>
+<span style="font-weight: bold;" />
+<ul>
+  <li><span style="font-weight: bold;">Counter64 =&gt; hexadecimal string<br />
+    </span><span style="font-style: italic;">s = counter64.tohex(val) ==&gt; e.g. 0xffffffffffffffff (64 bit)</span><span style="font-weight: bold;"><br />
+    </span></li>
+</ul>
+<span style="font-weight: bold;" />
+<ul>
+  <li><span style="font-weight: bold;">Counter64 =&gt; table<br />
+    </span><span style="font-style: italic;">t = counter64.totable(val)&nbsp; ==&gt; {high = &lt;num32&gt;, low=&lt;num32&gt;}</span><span style="font-weight: bold;"><br />
+    </span></li>
+</ul>
+<span style="font-weight: bold;">
+<p><span style="font-weight: bold;">Arithmetic and boolean Operations</span><br />
+</p>
+<p>The following arithmetic operations are available. The result is
+automatically converted to counter64. Operands can be either counter64
+userdata or numbers.<br />
+</p>
+
+<ul style="font-weight: bold; font-style: italic;">
+  <li><span style="font-weight: bold;">Addition: </span><br />
+    <span style="font-style: italic;">result = val1 + val2 or counter64.add(val1, val2)</span></li>
+</ul>
+<ul style="font-weight: bold; font-style: italic;">
+  <li><span style="font-weight: bold;">Substraction: </span><br />
+    <span style="font-style: italic;">result = val1 - val2 or counter64.sub(val1, val2)</span>; the result is always an unsigned 64 bit value</li>
+</ul>
+<ul style="font-weight: bold; font-style: italic;">
+  <li><span style="font-weight: bold;">Multiplication: </span><br />
+    <span style="font-style: italic;">result = val1 * val2 or counter64.mul(val1, val2)</span></li>
+</ul>
+<ul style="font-weight: bold; font-style: italic;">
+  <li><span style="font-weight: bold;">Division:</span><br />
+    <span style="font-style: italic;">result = val1 / val2 or counter64.div(val1, val2)</span></li>
+</ul>
+<ul style="font-weight: bold; font-style: italic;">
+  <li><span style="font-weight: bold;">Modulo:</span><br />
+    <span style="font-style: italic;">result = counter64.mod(val1, val2)</span></li>
+</ul>
+<ul>
+  <li><span style="font-weight: bold;">Div and Modulo:</span><br style="font-weight: bold; font-style: italic;" />
+    <span style="font-style: italic;">div, mod = counter64.divmod(val1, val2)</span></li>
+  </ul><span style="font-weight: bold;" />
+<ul>
+  <li><span style="font-weight: bold;">Comparision:<br />
+    </span>All standard Lua compare operators &lt;, &gt;, ==, ~=, &gt;=, &lt;= deliver boolean results.<span style="font-weight: bold;"><br />
+    </span>Additionally, the function <br />
+    <span style="font-style: italic;">result = counter64.compare(val1, val2)</span><br />
+delivers numbers:<span style="font-weight: bold;"><br />
+    </span><span style="font-style: italic;">-</span><span style="font-style: italic;">1, if val1 &lt; val2</span><br style="font-style: italic;" />
+    <span style="font-style: italic;">&nbsp;0, if val1 == val2</span><br style="font-style: italic;" />
+    <span style="font-style: italic;">&nbsp;1, if val1 &gt; val2</span></li>
+</ul>
+<span style="font-weight: bold;" />
+<ul>
+  <li><span style="font-weight: bold;">Negation<br />
+    </span><span style="font-style: italic;">result = - val or<br />
+result = counter64.neg(val)<br />
+    </span>NOTE: The resulting bit pattern is correct, but since
+Counter64 is an unsigned type, you will never see negative counter64
+values.<span style="font-style: italic;"><br />
+    </span></li>
+</ul>
+<span style="font-weight: bold;" />
+<ul>
+  <li><span style="font-weight: bold;">Zero Test:<br />
+    </span>result = counter64.iszero(val) delivers true if <span style="font-style: italic;">val</span> is 0.<span style="font-style: italic;"><span style="font-weight: bold;"><br />
+    </span></span></li>
+
+</ul>
+
+<h1><a name="varbinds">Varbinds</a></h1>
 
 
 
@@ -2587,7 +2730,9 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-<h3><a name="varbinds_general"></a>General</h3>
+
+<h3><a name="varbinds_general">General</a></h3>
+<p>
 
 
 
@@ -2598,14 +2743,15 @@ instance value. Additionally LuaSNMP maintains a database to map the numerical c
 
 
 
-SNMP operations are defined on a list of MIB variable instances called a <i>varbind list</i>. Each element of a varbind list - a <span style="font-weight: bold;">varbind element</span>
+<a name="varbinds_general">SNMP operations are defined on a list of MIB variable instances called a <i>varbind list</i>. Each element of a varbind list - a <span style="font-weight: bold;">varbind element</span>
 - describes a specific MIB variable instance. A varbind element
 specifies three MIB instance attributes: its <span style="font-weight: bold;">object identifier</span>, its
 <span style="font-weight: bold;">data type</span> and its <span style="font-weight: bold;">value</span>. 
-<p>LuaSNMP represents a <span style="font-weight: bold;">varbind list</span> as a table containing <span style="font-weight: bold;">varbind elements</span>
+</a></p>
+<p><a name="varbinds_general">LuaSNMP represents a <span style="font-weight: bold;">varbind list</span> as a table containing <span style="font-weight: bold;">varbind elements</span>
 indexed by consecutive numerical values, starting with 1. A varbind
 element is represented as a table containing the values of the three
-MIB instance attributes. The strings <b>"oid"</b>,<b> "type"</b> and <b>"value" </b>index the three attributes of a varbind table. LuaSNMP represents the values of the varbind attributes as follows:</p>
+MIB instance attributes. The strings <b>"oid"</b>,<b> "type"</b> and <b>"value" </b>index the three attributes of a varbind table. LuaSNMP represents the values of the varbind attributes as follows:</a></p>
 
 
 
@@ -2618,7 +2764,7 @@ MIB instance attributes. The strings <b>"oid"</b>,<b> "type"</b> and <b>"value" 
 
 <dir>
 
-<p><b>oid</b> - a string containing the <i>object identifier</i> that identifies the MIB instance.</p>
+<p><a name="varbinds_general"><b>oid</b> - a string containing the <i>object identifier</i> that identifies the MIB instance.</a></p>
 
 
 
@@ -2630,7 +2776,7 @@ MIB instance attributes. The strings <b>"oid"</b>,<b> "type"</b> and <b>"value" 
 
 
 
-<p><b>type</b> - the numerical code associated by LuaMan to the SNMP data type of the MIB instance, as specified in the table above (<a href="#data_types">Data Types</a>).</p>
+<p><a name="varbinds_general"><b>type</b> - the numerical code associated by LuaMan to the SNMP data type of the MIB instance, as specified in the table above (</a><a href="#data_types">Data Types</a>).</p>
 
 
 
@@ -2742,7 +2888,7 @@ snmp.ENDOFMIBVIEW. </p>
 
 
 
-<h3><a name="varbind_meta"></a>Varbind Metamethods</h3>
+<h3><a name="varbind_meta">Varbind Metamethods</a></h3>
 
 
 
@@ -2753,9 +2899,9 @@ snmp.ENDOFMIBVIEW. </p>
 
 
 
-<p>Every varbind element returned by&nbsp; LuaSNMP has a metatable
+<p><a name="varbind_meta">Every varbind element returned by&nbsp; LuaSNMP has a metatable
 assigned. This metatable allows the following special operation on
-varbind elements:</p>
+varbind elements:</a></p>
 
 
 
@@ -2766,7 +2912,7 @@ varbind elements:</p>
 
 
 
-<h5>Creation of varbind elements</h5>
+<h5><a name="varbind_meta">Creation of varbind elements</a></h5>
 
 
 
@@ -2777,7 +2923,7 @@ varbind elements:</p>
 
 
 
-<p>A varbind element can be created using the function <span style="font-style: italic;"><span style="font-weight: bold;">snmp</span></span><span style="font-weight: bold; font-style: italic;">.newvar(NAME, VALUE). </span>This function returns a new varbind element as Lua table with approriate metamethods set.&nbsp;</p>
+<p><a name="varbind_meta">A varbind element can be created using the function <span style="font-style: italic;"><span style="font-weight: bold;">snmp</span></span><span style="font-weight: bold; font-style: italic;">.newvar(NAME, VALUE). </span>This function returns a new varbind element as Lua table with approriate metamethods set.&nbsp;</a></p>
 
 
 
@@ -2788,7 +2934,7 @@ varbind elements:</p>
 
 
 
-<pre>leuwer@goofy:luasnmp$ lua -l snmp -i<br />&gt; vb1=snmp.newvar("ifSpeed.1", 1000)<br />&gt; vb2=snmp.newvar("sysContact.0", "atHome")<br />&gt; vb3=snmp.newvar("ifName.2", "Ethernet")<br />&gt; vb4=snmp.newvar("ifSpeed.2", 2000)<br /></pre>
+<pre><a name="varbind_meta">leuwer@goofy:luasnmp$ lua -l snmp -i<br />&gt; vb1=snmp.newvar("ifSpeed.1", 1000)<br />&gt; vb2=snmp.newvar("sysContact.0", "atHome")<br />&gt; vb3=snmp.newvar("ifName.2", "Ethernet")<br />&gt; vb4=snmp.newvar("ifSpeed.2", 2000)<br /></a></pre>
 
 
 
@@ -2799,7 +2945,7 @@ varbind elements:</p>
 
 
 
-<h5>Conversion to string:&nbsp;</h5>
+<h5><a name="varbind_meta">Conversion to string:&nbsp;</a></h5>
 
 
 
@@ -2810,8 +2956,8 @@ varbind elements:</p>
 
 
 
-<p>When the function tostring(vb) is applied to a varbind element, it
-returns a printable string representation of the varbind element.</p>
+<p><a name="varbind_meta">When the function tostring(vb) is applied to a varbind element, it
+returns a printable string representation of the varbind element.</a></p>
 
 
 
@@ -2822,7 +2968,7 @@ returns a printable string representation of the varbind element.</p>
 
 
 
-<pre>&gt; print(tostring(vb1))<br />IF-MIB::ifSpeed.1 = Gauge32: 1000<br />&gt; print(vb2)<br />SNMPv2-MIB::sysContact.0 = STRING: atHome<br />&gt; print(vb3)<br />IF-MIB::ifName.2 = STRING: Ethernet<br />&gt; print(tostring(vb4))<br />IF-MIB::ifSpeed.2 = Gauge32: 2000<br /></pre>
+<pre><a name="varbind_meta">&gt; print(tostring(vb1))<br />IF-MIB::ifSpeed.1 = Gauge32: 1000<br />&gt; print(vb2)<br />SNMPv2-MIB::sysContact.0 = STRING: atHome<br />&gt; print(vb3)<br />IF-MIB::ifName.2 = STRING: Ethernet<br />&gt; print(tostring(vb4))<br />IF-MIB::ifSpeed.2 = Gauge32: 2000<br /></a></pre>
 
 
 
@@ -2833,7 +2979,7 @@ returns a printable string representation of the varbind element.</p>
 
 
 
-<h5>Comparision of varbind elements</h5>
+<h5><a name="varbind_meta">Comparision of varbind elements</a></h5>
 
 
 
@@ -2844,10 +2990,10 @@ returns a printable string representation of the varbind element.</p>
 
 
 
-<p>A compare operation on varbind elements compares their values. Note
+<p><a name="varbind_meta">A compare operation on varbind elements compares their values. Note
 that the comparison is performed on equivalent Lua type (see Data Types
 above). Comparing varbind elements with values of different Lua types
-leads to an error.</p>
+leads to an error.</a></p>
 
 
 
@@ -2858,7 +3004,7 @@ leads to an error.</p>
 
 
 
-<pre>&gt; =vb1&lt;vb4<br />true<br />&gt; =vb1&lt;=vb4<br />true<br />&gt; =vb1&gt;vb4<br />false<br />&gt; =vb2&lt;vb3<br />false<br />&gt; =vb2&gt;vb3<br />true<br />&gt; =vb1 &lt; vb2<br />./snmp.lua:316: attempt to compare number with string<br />stack traceback:<br />        ./snmp.lua:316: in function &lt;./snmp.lua:316&gt;<br />        stdin:1: in main chunk<br />        [C]: ?</pre>
+<pre><a name="varbind_meta">&gt; =vb1&lt;vb4<br />true<br />&gt; =vb1&lt;=vb4<br />true<br />&gt; =vb1&gt;vb4<br />false<br />&gt; =vb2&lt;vb3<br />false<br />&gt; =vb2&gt;vb3<br />true<br />&gt; =vb1 &lt; vb2<br />./snmp.lua:316: attempt to compare number with string<br />stack traceback:<br />        ./snmp.lua:316: in function &lt;./snmp.lua:316&gt;<br />        stdin:1: in main chunk<br />        [C]: ?</a></pre>
 
 
 
@@ -2869,7 +3015,7 @@ leads to an error.</p>
 
 
 
-<h5>Concatenation of varbind elements</h5>
+<h5><a name="varbind_meta">Concatenation of varbind elements</a></h5>
 
 
 
@@ -2880,10 +3026,10 @@ leads to an error.</p>
 
 
 
-<p>Applying the concatenation operator on varbind elements creates a
+<p><a name="varbind_meta">Applying the concatenation operator on varbind elements creates a
 varbind list. Any number of varbinds can be concatenated. Concatenation
 a varbind element and a varbind list creates a new varbind list which
-contains the varbind element and all elements of the varbind list.</p>
+contains the varbind element and all elements of the varbind list.</a></p>
 
 
 
@@ -2894,7 +3040,7 @@ contains the varbind element and all elements of the varbind list.</p>
 
 
 
-<pre>&gt; vlist = vb1..vb2..vb3<br />&gt; table.foreach(vlist, print)<br />1       IF-MIB::ifSpeed.1 = Gauge32: 1000<br />2       SNMPv2-MIB::sysContact.0 = STRING: atHome<br />3       IF-MIB::ifName.2 = STRING: Ethernet<br />&gt;<br /></pre>
+<pre><a name="varbind_meta">&gt; vlist = vb1..vb2..vb3<br />&gt; table.foreach(vlist, print)<br />1       IF-MIB::ifSpeed.1 = Gauge32: 1000<br />2       SNMPv2-MIB::sysContact.0 = STRING: atHome<br />3       IF-MIB::ifName.2 = STRING: Ethernet<br />&gt;<br /></a></pre>
 
 
 
@@ -2905,7 +3051,7 @@ contains the varbind element and all elements of the varbind list.</p>
 
 
 
-om<br />
+<a name="varbind_meta">om<br />
 
 
 
@@ -2916,7 +3062,7 @@ om<br />
 
 
 
-<h1><a name="sessions"></a>SNMP Sessions</h1>
+</a><h1><a name="sessions">SNMP Sessions</a></h1>
 
 
 
@@ -2927,14 +3073,14 @@ om<br />
 
 
 
-<p>Similarly to other SNMP APIs, LuaSNMP implements the concept of SNMP
+<p><a name="sessions">Similarly to other SNMP APIs, LuaSNMP implements the concept of SNMP
 sessions. Before invoking SNMP operations on an SNMP peer, a management
 application must create, or open, an SNMP session. An SNMP session is a
 special object that stores the configuration parameters that control
 the protocol interactions with an SNMP peer. These configuration
 parameters include the IP address of the SNMP peer, the protocol
 version to be used and authentication information. All invocations of
-SNMP operations must specify an SNMP session.</p>
+SNMP operations must specify an SNMP session.</a></p>
 
 
 
@@ -2945,10 +3091,10 @@ SNMP operations must specify an SNMP session.</p>
 
 
 
-<p>When creating an SNMP session, an application can also define
+<p><a name="sessions">When creating an SNMP session, an application can also define
 default callback functions for receiving responses to asynchronous SNMP
 operations and for handling notifications (trap and inform messages)
-sent by the associated peer.</p>
+sent by the associated peer.</a></p>
 
 
 
@@ -2959,7 +3105,7 @@ sent by the associated peer.</p>
 
 
 
-<p>The configuration parameters stored in a LuaSNMP&nbsp;session are described below.</p>
+<p><a name="sessions">The configuration parameters stored in a LuaSNMP&nbsp;session are described below.</a></p>
 
 
 
@@ -2970,7 +3116,7 @@ sent by the associated peer.</p>
 
 
 
-<h5>peer = STRING</h5>
+<h5><a name="sessions">peer = STRING</a></h5>
 
 
 
@@ -2982,10 +3128,10 @@ sent by the associated peer.</p>
 
 
 
-<p>Defines the network (IP) address of the associated SNMP peer, and
+<p><a name="sessions">Defines the network (IP) address of the associated SNMP peer, and
 can be provided either as an IP address in dotted notation (e.g.
 "139.82.95.11") or as a host name that can be translated to an IP
-address.</p>
+address.</a></p>
 
 
 
@@ -2995,13 +3141,13 @@ address.</p>
 
 
 
-The default value for this parameter is "0.0.0.0", and indicates an
+<a name="sessions">The default value for this parameter is "0.0.0.0", and indicates an
 SNMP session that is not associated to a specific peer. This kind of
 "unassociated" SNMP sessions can be used for receiving all
 notifications (traps and informs) sent by the SNMP agents and managers
 on the network (see configuration parameters trap and inform). Note,
 however, that SNMP operations can only be invoked for SNMP sessions
-associated to specific peers.</p>
+associated to specific peers.</a></p>
 
 
 
@@ -3012,16 +3158,16 @@ associated to specific peers.</p>
 
 
 
-<h5>version = NUMBER</h5>
+<h5><a name="sessions">version = NUMBER</a></h5>
 
 
 
 
 
-<p>Defines the SNMP protocol version to be used when interacting with
+<p><a name="sessions">Defines the SNMP protocol version to be used when interacting with
 the SNMP peer associated to the session. LuaSNMP supports
 SNMPv1,&nbsp;SNMPv2C and SNMPv3. A <span style="font-weight: bold;">default value </span>can be defined with the <span style="font-weight: bold;">defCommunity</span> configuration directive in snmp.conf. The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter
-is <span style="font-weight: bold;">snmp.SNMPv2C</span>. LuaSNMP provides the following constants to define the session's version:&nbsp;</p>
+is <span style="font-weight: bold;">snmp.SNMPv2C</span>. LuaSNMP provides the following constants to define the session's version:&nbsp;</a></p>
 
 
 
@@ -3050,19 +3196,19 @@ is <span style="font-weight: bold;">snmp.SNMPv2C</span>. LuaSNMP provides the fo
 
 
 
-  <li><span style="font-weight: bold;">snmp.SNMPv1 = 1</span></li>
+<a name="sessions">  </a><li><span style="font-weight: bold;"><a name="sessions">snmp.SNMPv1 = 1</a></span></li>
 
 
 
 
 
-  <li><span style="font-weight: bold;"></span><span style="font-weight: bold;">snmp.SNMPv2C = snmp.SNMPv2c = 2</span></li>
+<a name="sessions">  </a><li><span style="font-weight: bold;"><span style="font-weight: bold;"><a name="sessions">snmp.SNMPv2C = snmp.SNMPv2c = 2</a></span></span></li>
 
 
 
 
 
-  <li><span style="font-weight: bold;">snmp.SNMPv3 = 3</span></li>
+<a name="sessions">  </a><li><span style="font-weight: bold;"><a name="sessions">snmp.SNMPv3 = 3</a></span></li>
 
 
 
@@ -3079,7 +3225,7 @@ is <span style="font-weight: bold;">snmp.SNMPv2C</span>. LuaSNMP provides the fo
 
 
 
-<h5>community = STRING</h5>
+<h5><a name="sessions">community = STRING</a></h5>
 
 
 
@@ -3090,9 +3236,9 @@ is <span style="font-weight: bold;">snmp.SNMPv2C</span>. LuaSNMP provides the fo
 
 
 
-<p>Defines the community string to be used for authenticating the SNMP
+<p><a name="sessions">Defines the community string to be used for authenticating the SNMP
 messages sent to the associated peer. A <span style="font-weight: bold;">default value </span>can be defined with the <span style="font-weight: bold;">defVersion</span> configuration directive in snmp.conf. The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this
-parameter is <span style="font-weight: bold;">"public"</span>. The community is only used for SNMPv1 and SNMPv2C</p>
+parameter is <span style="font-weight: bold;">"public"</span>. The community is only used for SNMPv1 and SNMPv2C</a></p>
 
 
 
@@ -3103,7 +3249,7 @@ parameter is <span style="font-weight: bold;">"public"</span>. The community is 
 
 
 
-<h5>port = NUMBER</h5>
+<h5><a name="sessions">port = NUMBER</a></h5>
 
 
 
@@ -3114,7 +3260,7 @@ parameter is <span style="font-weight: bold;">"public"</span>. The community is 
 
 
 
-<p>Defines the UDP port used by the associated peer for receiving SNMP requests. A default value can be defined via the <span style="font-weight: bold;">defaultPort</span> configuration directive in <span style="font-weight: bold;">snmp.conf</span>. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is <span style="font-weight: bold;">161</span>.</p>
+<p><a name="sessions">Defines the UDP port used by the associated peer for receiving SNMP requests. A default value can be defined via the <span style="font-weight: bold;">defaultPort</span> configuration directive in <span style="font-weight: bold;">snmp.conf</span>. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is <span style="font-weight: bold;">161</span>.</a></p>
 
 
 
@@ -3125,7 +3271,7 @@ parameter is <span style="font-weight: bold;">"public"</span>. The community is 
 
 
 
-<h5>retries = NUMBER</h5>
+<h5><a name="sessions">retries = NUMBER</a></h5>
 
 
 
@@ -3136,7 +3282,7 @@ parameter is <span style="font-weight: bold;">"public"</span>. The community is 
 
 
 
-<p>Defines the maximum number of retransmissions of an SNMP message. The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span>&nbsp;is <span style="font-weight: bold;">5.</span></p>
+<p><a name="sessions">Defines the maximum number of retransmissions of an SNMP message. The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span>&nbsp;is <span style="font-weight: bold;">5.</span></a></p>
 
 
 
@@ -3147,7 +3293,7 @@ parameter is <span style="font-weight: bold;">"public"</span>. The community is 
 
 
 
-<h5>timeout = NUMBER</h5>
+<h5><a name="sessions">timeout = NUMBER</a></h5>
 
 
 
@@ -3158,10 +3304,10 @@ parameter is <span style="font-weight: bold;">"public"</span>. The community is 
 
 
 
-<p>Defines the time (in seconds) to wait for a response to an SNMP
+<p><a name="sessions">Defines the time (in seconds) to wait for a response to an SNMP
 request. In order to avoid congestion problems, every retransmission of
 a given SNMP request will double the previous timeout value.&nbsp;The
-<span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is<span style="font-weight: bold;"> 1.</span></p>
+<span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is<span style="font-weight: bold;"> 1.</span></a></p>
 
 
 
@@ -3172,7 +3318,7 @@ a given SNMP request will double the previous timeout value.&nbsp;The
 
 
 
-<h5>callback =FUNCTION</h5>
+<h5><a name="sessions">callback =FUNCTION</a></h5>
 
 
 
@@ -3185,7 +3331,7 @@ a given SNMP request will double the previous timeout value.&nbsp;The
 
 
 
-<p>This parameter defines a default user function to be invoked when a
+<p><a name="sessions">This parameter defines a default user function to be invoked when a
 response to an asynchronous SNMP operation is received, or when an
 asynchronous request times out.<br />
 
@@ -3212,7 +3358,7 @@ configured for the session.<br />
 
 The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is <span style="font-weight: bold;">nil</span>, indicating that no
 default function for handling asynchronous responses is defined for the
-session.</p>
+session.</a></p>
 
 
 
@@ -3223,7 +3369,7 @@ session.</p>
 
 
 
-<h5>trap = FUNCTION</h5>
+<h5><a name="sessions">trap = FUNCTION</a></h5>
 
 
 
@@ -3235,7 +3381,7 @@ session.</p>
 
 
 
-<p>This parameter defines a user function to be invoked when a trap
+<p><a name="sessions">This parameter defines a user function to be invoked when a trap
 message is received. Note that when a trap message is received, LuaSNMP
 invokes the trap handling functions specified for all SNMP sessions
 associated to the originating agent, and also the trap handling
@@ -3249,7 +3395,7 @@ functions specified for "unassociated" sessions (peer = "0.0.0.0").&nbsp;<br />
 
 
 
-The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is <span style="font-weight: bold;">nil</span>, indicating that no trap handling function is defined for the session.</p>
+The <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> for this parameter is <span style="font-weight: bold;">nil</span>, indicating that no trap handling function is defined for the session.</a></p>
 
 
 
@@ -3259,7 +3405,7 @@ The <span style="font-weight: bold;">default</span> <span style="font-weight: bo
 
 
 
-<p>Note, that the trap callback function is also invoked for solicited traps = informs.<br />
+<p><a name="sessions">Note, that the trap callback function is also invoked for solicited traps = informs.<br />
 
 
 
@@ -3269,7 +3415,7 @@ The <span style="font-weight: bold;">default</span> <span style="font-weight: bo
 
 
 
-See Trap Handling for more details on trap handling in LuaSNMP.</p>
+See Trap Handling for more details on trap handling in LuaSNMP.</a></p>
 
 
 
@@ -3279,7 +3425,7 @@ See Trap Handling for more details on trap handling in LuaSNMP.</p>
 
 
 
-<h5>user = STRING</h5>
+<h5><a name="sessions">user = STRING</a></h5>
 
 
 
@@ -3289,7 +3435,7 @@ See Trap Handling for more details on trap handling in LuaSNMP.</p>
 
 
 
-<p>This parameter defines the user name to be used during SNMP version 3 USM based&nbsp; authentication. A <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> can be specified using the&nbsp;<span style="font-weight: bold;">defSecurityName </span>configuration directive in snmp.conf. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;</p>
+<p><a name="sessions">This parameter defines the user name to be used during SNMP version 3 USM based&nbsp; authentication. A <span style="font-weight: bold;">default</span> <span style="font-weight: bold;">value</span> can be specified using the&nbsp;<span style="font-weight: bold;">defSecurityName </span>configuration directive in snmp.conf. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;</a></p>
 
 
 
@@ -3299,7 +3445,7 @@ See Trap Handling for more details on trap handling in LuaSNMP.</p>
 
 
 
-<h5>password = STRING&nbsp;<br />
+<h5><a name="sessions">password = STRING&nbsp;<br />
 
 
 
@@ -3309,7 +3455,7 @@ See Trap Handling for more details on trap handling in LuaSNMP.</p>
 
 
 
-autPassphrase = STRING</h5>
+autPassphrase = STRING</a></h5>
 
 
 
@@ -3319,9 +3465,9 @@ autPassphrase = STRING</h5>
 
 
 
-<p>This parameter defines the&nbsp;pass phrase to be used during SNMP
+<p><a name="sessions">This parameter defines the&nbsp;pass phrase to be used during SNMP
 version 3 USM based authentication. A default value can be specified
-using the <span style="font-weight: bold;">defAuthPassphrase</span> or <span style="font-weight: bold;">defPassphrase</span> configuration directives in <span style="font-weight: bold;">snmp.conf</span>. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;</p>
+using the <span style="font-weight: bold;">defAuthPassphrase</span> or <span style="font-weight: bold;">defPassphrase</span> configuration directives in <span style="font-weight: bold;">snmp.conf</span>. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;</a></p>
 
 
 
@@ -3331,9 +3477,9 @@ using the <span style="font-weight: bold;">defAuthPassphrase</span> or <span sty
 
 
 
-<p>Note, that password is used as the pass phrase for both
+<p><a name="sessions">Note, that password is used as the pass phrase for both
 authentication and encryption if no dedicated pass phrase is specified
-for encryption.</p>
+for encryption.</a></p>
 
 
 
@@ -3343,7 +3489,7 @@ for encryption.</p>
 
 
 
-<h5>authType = STRING</h5>
+<h5><a name="sessions">authType = STRING</a></h5>
 
 
 
@@ -3353,7 +3499,7 @@ for encryption.</p>
 
 
 
-<p>This parameter defines the <span style="font-weight: bold;">authentication method</span> to be used for SNMP version 3 authentication. Possible values are <span style="font-weight: bold;">"MD5"</span> or <span style="font-weight: bold;">"SHA"</span>. A default value can be specified using the <span style="font-weight: bold;">defAuthType</span> configuration directive in <span style="font-weight: bold;">snmp.conf</span>. If no authentication method is defined LuaSNMP assumes <span style="font-weight: bold;">"MD5"</span> as <span style="font-weight: bold;">default value.</span></p>
+<p><a name="sessions">This parameter defines the <span style="font-weight: bold;">authentication method</span> to be used for SNMP version 3 authentication. Possible values are <span style="font-weight: bold;">"MD5"</span> or <span style="font-weight: bold;">"SHA"</span>. A default value can be specified using the <span style="font-weight: bold;">defAuthType</span> configuration directive in <span style="font-weight: bold;">snmp.conf</span>. If no authentication method is defined LuaSNMP assumes <span style="font-weight: bold;">"MD5"</span> as <span style="font-weight: bold;">default value.</span></a></p>
 
 
 
@@ -3363,7 +3509,7 @@ for encryption.</p>
 
 
 
-<h5>privType = STRING</h5>
+<h5><a name="sessions">privType = STRING</a></h5>
 
 
 
@@ -3373,7 +3519,7 @@ for encryption.</p>
 
 
 
-<p>This parameter defines the <span style="font-weight: bold;">encryption method</span> to be used for SNMP version 3 PDU encryption. Possible values are <span style="font-weight: bold;">"DES"</span> or <span style="font-weight: bold;">"AES"</span>. A default value can be specified using the <span style="font-weight: bold;">defPrivType</span><span style="font-weight: bold;"> </span>in<span style="font-weight: bold;"> snmp.conf</span>. If no authentication method is defined LuaSNMP assumes <span style="font-weight: bold;">"DES"</span><span style="font-weight: bold;"> </span>as <span style="font-weight: bold;">default value.</span></p>
+<p><a name="sessions">This parameter defines the <span style="font-weight: bold;">encryption method</span> to be used for SNMP version 3 PDU encryption. Possible values are <span style="font-weight: bold;">"DES"</span> or <span style="font-weight: bold;">"AES"</span>. A default value can be specified using the <span style="font-weight: bold;">defPrivType</span><span style="font-weight: bold;"> </span>in<span style="font-weight: bold;"> snmp.conf</span>. If no authentication method is defined LuaSNMP assumes <span style="font-weight: bold;">"DES"</span><span style="font-weight: bold;"> </span>as <span style="font-weight: bold;">default value.</span></a></p>
 
 
 
@@ -3383,7 +3529,7 @@ for encryption.</p>
 
 
 
-<h5>privPassphrase = STRING</h5>
+<h5><a name="sessions">privPassphrase = STRING</a></h5>
 
 
 
@@ -3393,10 +3539,10 @@ for encryption.</p>
 
 
 
-<p>This parameter defines the&nbsp;pass phrase to be used during SNMP version
+<p><a name="sessions">This parameter defines the&nbsp;pass phrase to be used during SNMP version
 3 PDU encryption. &nbsp;A default value can be specified using the
 <span style="font-weight: bold;">defPrivPassphrase</span> or <span style="font-weight: bold;">defPassphrase</span> configuration directives in
-<span style="font-weight: bold;">snmp.conf</span>. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;</p>
+<span style="font-weight: bold;">snmp.conf</span>. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;</a></p>
 
 
 
@@ -3406,8 +3552,8 @@ for encryption.</p>
 
 
 
-<p>Note, that <span style="font-weight: bold;">password</span> is used as the pass phrase for both authentication
-and encryption if no dedicated pass phrase is specified for encryption.</p>
+<p><a name="sessions">Note, that <span style="font-weight: bold;">password</span> is used as the pass phrase for both authentication
+and encryption if no dedicated pass phrase is specified for encryption.</a></p>
 
 
 
@@ -3417,7 +3563,7 @@ and encryption if no dedicated pass phrase is specified for encryption.</p>
 
 
 
-<h5>securityLevel = STRING</h5>
+<h5><a name="sessions">securityLevel = STRING</a></h5>
 
 
 
@@ -3427,7 +3573,7 @@ and encryption if no dedicated pass phrase is specified for encryption.</p>
 
 
 
-<p>Defines the security level to be used in SNMP version 3. The parameter can take the following values:</p>
+<p><a name="sessions">Defines the security level to be used in SNMP version 3. The parameter can take the following values:</a></p>
 
 
 
@@ -3437,7 +3583,7 @@ and encryption if no dedicated pass phrase is specified for encryption.</p>
 
 
 
-<p style="margin-left: 40px;"><span style="font-weight: bold;">"noAuthNoPriv"</span> <span style="font-weight: bold;">-</span> LuaSNMP does not require authentication nor does it perform encryption</p>
+<p style="margin-left: 40px;"><span style="font-weight: bold;"><a name="sessions">"noAuthNoPriv"</a></span><a name="sessions"> <span style="font-weight: bold;">-</span> LuaSNMP does not require authentication nor does it perform encryption</a></p>
 
 
 
@@ -3447,7 +3593,7 @@ and encryption if no dedicated pass phrase is specified for encryption.</p>
 
 
 
-<p style="margin-left: 40px;"><span style="font-weight: bold;">"authNoPriv" - </span>LuaSNMP requires authentication but does NOT perform encryption.<br />
+<p style="margin-left: 40px;"><span style="font-weight: bold;"><a name="sessions">"authNoPriv" - </a></span><a name="sessions">LuaSNMP requires authentication but does NOT perform encryption.<br />
 
 
 
@@ -3457,7 +3603,7 @@ and encryption if no dedicated pass phrase is specified for encryption.</p>
 
 
 
-</p>
+</a></p>
 
 
 
@@ -3467,7 +3613,7 @@ and encryption if no dedicated pass phrase is specified for encryption.</p>
 
 
 
-<div style="margin-left: 40px;"><span style="font-weight: bold;">"authPriv" - </span>LuaSNMP requires authentication AND performs encryption</div>
+<div style="margin-left: 40px;"><span style="font-weight: bold;"><a name="sessions">"authPriv" - </a></span><a name="sessions">LuaSNMP requires authentication AND performs encryption</a></div>
 
 
 
@@ -3477,7 +3623,7 @@ and encryption if no dedicated pass phrase is specified for encryption.</p>
 
 
 
-<p>A <span style="font-weight: bold;">default value</span> can be defined using the <span style="font-weight: bold;">defSecurityLevel</span> configuration directive in snmp.conf. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;<br />
+<p><a name="sessions">A <span style="font-weight: bold;">default value</span> can be defined using the <span style="font-weight: bold;">defSecurityLevel</span> configuration directive in snmp.conf. See the Net-SNMP manual page snmp.conf (5) for details.&nbsp;<br />
 
 
 
@@ -3497,7 +3643,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-</p>
+</a></p>
 
 
 
@@ -3507,7 +3653,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<h5>includeroot = BOOLEAN</h5>
+<h5><a name="sessions">includeroot = BOOLEAN</a></h5>
 
 
 
@@ -3517,7 +3663,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<p>This parameter defines whether the SNMP access function <span style="font-weight: bold; font-style: italic;">walk(NODE) </span>shall include the given NODE. Normally, the walk starts with the successor of the given NODE. The default value is <span style="font-weight: bold;">false</span>.</p>
+<p><a name="sessions">This parameter defines whether the SNMP access function <span style="font-weight: bold; font-style: italic;">walk(NODE) </span>shall include the given NODE. Normally, the walk starts with the successor of the given NODE. The default value is <span style="font-weight: bold;">false</span>.</a></p>
 
 
 
@@ -3527,7 +3673,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<h5>sprintvar = FUNCTION</h5>
+<h5><a name="sessions">sprintvar = FUNCTION</a></h5>
 
 
 
@@ -3537,7 +3683,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<p>This parameter instructs LuaSNMP to use the given FUNCTION to convert varbind elements to readable strings.&nbsp; </p>
+<p><a name="sessions">This parameter instructs LuaSNMP to use the given FUNCTION to convert varbind elements to readable strings.&nbsp; </a></p>
 
 
 
@@ -3547,7 +3693,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<h5>sprintval = FUNCTION</h5>
+<h5><a name="sessions">sprintval = FUNCTION</a></h5>
 
 
 
@@ -3557,7 +3703,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<p>This parameter instructs LuaSNMP to use the given FUNCTION to convert varbind values to readable strings.&nbsp;</p>
+<p><a name="sessions">This parameter instructs LuaSNMP to use the given FUNCTION to convert varbind values to readable strings.&nbsp;</a></p>
 
 
 
@@ -3567,7 +3713,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<h5>context = STRING</h5>
+<h5><a name="sessions">context = STRING</a></h5>
 
 
 
@@ -3577,7 +3723,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<p>This parameter defines the context to which this session shall have access. <span style="font-weight: bold;">Defaults</span> to an empty context <span style="font-weight: bold;">""</span>.</p>
+<p><a name="sessions">This parameter defines the context to which this session shall have access. <span style="font-weight: bold;">Defaults</span> to an empty context <span style="font-weight: bold;">""</span>.</a></p>
 
 
 
@@ -3587,7 +3733,7 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<h5>contextID = STRING</h5>
+<h5><a name="sessions">contextID = STRING</a></h5>
 
 
 
@@ -3597,9 +3743,9 @@ If no security level is defined during session creation and there is no configur
 
 
 
-<p>This parameter sets the context engineID used for SNMPv3 REQUEST
+<p><a name="sessions">This parameter sets the context engineID used for SNMPv3 REQUEST
 messages scopedPdu.&nbsp;&nbsp; If not specified, this will default to
-the authoritative <span style="font-weight: bold;">engineID.</span></p>
+the authoritative <span style="font-weight: bold;">engineID.</span></a></p>
 
 
 
@@ -3609,7 +3755,7 @@ the authoritative <span style="font-weight: bold;">engineID.</span></p>
 
 
 
-<h5>engineID = STRING</h5>
+<h5><a name="sessions">engineID = STRING</a></h5>
 
 
 
@@ -3619,11 +3765,11 @@ the authoritative <span style="font-weight: bold;">engineID.</span></p>
 
 
 
-<p>This parameter sets&nbsp; the&nbsp; authoritative&nbsp;
+<p><a name="sessions">This parameter sets&nbsp; the&nbsp; authoritative&nbsp;
 (security)&nbsp; engineID&nbsp; used&nbsp; for&nbsp; SNMPv3
 REQUEST&nbsp; messages.&nbsp;&nbsp; It&nbsp; is&nbsp; typically&nbsp;
 not necessary to specify this, as it will usually be discovered
-automatically.</p>
+automatically.</a></p>
 
 
 
@@ -3633,7 +3779,7 @@ automatically.</p>
 
 
 
-<h5>engineBoots = STRING</h5>
+<h5><a name="sessions">engineBoots = STRING</a></h5>
 
 
 
@@ -3643,7 +3789,7 @@ automatically.</p>
 
 
 
-<p>This parameter is not (yet) supported. It's typically not required because this value is automatically discovered.</p>
+<p><a name="sessions">This parameter is not (yet) supported. It's typically not required because this value is automatically discovered.</a></p>
 
 
 
@@ -3653,7 +3799,7 @@ automatically.</p>
 
 
 
-<h5>engineTime = STRING</h5>
+<h5><a name="sessions">engineTime = STRING</a></h5>
 
 
 
@@ -3663,7 +3809,7 @@ automatically.</p>
 
 
 
-<p>This parameter is not (yet) supported. It's typically not required because this value is automatically discovered.</p>
+<p><a name="sessions">This parameter is not (yet) supported. It's typically not required because this value is automatically discovered.</a></p>
 
 
 
@@ -3674,7 +3820,7 @@ automatically.</p>
 
 
 
-<h1><a name="trap_handling"></a>Trap Handling</h1>
+<h1><a name="trap_handling">Trap Handling</a></h1>
 
 
 
@@ -3682,7 +3828,7 @@ automatically.</p>
 
 
 
-<p>LuaSNMP handles traps via the&nbsp;<span style="font-weight: bold;">snmptrapd</span> from the NetSNMP library using the <span style="font-weight: bold;">traphandle</span> directive in <span style="font-weight: bold;">snmptrapd.conf(5)</span>.&nbsp;&nbsp;</p>
+<p><a name="trap_handling">LuaSNMP handles traps via the&nbsp;<span style="font-weight: bold;">snmptrapd</span> from the NetSNMP library using the <span style="font-weight: bold;">traphandle</span> directive in <span style="font-weight: bold;">snmptrapd.conf(5)</span>.&nbsp;&nbsp;</a></p>
 
 
 
@@ -3690,29 +3836,29 @@ automatically.</p>
 
 
 
-<p>In order to capture traps in this way&nbsp;you have to configure the
-script trapd.lua provided with LuaSNMP to handle &nbsp;traps via the <span style="font-weight: bold;">traphandle</span> directive. Insert the following line into snmptrapd.conf:</p>
+<p><a name="trap_handling">In order to capture traps in this way&nbsp;you have to configure the
+script trapd.lua provided with LuaSNMP to handle &nbsp;traps via the <span style="font-weight: bold;">traphandle</span> directive. Insert the following line into snmptrapd.conf:</a></p>
 
 
 
 
 
 
-<pre>traphandle default PATH_TO_LUA/lua50 PATH_TO_TRAPD/trapd.lua [FWDPORT]</pre>
+<pre><a name="trap_handling">traphandle default PATH_TO_LUA/lua50 PATH_TO_TRAPD/trapd.lua [FWDPORT]</a></pre>
 
 
 
 
 
 
-<p>The script trapd.lua simply forwards all information received by snmptrapd to LuaSNMP using a UDP socket with localhost on&nbsp;<span style="font-weight: bold;">port&nbsp;6000</span>. In order to change the port, set the environment variable&nbsp; <span style="font-weight: bold;">LUASNMP_TRAPDPORT </span>to the desired port number and provide the same number in the traphandle directive in <span style="font-weight: bold;">snmptrapd.conf</span>.</p>
+<p><a name="trap_handling">The script trapd.lua simply forwards all information received by snmptrapd to LuaSNMP using a UDP socket with localhost on&nbsp;<span style="font-weight: bold;">port&nbsp;6000</span>. In order to change the port, set the environment variable&nbsp; <span style="font-weight: bold;">LUASNMP_TRAPDPORT </span>to the desired port number and provide the same number in the traphandle directive in <span style="font-weight: bold;">snmptrapd.conf</span>.</a></p>
 
 
 
 
 
 
-<p>Note, that for informs the response to the inform message is sent AFTER trapd.lua has finished.</p>
+<p><a name="trap_handling">Note, that for informs the response to the inform message is sent AFTER trapd.lua has finished.</a></p>
 
 
 
@@ -3726,7 +3872,7 @@ script trapd.lua provided with LuaSNMP to handle &nbsp;traps via the <span style
 
 
 
-</div>
+</span></div>
 
 
 
@@ -3746,7 +3892,7 @@ script trapd.lua provided with LuaSNMP to handle &nbsp;traps via the <span style
 
 
 
-<div id="footer">(c) 2006-2009 Herbert Leuwer, March 2006&nbsp;&nbsp; &nbsp;<a href="mailto:herbert.leuwer@t-online.de">Contact</a></div>
+<div style="font-weight: normal;" id="footer"><small>(c) 2006-2010 Herbert Leuwer, March 2006&nbsp;&nbsp; &nbsp;<a href="mailto:herbert.leuwer@t-online.de">Contact</a></small></div>
 
 
 
@@ -3768,5 +3914,4 @@ script trapd.lua provided with LuaSNMP to handle &nbsp;traps via the <span style
 
 <small><small>
 </small></small>
-</body>
-</html>
+</h1></body></html>

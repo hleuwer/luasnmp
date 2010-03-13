@@ -171,6 +171,15 @@ LuaSNMP
      of restrictions in the net-snmp API (or in my brain, because I couldn't find
      a clean and simple way to get it to run with the client library of net-snmp).
 
+* Trap log message format
+  ---------------------
+     In order to have the trapd.lua script work properly snmptrapfmt must be configured
+     with the following format setting:
+       SUBST=\#\ \
+       NODEFMT=ip
+       VARFMT="#[%s] %n (%t) : %v" 
+       LOGFMT="$x#$A#$e#$G#$S#$T$*"
+     This ensure that the log message can be interpreted by the trapd script.
 
 * Environment Variables
   ---------------------
