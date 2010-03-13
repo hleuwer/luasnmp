@@ -63,7 +63,7 @@ dist: dist-git
 
 dist-git:
 	mkdir -p $(EXPORTDIR)
-	git archive --format-tar --prefix=$(DISTNAME)/ HEAD | gzip >$(EXPORTDIR)/$(DISTARCH)
+	git archive --format=tar --prefix=$(DISTNAME)/ HEAD | gzip >$(EXPORTDIR)/$(DISTARCH)
 
 dist-cvs::
 	mkdir -p $(EXPORTDIR)/$(DISTNAME)
