@@ -27,7 +27,7 @@ install-doc:
 	mkdir -p $(INSTALL_DOC)/html
 	cd doc && $(INSTALL_COPY) * $(INSTALL_DOC)/html
 
-uninstall-code:
+uninstall-doc:
 	rm -rf $(INSTALL_DOC)
 
 .PHONY: test testd testtrap testtrapd testtraponly testtraponlyd
