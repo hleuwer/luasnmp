@@ -67,9 +67,9 @@ DEF = -DCMU_COMPATIBLE -DUSE_SNMPTRAPD $(DEFCOMPAT) -DVERSION='"$(VERSION)"' -DS
 NETSNMP_DEF =
 CC = gcc
 ifeq ($(DEBUG), 1)
-  CFLAGS = -I$(LUAINC) -I$(COMPAT)  $(DEF) $(NETSNMP_DEF)  -Wall -ggdb
+  CFLAGS = -I$(LUAINC) -I$(COMPAT)  $(DEF) $(NETSNMP_DEF)  -Wall -ggdb -fPIC
 else
-  CFLAGS = $(shell net-snmp-config --cflags) -I$(LUAINC) -I$(COMPAT) $(DEF) -Wall -O2
+  CFLAGS = $(shell net-snmp-config --cflags) -I$(LUAINC) -I$(COMPAT) $(DEF) -Wall -O2 -fPIC
 endif
 LDFLAGS = $(shell net-snmp-config --ldflags) -O -shared -fpic
 LIBS += $(shell net-snmp-config --libs) -lcrypto
