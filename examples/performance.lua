@@ -29,7 +29,7 @@ end
 function perf_shell(n, obj)
   local obj = obj or "ifSpeed.1"
   local n = n or 1e3
-  local cmd = "for ((i="..n..";i--;));do snmpget -v 2c -c public localhost "..obj.." > /dev/null; done"
+  local cmd = "bash -c 'for ((i="..n..";i--;));do snmpget -v 2c -c public localhost "..obj.." > /dev/null; done'"
   os.execute(cmd)
 end
 
