@@ -5,6 +5,10 @@
 #ifndef nm_snmp_h
 #define	nm_snmp_h
 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/library/snmp_client.h>
@@ -55,7 +59,7 @@ typedef struct Tsession {
   int lua_session;		/* sessao para usr (ref a table lua) */
   int no_peer;			/* indica se peer definido */
 #if 1
-  u_long peer_addr;			/* endereco IP do peer */
+  struct in_addr peer_addr;	/* endereco IP do peer */
 #else
   char peer_addr[32];
 #endif

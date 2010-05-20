@@ -12,7 +12,6 @@
 #include <sys/types.h>
 #include <sys/param.h>
 #include <netdb.h>
-#include <arpa/inet.h>
 #endif
 
 #include <string.h>
@@ -720,7 +719,7 @@ static int nm_snmp_open(lua_State *L) {
   int version;
   int flg_nopeer;
   char *peername;
-  u_long peer_addr;
+  struct in_addr peer_addr;
   char *Apsz, *Xpsz;
 
   /* Get a table from Lua stack */
@@ -926,17 +925,18 @@ static int nm_snmp_open(lua_State *L) {
   /* Check whether we have a peer address (!= 0.0.0.0) */
   if (!strcmp(nm_cmu_session.peername, peer_def)) {
     flg_nopeer = TRUE;
-    peer_addr = 0;
+    peer_addr.s_addr = 0;
   } else {
     flg_nopeer = FALSE;
-    if ((peer_addr = inet_addr(peername)) == -1) {
+    if (inet_aton((const char *) peername, &peer_addr) == 0){
+      /* invalid dot notation - try to resolve dns */
       struct hostent *hp;
       if ((hp = gethostbyname(peername)) == NULL) {
         lua_pushnil(L);
         lua_pushstring(L, "snmp: bad peer address");
         return 2;
       }
-      memcpy((char *)&peer_addr, hp->h_addr, hp->h_length);
+      memcpy((char *)&peer_addr.s_addr, hp->h_addr, hp->h_length);
     }
   }
 
@@ -1046,12 +1046,12 @@ static int nm_snmp_open(lua_State *L) {
   lua_pushvalue(L, -2);
   lua_settable(L, LUA_REGISTRYINDEX);
   nm_session->no_peer = flg_nopeer;
-  nm_session->peer_addr = peer_addr;
+  nm_session->peer_addr.s_addr = peer_addr.s_addr;
   sprintf(nm_session->peer_ip, "%d.%d.%d.%d", 
-	  (int) ((htonl(peer_addr) >> 24) & 0xFF), 
-	  (int) ((htonl(peer_addr) >> 16) & 0xFF),
-	  (int) ((htonl(peer_addr) >> 8) & 0xFF), 
-	  (int) (htonl(peer_addr) & 0xFF));
+	  (int) ((htonl(peer_addr.s_addr) >> 24) & 0xFF), 
+	  (int) ((htonl(peer_addr.s_addr) >> 16) & 0xFF),
+	  (int) ((htonl(peer_addr.s_addr) >> 8) & 0xFF), 
+	  (int) (htonl(peer_addr.s_addr) & 0xFF));
   nm_session->synch_req = FALSE;
   nm_session->as_reqs = 0;
   nm_session->as_reqs_lst = NULL;
@@ -1595,24 +1595,25 @@ static int nm_snmp_set_info_req(lua_State *L, int req_type, int req_mode) {
     for (ind = 1; ; ind++) {
       lua_rawgeti(L, vlist, ind);
       if (lua_isnil(L, -1))
-        break;
+	break;
       if ((varlist = f_create_vlist(L, errs)) == NULL) {
 	char eerrs[64];
-        lua_pushnil(L);
+	lua_pushnil(L);
 	sprintf(eerrs, "%s in index %d", errs, ind);
 	lua_pushstring(L, eerrs);
-        snmp_free_pdu(pdu);
-        return 2;
+	snmp_free_pdu(pdu);
+	return 2;
       }
       lua_remove(L, -1);
       if (pdu->variables)
-        last_var->next_variable = varlist;
+	last_var->next_variable = varlist;
       else
-        pdu->variables = varlist;
+	pdu->variables = varlist;
       last_var = varlist;
-    }
-  }
+    } 
+  } 
 
+  
   /* Perform the request */
   if (req_mode == NM_SNMP_SYNCH_REQ)
     retval = nm_snmp_synch_req(L, nm_session, pdu, islist);

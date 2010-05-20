@@ -890,8 +890,8 @@ function __trap(session, msg)
 		     host, proto, ip, port, uptimeName, uptimeVal, vbs = select(1, ...) 
 		  end)
       -- debugging:
-      -- print(string.format("  host=%q, proto=%q, ip=%q, port=%q, uptimeName=%q, uptimeVal=%q, vbs=%q",
-      -- host, proto, ip, port, uptimeName, uptimeVal, vbs))
+      --print(string.format("  host=%q, proto=%q, ip=%q, port=%q, uptimeName=%q, uptimeVal=%q, vbs=%q",
+      --		  host, proto, ip, port, uptimeName, uptimeVal, vbs))
    elseif snmp.getversion() > "5.3" then
       string.gsub(msg, 
 		  -- Example msg:

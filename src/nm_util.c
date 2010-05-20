@@ -1107,8 +1107,8 @@ struct variable_list *f_create_infovl(char *trapOID) {
   vp->type = SMI_TIMETICKS;
 
   vp->val.integer = (long *)calloc(1, sizeof(long));
-  vp->val_len = sizeof(unsigned int);
-  *(vp->val.integer) = (unsigned int)f_uptime();
+  vp->val_len = sizeof(long);
+  *(vp->val.integer) = (long)f_uptime();
 
   /* Proximo vbind e' para snmpTrapOID */
   vp->next_variable = (struct variable_list *)calloc(1, sizeof(struct variable_list));

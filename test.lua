@@ -254,7 +254,6 @@ local function trap_cb(vlist, ip, host, session)
   debug("    session version: %s", session:getversion())
   for _,vb in ipairs(vlist) do
      debug("   1 method session.sprintvar(vb): %s", session.sprintvar(vb))
---    print(pretty(vb))
      debug("   2 method tosting(vb)            %s", tostring(vb))
      debug("   3 method snmp.sprintvar2:       %s", snmp.sprintvar2(vb))
      debug("   4 method snmp.sprintval:        %s", snmp.sprintval(vb))

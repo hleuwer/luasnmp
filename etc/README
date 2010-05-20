@@ -2,3 +2,36 @@
 This sub-directory contains additional material for LuaSNMP
 
 1. Example config files
+
+Configuration of net-snmp is tedious due to its many
+configuration options. Here is a list of templates to start
+and that allow seamless testing using test.lua.
+
+etc_snmp.conf => /etc/snmp/snmp.conf
+	- system wide client configuration
+	- defines the default user
+
+snmp.conf => ~/.snmp/snmp.conf
+	-- user local client configuration
+	-- all kinds of client behaviors
+
+snmpd.conf => /etc/snmp/snmpd.conf
+	-- system wide agent configuration
+	-- general agent config
+	
+	Note: remove createUser directives from this 
+	      readable file and place them into 
+	      /var/lib/snmp/snmpd.conf
+	      Here the readable values become hidden once snmpd starts.
+	      We have them in /etc/snmp/snmpd.conf to have test.lua
+	      to not fail.
+
+share_snmpd.conf => /usr/share/snmp/snmpd.conf
+	-- shared agent configuration
+	-- list of users and communities
+
+etc_snmpd.local.conf => /etc/snmp/snmpd.local.conf
+	-- local agent configuration
+	-- define sysLocation and sysContact
+	
+	Note: commented out for test purposes
