@@ -1079,7 +1079,7 @@ mib.instance = instance
 ------------------------------------------------------------------------------
 function newpassword(session, oldpw, newpw, flag, user, engineID)
   local authKeyChange, privKeyChange
-
+  local doauth, dopriv = false, false
   -- Be sure we run a version 3 session
   -- Do we really need this? Don't think so (leu)
   if session.version ~= SNMPv3 then return FAIL(BADSESSION) end
@@ -1135,7 +1135,7 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
   if not oldKu then return nil, oldKuLen end
   local newKu, newKuLen = createkey(session, newpw, authProto)
   if not newKu then return nil, newKuLen end
-  
+
   -- create old and new localized keys
   local oldKul, oldKulLen = createlocalkey(session, oldKu, authProto, engineID)
   if not oldKul then return nil, oldKulLen end
@@ -1173,6 +1173,7 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
 		      snmp.TYPE_OCTETSTR)
     table.insert(vl, vb)
   end
+
   if dopriv then
     local vb = newvar(string.format("%s.%d.%s.%d.%s",
  				    privKeyChange,
@@ -1181,6 +1182,7 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
 		      key2octet(keychgpriv, keychgprivlen),
 		      snmp.TYPE_OCTETSTR)
   end
+
   -- set request
   vl, err, errindex = session:set(vl)
   if err then

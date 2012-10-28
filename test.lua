@@ -918,7 +918,6 @@ local function test_newpassword(sess)
   for _,v in ipairs(vl) do 
     debug("  %s", tostring(v)) 
   end
-
   local sessnew, err = sessold:clone{password = newpw}
   vb, err = sessnew:get("sysContact.0")
   assert(vb, err)
@@ -930,7 +929,6 @@ local function test_newpassword(sess)
   for _,v in ipairs(vl) do
     debug("  %s", tostring(v)) 
   end
-
   debug("  Reopen a session with old password")
   sessold2, err = sessold:clone()
   assert(sessold2, err)
