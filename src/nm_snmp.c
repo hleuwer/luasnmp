@@ -21,7 +21,6 @@
 
 #include "lua.h"
 #include "lauxlib.h"
-#include "compat-5.1.h"
 
 #include "nm_snmp.h"
 #include "nm_mib.h"
@@ -142,6 +141,7 @@ static const char *secLevelName[] = {
     "authPriv"
 };
 
+
 /*
  * FROM NET-SNMP:
  * Parses the packet received to determine version, either directly
@@ -200,7 +200,7 @@ _snmp_parse(void *sessp,
     switch (pdu->version) {
     case SNMP_VERSION_1:
     case SNMP_VERSION_2c:
-        DEBUGMSGTL(("snmp_api", "Parsing SNMPv%d message...\n",
+        DEBUGMSGTL(("snmp_api", "Parsing SNMPv%ld message...\n",
                     (1 + pdu->version)));
 
         /*
@@ -661,6 +661,7 @@ snmp_free_var(netsnmp_variable_list * var)
     free((char *) var);
 }
 #endif /* USE_SNMPTRAPD */
+
 /*-----------------------------------------------------------------------------
  * Function prototypes
  *----------------------------------------------------------------------------*/
@@ -688,10 +689,10 @@ static int nm_snmp_gettrapd(lua_State *L)
 {
 #ifdef USE_SNMPTRAPD
   lua_pushstring(L, "snmptrapd");
-  return 1;
 #else
   lua_pushstring(L, "straps");
 #endif
+  return 1;
 }
 
 static void nm_snmp_init_session(netsnmp_session *session)
@@ -711,7 +712,7 @@ static void nm_snmp_init_session(netsnmp_session *session)
  *
  *  Synopsis : snmp.open(INIT_TABLE)
  *  Lua Param: INIT TABLE
- *  Return   : nil+error on failure, userdata to session on success
+ *  Return   : nil+error on failure, userdata + peer IP address to session on success
  *  Function : Opens an snmp session
  *----------------------------------------------------------------------------*/
 static int nm_snmp_open(lua_State *L) {
@@ -981,9 +982,10 @@ static int nm_snmp_open(lua_State *L) {
     nm_session->defcb = -1;
   }
   lua_remove(L, -1);
+
   lua_pushstring(L, "trap");
   lua_gettable(L, -2);
-  if (!lua_isnil(L, -1)) {
+  if ((!lua_isnil(L, -1)) && (lua_isfunction(L, -1))) {
     lua_pushlightuserdata(L, &nm_session->trapcb);
     lua_pushvalue(L, -2);
     lua_settable(L, LUA_REGISTRYINDEX);
@@ -1349,18 +1351,18 @@ static int nm_snmp_getreq(lua_State *L, int req_type, int req_mode) {
 
     /* Se a sessao e' SNMPv1 faz um getnext em vez de getbulk */
     if (nm_session->cmu_session->version == SNMP_VERSION_1)
-      pdu = snmp_pdu_create(SNMP_PDU_GETNEXT);
+      pdu = snmp_pdu_create(SNMP_MSG_GETNEXT);
     else {
-      pdu = snmp_pdu_create(SNMP_PDU_GETBULK);
+      pdu = snmp_pdu_create(SNMP_MSG_GETBULK);
       pdu->non_repeaters  = (int) lua_tonumber(L, lnr);
       pdu->max_repetitions  = (int) lua_tonumber(L, lmr);
     }
   } else {
     /* Prepara o pdu para o request */
     if (req_type == NM_SNMP_GET_REQ)
-      pdu = snmp_pdu_create(SNMP_PDU_GET) ;
+      pdu = snmp_pdu_create(SNMP_MSG_GET) ;
     else
-      pdu = snmp_pdu_create(SNMP_PDU_GETNEXT) ;
+      pdu = snmp_pdu_create(SNMP_MSG_GETNEXT) ;
   }
   if (!lua_isnil(L, vlist)){
     /* Check how the objects to retrieve are described */
@@ -1553,8 +1555,7 @@ static int nm_snmp_set_info_req(lua_State *L, int req_type, int req_mode) {
       lua_pushstring(L, "snmp: bad trap oid");
       return 2;
     }
-
-    pdu = snmp_pdu_create(SNMP_PDU_INFORM);
+    pdu = snmp_pdu_create(SNMP_MSG_INFORM);
     if ((varlist = f_create_infovl((char *)lua_tostring(L, trapOID))) == NULL) {
       lua_pushnil(L);
       lua_pushstring(L, "snmp: bad trap oid");
@@ -1564,7 +1565,7 @@ static int nm_snmp_set_info_req(lua_State *L, int req_type, int req_mode) {
     pdu->variables = varlist;
     last_var = varlist->next_variable;
   } else {
-    pdu = snmp_pdu_create(SNMP_PDU_SET);
+    pdu = snmp_pdu_create(SNMP_MSG_SET);
   }
 
   /* Prepare single varbind or varbind list */
@@ -1587,7 +1588,7 @@ static int nm_snmp_set_info_req(lua_State *L, int req_type, int req_mode) {
     }
     lua_remove(L, -1);
     if (pdu->variables)
-      last_var->next_variable = varlist;
+          last_var->next_variable = varlist;
     else
       pdu->variables = varlist;
   } else {
@@ -1595,25 +1596,23 @@ static int nm_snmp_set_info_req(lua_State *L, int req_type, int req_mode) {
     for (ind = 1; ; ind++) {
       lua_rawgeti(L, vlist, ind);
       if (lua_isnil(L, -1))
-	break;
+        break;
       if ((varlist = f_create_vlist(L, errs)) == NULL) {
-	char eerrs[64];
-	lua_pushnil(L);
-	sprintf(eerrs, "%s in index %d", errs, ind);
-	lua_pushstring(L, eerrs);
-	snmp_free_pdu(pdu);
-	return 2;
+        char eerrs[64];
+        lua_pushnil(L);
+        sprintf(eerrs, "%s in index %d", errs, ind);
+        lua_pushstring(L, eerrs);
+        snmp_free_pdu(pdu);
+        return 2;
       }
       lua_remove(L, -1);
       if (pdu->variables)
-	last_var->next_variable = varlist;
-      else
-	pdu->variables = varlist;
+        last_var->next_variable = varlist;
+          else
+            pdu->variables = varlist;
       last_var = varlist;
-    } 
-  } 
-
-  
+    }
+  }
   /* Perform the request */
   if (req_mode == NM_SNMP_SYNCH_REQ)
     retval = nm_snmp_synch_req(L, nm_session, pdu, islist);
@@ -1828,7 +1827,7 @@ static int nm_snmp_eventloop(lua_State *L) {
  *
  *  Synopsis : -
  *  Lua Param: -
- *  Return   : op_status != success: nil + error msg
+ *  Return   : op_status != success: nil + error msg + op_status
  *             op_status == success: 
  *               pdu->errstat == no_error: vbind or vlist
  *               pdu->errstat == error:    vbind or vlist + status + errindex
@@ -1841,9 +1840,11 @@ static int nm_snmp_pushrsp(lua_State *L, Tsession *nm_session, int op_status, st
     lua_pushnil(L);
     if (op_status == STAT_TIMEOUT){
       lua_pushstring(L, "snmp: timeout");
-      return 2;
+      lua_pushnumber(L, op_status);
+      return 3;
     } else {
       lua_pushstring(L, "snmp: internal error - response status");
+      //      lua_pushnumber(L, op_status);
       return 2;
     }
   }
@@ -1861,8 +1862,12 @@ static int nm_snmp_pushrsp(lua_State *L, Tsession *nm_session, int op_status, st
       lua_setmetatable(L, -2);
     }
 #endif
+#if 1
+    lua_getglobal(L, "snmp");
+#else
     lua_pushstring(L, "snmp");
     lua_gettable(L, LUA_GLOBALSINDEX);
+#endif
     lua_pushstring(L, "errtb");
     lua_gettable(L, -2);
     lua_remove(L, -2);
@@ -1911,15 +1916,21 @@ static int nm_snmp_synch_req(lua_State *L, Tsession *nm_session, struct snmp_pdu
   int op_status;
   struct synch_state *state;
   int retval;
+  int _errno = 0;
+  int _snmp_errno = 0;
+  char *str;
 
   /* Pede o envio do pdu */
   state = &(nm_session->cmu_synch_state);
 #if 0
-  if (pdu->command == SNMP_PDU_INFORM)
+  if (pdu->command == SNMP_MSG_INFORM)
     netsnmp_ds_set_int(NETSNMP_DS_LIBRARY_ID, NETSNMP_DS_LIB_DEFAULT_PORT, 
 		       SNMP_TRAP_PORT);
 #endif
   if ((state->reqid = snmp_send(nm_session->cmu_session,pdu)) == 0) {
+    snmp_error(nm_session->cmu_session, &_errno, &_snmp_errno, &str);
+    fprintf(stderr, "errno=%d, snmp_errno=%d, errstr='%s'\n", _errno, _snmp_errno, str);
+    free(str);
     snmp_free_pdu(pdu);
     lua_pushnil(L);
     lua_pushstring(L, "snmp: internal error - synch request id is 0");
@@ -2054,7 +2065,7 @@ static int nm_snmp_asynch_rsp(Tsession *nm_session, int reqid, int op, struct sn
 
   /* Verify result of request (ok or timeout) */
   if ((op == RECEIVED_MESSAGE) && (pdu != NULL) &&
-      (pdu->command == SNMP_PDU_RESPONSE || pdu->command == SNMP_PDU_REPORT))
+      (pdu->command == SNMP_MSG_RESPONSE || pdu->command == SNMP_MSG_REPORT))
     op_status = STAT_SUCCESS;
   else
     if (op == TIMED_OUT)
@@ -2180,9 +2191,6 @@ static int nm_snmp_callback(int op, CmuSession *session, int reqid, struct snmp_
 static void nm_snmp_trap(lua_State *L, char *buf, int rxlen)
 {
   Tsession *nm_session, *nxt_session;
-#if 0
-  printf("nm_snmp_trap():%d\n%s\n", rxlen, buf);
-#endif
   /* We step through all sessions that have a trap callback */
   for (nm_session = nm_snmp_sessions; nm_session; nm_session = nxt_session) {
 
@@ -2191,9 +2199,6 @@ static void nm_snmp_trap(lua_State *L, char *buf, int rxlen)
     if (nm_session->trapcb == -1)
       continue;
     
-#if 0
-    printf("Found session with trap callback - calling\n");
-#endif
     /* Session has a trap callback */
     lua_pushlightuserdata(L, &nm_session->trapcb);
     lua_gettable(L, LUA_REGISTRYINDEX);
@@ -2224,15 +2229,15 @@ static void nm_snmp_trap(lua_State *L, u_char *packet, int length, struct sockad
   nm_session = nm_snmp_sessions;
 
   if ((retval = snmp_parse(NULL, nm_session->cmu_session, pdu, packet, pktLen)) || 
-      ((pdu->command != TRP_REQ_MSG) &&(pdu->command != SNMP_PDU_V2TRAP) 
-       && (pdu->command != SNMP_PDU_INFORM))) {
+      ((pdu->command != SNMP_MSG_TRAP) &&(pdu->command != SNMP_MSG_TRAP2) 
+       && (pdu->command != SNMP_MSG_INFORM))) {
     fprintf(stderr,"luasnmp: invalid trap packet %d %d\n", retval, pdu->command);
     snmp_free_pdu(pdu);
     return;
   }
 
   /* Convert SNMPV1 trap into SNMPV2 trap */
-  if (pdu->command == TRP_REQ_MSG) {
+  if (pdu->command == SNMP_MSG_TRAP) {
     f_trapconv(pdu);
   }
 
@@ -2248,7 +2253,7 @@ static void nm_snmp_trap(lua_State *L, u_char *packet, int length, struct sockad
         continue;
     }
 
-    if (pdu->command == SNMP_PDU_INFORM) {
+    if (pdu->command == SNMP_MSG_INFORM) {
       if (nm_session->infocb == -1)
         continue;
       lua_pushlightuserdata(L, &nm_session->infocb);
@@ -2284,7 +2289,7 @@ static void nm_snmp_trap(lua_State *L, u_char *packet, int length, struct sockad
 
   /* Check response upon inform request */
   if (info_session != NULL) {
-    pdu->command = SNMP_PDU_RESPONSE;
+    pdu->command = SNMP_MSG_RESPONSE;
     pdu->errstat = 0;
     pdu->errindex = 0;
     snmp_send(info_session->cmu_session,pdu);
@@ -2442,8 +2447,12 @@ static int nm_snmp_init(lua_State *L){
 
   /* Init varbind metatable reference */
   lua_pushlightuserdata(L, &vbindmetatable);
+#if 1
+  lua_getglobal(L, "snmp");
+#else
   lua_pushstring(L, "snmp");
   lua_gettable(L, LUA_GLOBALSINDEX);
+#endif
   lua_pushstring(L, "__vbindmetatable");
   lua_gettable(L, -2);
   if (lua_isnil(L, -1))
@@ -2900,6 +2909,56 @@ int nm_snmp_usmpassword(lua_State *L)
   return rval;
 }
 #endif
+
+#ifndef REMOVE_THIS
+/*-----------------------------------------------------------------------------
+ * nm_snmp_remove_user_from_list
+ *
+ *  Synopsis : snmp.remove_user_from_list(session)
+ *  Lua Param: session
+ *  Return   : true on success, 
+ *             nil + error msg on failure
+ *  Function : Remove given session's user from net-snmp userList.
+ *  Example:   res, err = sess:remove_user_from_list(vlist) 
+ *----------------------------------------------------------------------------*/
+static int nm_snmp_remove_user_from_list(lua_State *L){
+
+  Tsession *nm_session;
+  struct usmUser *user;
+  char *username;
+
+  /* Get the internal session from external session */
+  if (!lua_istable(L, 1)){
+    lua_pushnil(L);
+    lua_pushstring(L, "snmp: bad session");
+    return 2;
+  }
+  username = (char*) lua_tostring(L, -1);
+  /* Get the internal session from external session */
+  lua_pushvalue(L, 1);
+  nm_session = nm_snmp_getsession(L);
+  if (nm_session == NULL) {
+    lua_pushnil(L);
+    lua_pushstring(L, "snmp: bad session");
+    return 2;
+  }
+  if (username == NULL)
+    username = nm_session->cmu_session->securityName;
+
+  user = usm_get_user(nm_session->cmu_session->securityEngineID, 
+                      nm_session->cmu_session->securityEngineIDLen, 
+                      username);
+  if (user == NULL){
+    lua_pushnil(L);
+    lua_pushstring(L, "snmp: user not found in list");
+    return 2;
+  } 
+  usm_remove_user(user);
+  usm_free_user(user);
+  lua_pushboolean(L, 1);
+  return 1;
+}
+#endif
 /*-----------------------------------------------------------------------------
  * nm_snmp_register
  *
@@ -2927,7 +2986,7 @@ void nm_snmp_register(void) {
 }
 #endif
 
-static const luaL_reg funcs[] = {
+static const luaL_Reg funcs[] = {
   {"inittrap", nm_snmp_inittrap},
   {"gettrapd", nm_snmp_gettrapd},
   {"init", nm_snmp_init},
@@ -2954,18 +3013,26 @@ static const luaL_reg funcs[] = {
   {"createlocalkey", nm_snmp_createlocalkey}, 
   {"keychange", nm_snmp_keychange},
   {"details", nm_snmp_sessiondetails},
+  {"removeuser", nm_snmp_remove_user_from_list},
 #ifdef REMOVE_THIS
   {"usmpassword", nm_snmp_usmpassword},
 #endif
   {NULL, NULL}
 };
 
-extern const luaL_reg mibfuncs[];
+extern const luaL_Reg mibfuncs[];
 
 #define luaopen_snmpcore luaopen_snmp_core
 
 LUALIB_API int luaopen_snmp_core(lua_State *L) {
+#if LUA_VERSION_NUM > 501
+  lua_newtable(L);                     /* mtab */
+  luaL_setfuncs(L, funcs, 0); 
+  lua_pushvalue(L, -1);                /* mtab, mtab */
+  lua_setglobal(L, MYNAME);            /* mtab */
+#else
   luaL_register(L, MYNAME, funcs);     /* mtab */
+#endif
   lua_pushliteral(L, "version");       /* mtab.version = ... */
   lua_pushliteral(L, MYVERSION);
   lua_rawset(L, -3);
@@ -2978,7 +3045,11 @@ LUALIB_API int luaopen_snmp_core(lua_State *L) {
   except_open(L);                      /* mtab */
   lua_pushliteral(L, "mib");           /* 'mib', mtab */
   lua_newtable(L);                     /* tab, 'mib', mtab */
+#if LUA_VERSION_NUM > 501
+  luaL_setfuncs(L, mibfuncs, 0);
+#else
   luaL_register(L, NULL, mibfuncs);    /* tab.<funcs> ... */
+#endif
   lua_settable(L, -3);                 /* mtab */
   c64_open(L);                         
   return 1;
@@ -3013,3 +3084,4 @@ static Tsession *nm_snmp_getsession(lua_State *L) {
       break;
   return(nxt_sess);
 }
+

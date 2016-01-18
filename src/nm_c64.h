@@ -4,6 +4,7 @@
 #ifndef WIN32
 #include <sys/types.h>
 #endif
+#include <net-snmp/net-snmp-config.h>
 #include <net-snmp/library/asn1.h>
 #include "lua.h"
 #include "lauxlib.h"
@@ -32,7 +33,7 @@ typedef enum c64_ops {
   C64_ISZERO,
 } c64_ops_t;
 
-extern const luaL_reg c64_funcs[];
+extern const luaL_Reg c64_funcs[];
 
 int c64_new(lua_State *L, struct counter64 val);
 struct counter64 c64_get(lua_State *L, int i);

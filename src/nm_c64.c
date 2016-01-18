@@ -237,7 +237,7 @@ int c64_sqrt(lua_State *L) {return c64_op1(L, C64_SQRT);}
 int c64_iszero(lua_State *L) {return c64_op1(L, C64_ISZERO);}
 
 
-const luaL_reg c64_funcs[] = {
+const luaL_Reg c64_funcs[] = {
   {"__add", c64_add},
   {"__sub", c64_sub},
   {"__eq", c64_eq},
@@ -272,7 +272,11 @@ int c64_open(lua_State *L)
 {
   /* new metatable for 64 bit counter userdata in registry */ 
   luaL_newmetatable(L, C64TYPE);       /* mt, mod */
+#if LUA_VERSION_NUM > 501
+  luaL_setfuncs(L, c64_funcs, 0);
+#else
   luaL_register(L, NULL, c64_funcs);   /* mt, mod */
+#endif
   lua_pushliteral(L, C64NAME);         /* key, mt, mod */
   lua_pushvalue(L, -2);                /* mt, key, mt, mod */
   lua_settable(L, -4);                 /* mt, mod */

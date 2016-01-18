@@ -2,7 +2,7 @@ require "snmp"
 
 local count = 0
 
-hub1 = assert(snmp.open{peer = "goofy"})
+hub1 = assert(snmp.open{peer = "obelix"})
 
 function next_cb(vb, err, _, _, session)
   if not err and vb.type ~= snmp.ENDOFMIBVIEW then

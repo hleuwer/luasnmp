@@ -1,12 +1,16 @@
 local socket = require "socket"
-require "logging.file"
+local arg = {select(1, ...)}
 local port = tonumber(arg[1] or os.getenv("LUASNMP_TRAPDPORT")) or 6000
 local log
-if arg[2] then
+if _VERSION > "5.1" then
+   local logger = require "logging.file"
+   log = logger(arg[2])
+else
+   require "logging.file"
    log = logging.file(arg[2])
-   log:setLevel(arg[3] or "INFO")
-   log:info("TRAPD capture start")
 end
+log:setLevel(arg[3] or "INFO")
+log:info("TRAPD capture start")
 
 --
 -- Collect input from snmptrapd and optionally write into logfile

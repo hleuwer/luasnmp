@@ -7,8 +7,11 @@
 
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/mib_api.h>
+#if 0 /* CMU compatablity was removed in net-snmp */
 #include <net-snmp/library/cmu_compat.h>
+#endif
 #include <net-snmp/library/asn1.h>
+#include <net-snmp/library/snmp_impl.h>
 
 #ifndef WIN32
 #include <sys/param.h>
@@ -401,15 +404,15 @@ static Tsnmptype nm_snmp_types[] = {
                                      {ASN_OBJECT_ID, NM_TYPE_OBJID,FALSE},
                                      {ASN_OCTET_STR, NM_TYPE_OCTETSTR,FALSE},
                                      {ASN_INTEGER,   NM_TYPE_INTEGER,FALSE},
-                                     {SMI_IPADDRESS, NM_TYPE_IPADDR,FALSE},
+                                     {ASN_IPADDRESS, NM_TYPE_IPADDR,FALSE},
                                      /* NETADDR deve estar abaixo de IPADDR */
-                                     {SMI_IPADDRESS, NM_TYPE_NETADDR,FALSE},
-                                     {SMI_COUNTER32, NM_TYPE_COUNTER,FALSE},
-                                     {SMI_GAUGE32,   NM_TYPE_GAUGE,FALSE},
-                                     {SMI_TIMETICKS, NM_TYPE_TIMETICKS,FALSE},
-                                     {SMI_OPAQUE,    NM_TYPE_OPAQUE,FALSE},
+                                     {ASN_IPADDRESS, NM_TYPE_NETADDR,FALSE},
+                                     {ASN_COUNTER, NM_TYPE_COUNTER,FALSE},
+                                     {ASN_GAUGE,   NM_TYPE_GAUGE,FALSE},
+                                     {ASN_TIMETICKS, NM_TYPE_TIMETICKS,FALSE},
+                                     {ASN_OPAQUE,    NM_TYPE_OPAQUE,FALSE},
                                      {ASN_NULL,      NM_TYPE_NULL,FALSE},
-                                     {SMI_COUNTER64, NM_TYPE_COUNTER64,FALSE},
+                                     {ASN_COUNTER64, NM_TYPE_COUNTER64,FALSE},
 				     {ASN_OPAQUE_COUNTER64, NM_TYPE_COUNTER64, FALSE},
 
                                      /* Esses tipos nao valem para bib nova. Ver como fazer para mata-los !!! */
@@ -427,9 +430,9 @@ static Tsnmptype nm_snmp_types[] = {
                                      /* DISPLAY nao deve estar antes de OCTET STRING */
                                      {ASN_OCTET_STR, NM_TYPE_DISPLAY,FALSE},
 
-                                     {SMI_NOSUCHOBJECT,   NM_SNMP_NOSUCHOBJECT,FALSE},
-                                     {SMI_NOSUCHINSTANCE, NM_SNMP_NOSUCHINSTANCE,FALSE},
-                                     {SMI_ENDOFMIBVIEW,   NM_SNMP_ENDOFMIBVIEW,TRUE}
+                                     {SNMP_NOSUCHOBJECT,   NM_SNMP_NOSUCHOBJECT,FALSE},
+                                     {SNMP_NOSUCHINSTANCE, NM_SNMP_NOSUCHINSTANCE,FALSE},
+                                     {SNMP_ENDOFMIBVIEW,   NM_SNMP_ENDOFMIBVIEW,TRUE}
                                    };
 
 static int f_prim_type(u_char cod_cmu) {
@@ -802,8 +805,11 @@ struct variable_list *f_create_vl(lua_State *L, int prim_type) {
     if (!lua_isstring(L, -1))
       return NULL;
     strval = (char *)lua_tostring(L, -1);
+#if LUA_VERSION_NUM > 501 
+    slen = luaL_len(L, -1);
+#else
     slen = lua_strlen(L, -1);
-
+#endif
     /* Primeiro vamos verificar se e' uma "hex string" */
     if (prim_type != NM_TYPE_DISPLAY) {
       char *pstr = strval;
@@ -924,7 +930,6 @@ struct variable_list *f_create_vl(lua_State *L, int prim_type) {
 
   /* Seta o tipo com o valor usado pela bib CMU */
   vlist->type = f_cmu_type(prim_type);
-
   return vlist;
 }
 
@@ -1104,7 +1109,7 @@ struct variable_list *f_create_infovl(char *trapOID) {
   vp->name = op = (oid *)calloc(1, sizeof(oid) * UPTIME_LEN);
   memcpy((char *)op, (char *)sysUpTimeOid,sizeof(oid) * UPTIME_LEN);
 
-  vp->type = SMI_TIMETICKS;
+  vp->type = ASN_TIMETICKS;
 
   vp->val.integer = (long *)calloc(1, sizeof(long));
   vp->val_len = sizeof(long);
@@ -1119,7 +1124,7 @@ struct variable_list *f_create_infovl(char *trapOID) {
   vp->name = op =(oid *)calloc(1, (sizeof(oid) * TRAPOID_LEN));
   memcpy((char *)op, (char *)snmpTrapOid,sizeof(oid) * TRAPOID_LEN);
 
-  vp->type = OBJID;
+  vp->type = ASN_OBJECT_ID;
 
   vp->val_len = sizeof (oid) * tobjidlen;
   vp->val.objid = op = (oid *)calloc(1, vp->val_len);
@@ -1169,7 +1174,7 @@ void f_trapconv(struct snmp_pdu *pdu) {
   vp->name = op = (oid *)calloc(1, sizeof(oid) * UPTIME_LEN);
   memcpy((char *)op, (char *)sysUpTimeOid,sizeof(oid) * UPTIME_LEN);
 
-  vp->type = SMI_TIMETICKS;
+  vp->type = TYPE_TIMETICKS;
 
   vp->val.integer = (long *)calloc(1, sizeof(long));
   vp->val_len = sizeof(unsigned int);
@@ -1186,7 +1191,7 @@ void f_trapconv(struct snmp_pdu *pdu) {
   vp->name = op =(oid *)calloc(1, (sizeof(oid) * TRAPOID_LEN));
   memcpy((char *)op, (char *)snmpTrapOid,sizeof(oid) * TRAPOID_LEN);
 
-  vp->type = OBJID;
+  vp->type = TYPE_OBJID;
 
   switch (pdu->trap_type) {
     /* Tratamento para as traps "padrao" */
@@ -1234,7 +1239,7 @@ void f_trapconv(struct snmp_pdu *pdu) {
   vp->name = op =(oid *)calloc(1, (sizeof(oid) * TRAPENT_LEN));
   memcpy((char *)op, (char *)snmpTrapEntOid,sizeof(oid) * TRAPENT_LEN);
 
-  vp->type = OBJID;
+  vp->type = TYPE_OBJID;
   vp->val_len = sizeof(oid) * pdu->enterprise_length;
   vp->val.objid = op = (oid *)calloc(1, vp->val_len);
   memcpy((char *)op ,(char *)pdu->enterprise,

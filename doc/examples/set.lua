@@ -1,7 +1,7 @@
 local snmp = require "snmp"
 
 hub1, err = snmp.open{
-  peer = "goofy", 
+  peer = "obelix", 
   community = "private", 
 }
 assert(hub1, err)

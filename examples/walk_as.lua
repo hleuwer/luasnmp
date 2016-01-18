@@ -8,27 +8,29 @@ local mib = snmp.mib
 --
 -- Callback function for handling the response to get-next
 --
-
+local closed = false
 function walk_cb(vb, err, ind, reqid, session, root)
-   
-   if not err then
-      -- Check if the returned OID contains the OID associated
-      --   with the root of the subtree
-      if string.find(vb.oid, root) == nil or vb.type == snmp.ENDOFMIBVIEW then
-	 return
-      else
-	 -- print the returned varbind and request next var
-	 -- use LuaSNMP's sprintvar:
-	 -- print(snmp.sprintvar(vb))
-	 -- or NETSNMP's sprint_var via session
-	 -- print(session:sprintvar(vb))
-	 -- or simply rely on Lua's __tostring metamethod
-	 print(vb)
-	 req, err, ind = session:asynch_getnext(vb, walk_cb, root)
-      end
-   else
-      snmp.close(session)
-   end
+
+  if not err then
+    -- Check if the returned OID contains the OID associated
+    --   with the root of the subtree
+    if string.find(vb.oid, root) == nil or vb.type == snmp.ENDOFMIBVIEW then
+      return
+    else
+      -- print the returned varbind and request next var
+      -- use LuaSNMP's sprintvar:
+      -- print(snmp.sprintvar(vb))
+      -- or NETSNMP's sprint_var via session
+      -- print(session:sprintvar(vb))
+      -- or simply rely on Lua's __tostring metamethod
+      print(vb)
+      req, err, ind = session:asynch_getnext(vb, walk_cb, root)
+    end
+  else
+    print("error - close.")    
+    snmp.close(session)
+    closed = true
+  end
 end
 
 -- Function walk receives three parameters:
@@ -41,7 +43,7 @@ function walk(host,commStr,subtree)
    local s,err = snmp.open{peer = host, version = SNMPv1, community = commStr}
    if not s then
       print(string.format("walk: unable to open session with %s\n%s",
-			  host, err))
+                          host, err))
       return
    end
    
@@ -50,13 +52,13 @@ function walk(host,commStr,subtree)
    if subtree then
       root = mib.oid(subtree)
       if root == nil then
-	 print(string.format("walk: invalid subtree %s", subtree))
-	 return
+         print(string.format("walk: invalid subtree %s", subtree))
+         return
       end
    else -- if no label is defined, traverse the entire MIB
       root = "1"
    end
-   
+
    -- Start the traversal with the first asynchronous request
    --   (the callback function will issue the other requests)
    local vb={oid=root}

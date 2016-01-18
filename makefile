@@ -38,16 +38,11 @@ testd:
 	$(LUABIN) test.lua debug
 
 testtrap:
-	$(LUABIN) -e "trapyes=true" test.lua
+	$(LUABIN) -e "trapyes, informyes = true, true" test_trap.lua
 
 testtrapd:
-	$(LUABIN) -e "trapyes=true" test.lua debug
+	$(LUABIN) -e "trapyes, informyes = true, true" test_trap.lua debug
 
-testtraponly:
-	$(LUABIN) -e "traponly,trapyes=true,true" test.lua
-
-testtraponlyd:
-	$(LUABIN) -e "traponly,trapyes=true,true" test.lua debug
 
 .PHONY: tag tag-git tag-cvs tag-svn
 tag: tag-git

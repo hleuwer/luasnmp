@@ -11,39 +11,55 @@ local newpw = "mydog2006"
 local check = snmp.check
 
 --
--- Create a work session which we use to change the password
+-- Create a work session which we use to change the password back
 --
 local sess, err = snmp.open{
-  peer = "goofy",
+  peer = "localhost",
   version = snmp.SNMPv3,
   user = "leuwer",
   password = "leuwer2006"
 }
 
 --
--- Create an "old" session using OLDPW
+-- Create a "local" session using OLDPW
 --
-local sessold = check(snmp.open{
-  peer = "localhost",
-  version = snmp.SNMPv3,
-  user = user,
-  password = oldpw})
+local sesslocal = check(
+   snmp.open{
+      peer = "localhost",
+      version = snmp.SNMPv3,
+      user = user,
+      password = oldpw
+   })
 
 --
 -- Change password implicit using the user's session.
 --
-local vl = check(sessold:newpassword(oldpw, newpw, "a"))
+local vl = check(sesslocal:newpassword(oldpw, newpw, "a"))
 for _,v in ipairs(vl) do print(v) end
 
---
--- Create a "new" session using NEWPW for the user
---
-local sessnew = check(sessold:clone{password = newpw})
+-- Close the old session
+check(sesslocal:close())
 
 --
--- Use the "new" session
+-- Reopen the user session using the new password
+--
+local sessnew = check(
+   snmp.open{
+      peer = "localhost",
+      version = snmp.SNMPv3,
+      user = user,
+      password = newpw
+   })
+
+--
+-- Use it ...
 --
 print(check(sessnew:get("sysContact.0")))
+
+--
+-- Close the user session
+--
+check(sessnew:close())
 
 --
 -- Change password back from NEWPW to OLDPW explicitly
@@ -53,20 +69,6 @@ vl = check(sess:newpassword(newpw, oldpw, "a", user))
 for _,v in ipairs(vl) do print(v) end
 
 --
--- Reopen the old session. This will reuse OLDPW.
+-- Close the worker session
 --
-sessold2 = check(sessold:clone())
-
---
--- Use the reopened session
---
-vb = check(sessold2:get("sysContact.0"))
-print(vb)
-
---
--- Close all sessions created
---
-check(sessold:close())
-check(sessnew:close())
-check(sessold2:close())
 check(sess:close())

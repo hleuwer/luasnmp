@@ -33,7 +33,7 @@ local function pdoit()
   --
   -- Do some work: no failure here
   --
-  sess = try(snmp.open{peer = "goofy"})
+  sess = try(snmp.open{peer = "obelix"})
   
   --
   -- Do some work: no failure here

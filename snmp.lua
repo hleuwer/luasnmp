@@ -6,7 +6,8 @@
 
 local snmp = require "snmp.core"
 local mib = snmp.mib
-
+require "pl"
+local pretty = pretty.write
 module("snmp", package.seeall)
 
 ------------------------------------------------------------------------------
@@ -53,14 +54,16 @@ local function configfiles()
   }
   local filelist = {
     "snmp.conf",
-    "snmp.local.conf"
+    "snmp.local.conf",
+--    "snmpapp.conf"
   }
   local t = {}
   local confpath = os.getenv("SNMPCONFPATH")
   if confpath then 
-    for dir in string.gfind(confpath, "([^:]+)") do
+    for dir in string.gmatch(confpath, "[^:]+") do
       table.insert(t, dir .. "/snmp.conf")
       table.insert(t, dir .. "/snmp.local.conf")
+      table.insert(t, dir .. "/snmpapp.conf")
     end
   else
     for _, dir in ipairs(dirlist) do
@@ -143,16 +146,10 @@ assert(not init(tokens, function(token, line)
 -- 3. trapdPort in snmp.conf is set: use configuration value
 -- 4. Use port 6000
 ------------------------------------------------------------------------------
--- table.foreach(config, function(tok,val) print(tok.." = "..val) end)
-local straps = os.getenv("LUASNMP_STRAPS") or config.pathStrap
-if straps and string.find(straps, "straps") then
-  inittrap(straps);
-else
-   local trapdport = tonumber(os.getenv("LUASNMP_TRAPDPORT") or 
+local trapdport = tonumber(os.getenv("LUASNMP_TRAPDPORT") or 
 			      config.trapdPort) or 6000
-  if trapdport then
-    inittrap(trapdport)
-  end
+if trapdport then
+   inittrap(trapdport)
 end
 
 
@@ -620,11 +617,11 @@ end
 ------------------------------------------------------------------------------
 local function oidbase(oid, len)
   local err
-  len = len or oidlen(oid)
+  local len = len or oidlen(oid)
   oid, err = isoid(oid)
   if not oid then return nil, err end
   local rv = ""
-  for d, p in string.gfind(oid,"(%d+)(%.*)") do
+  for d, p in string.gmatch(oid,"(%d+)(%.*)") do
     rv = rv .. d
     len = len - 1
     if len == 0 then 
@@ -633,6 +630,7 @@ local function oidbase(oid, len)
       rv = rv .. (p or "")
     end
   end
+  print("###", oid, rv)
   return rv
 end
 
@@ -648,7 +646,7 @@ local function oidtotable(oid)
   if not oid then return nil, err end
   local t = {}
   string.gsub(oid, "(%d+)%.*", function(d) table.insert(t, tonumber(d)) end)
-  return t, table.getn(t)
+  return t, #t
 end
 
 ------------------------------------------------------------------------------
@@ -705,7 +703,7 @@ local function load(fname)
   else 
     local configdirs = string.gsub(config.mibdirs or "", "(%+*)(.+)", "%2")
     local mibdirs = ".:" .. (os.getenv("LUASNMP_MIBDIRS") or os.getenv("MIBDIRS") or configdirs)
-    for dir in string.gfind(mibdirs, "([^:;]+)") do
+    for dir in string.gmatch(mibdirs, "[^:;]+") do
       for _,ext in ipairs{".txt","",".mib"} do
 	local fn = dir.."/"..fname..ext
 	local f = io.open(fn,"r")
@@ -787,7 +785,7 @@ function walk(sess, var)
       table.insert(t, vb)
     end
   end
-  if not err and table.getn(t) == 0 then
+  if not err and #t == 0 then
     vb, err = sess:get(root)
     if err then return t, err end
     table.insert(t, vb)
@@ -874,7 +872,7 @@ end
 -- @return none.
 ---------------------------------------------------------------------------
 function __trap(session, msg)
-   local host, src, vbs, ip, port, uptimeName, uptimeVal, vbs
+   local host, src, vbs, sip, dip, sport, dport, uptimeName, uptimeVal, vbs, ip, port
    -- debugging: uncomment if desired
    --print(string.format("  session.name=%s", session.name))
    --print(string.format("  generic_trap(): msg = %q", msg))
@@ -890,18 +888,20 @@ function __trap(session, msg)
 		     host, proto, ip, port, uptimeName, uptimeVal, vbs = select(1, ...) 
 		  end)
       -- debugging:
-      --print(string.format("  host=%q, proto=%q, ip=%q, port=%q, uptimeName=%q, uptimeVal=%q, vbs=%q",
-      --		  host, proto, ip, port, uptimeName, uptimeVal, vbs))
-   elseif snmp.getversion() > "5.3" then
+      -- print(string.format("  host=%q, proto=%q, ip=%q, port=%q, uptimeName=%q, uptimeVal=%q, vbs=%q",
+      -- host, proto, ip, port, uptimeName, uptimeVal, vbs))
+   elseif snmp.getversion() > "5.5" then
       string.gsub(msg, 
 		  -- Example msg:
 		  -- " localhost UDP: [127.0.0.1]->[127.0.0.1]:-6577 \
 		  -- iso.3.6.1.2.1.1.3.0 0:2:11:01.53 iso.3.6.1.6.3.1.1.4.1.0 ccitt.0 iso.3.6.1.2.1.1.5.0 \"hello\""		  
-		  "^%s*([%w%.]+)%s+(%w+):%s*%[[%d%.]+%]%-%>%[([%d%.]+)%]:([%-%d]+)%s+([^%s]+)%s+([^%s]+)%s+(.*)",
+		  "^%s*([%w%.]+)%s+(%w+):%s*%[([%d%.]+)%]:([%d]+)%-%>%[([%d%.]+)%]:([%-%d]+)%s+([^%s]+)%s+([^%s]+)%s+(.*)",
 		  function(...) 
-		     host, proto, ip, port, uptimeName, uptimeVal, vbs = select(1, ...) 
+		     host, proto, sip, sport, dip, dport, uptimeName, uptimeVal, vbs = select(1, ...) 
+                     ip = sip
+                     port = sport
 		     -- debugging:
-		     -- print("dissected msg:", host, proto, ip, port, uptimeName, uptimeVal, vbs)
+		     -- print("dissected msg:", host, proto, sip, sport, dip, dport, uptimeName, uptimeVal, vbs)
 		  end)
       -- debugging: uncomment if desired
       -- print(string.format("  host=%q, proto=%q, ip=%q, port=%q, uptimeName=%q, uptimeVal=%q, vbs=%q",
@@ -917,7 +917,7 @@ function __trap(session, msg)
 		     vbs = arg[5]
 		  end)
    end
-   if ip == session.peer_ip then
+   if dip == session.peer_ip or true then
       -- Convert variable bindings
       local vlist
       if string.find(snmp.getversion(), "5.4") then
@@ -937,7 +937,7 @@ function __trap(session, msg)
 		  end)
       --  debugging:
       -- table.foreach(vlist, function(k,v) table.foreach(v, print) end)
-      session.usertrap(vlist, ip, host, session)
+      session.usertrap(vlist, ip, port, host, session)
    end
 end
 
@@ -1043,6 +1043,7 @@ mib.stringoid = stringoid
 ---------------------------------------------------------------------------
 function instance(...)
   local oid = ""
+  arg = {select(1, ...)}
   for k,v in ipairs(arg) do
     if type(v) == "number" then
       oid = oid .. string.format(".%d", v)
@@ -1074,11 +1075,13 @@ mib.instance = instance
 -- @param newpw string - New password.
 -- @param flag string (opt) - Indicates what pass phrase to
 --        change: "a" = auth, "ap" = auth + priv, "p" = priv.
--- @param engineID (opt)  - hexstring - context engine ID to use.
+-- @param user (opt) string - What user to change.
+-- @param engineID (opt) hexstring - Context engine ID to use.
 -- @return varlist on success, nil + error message of failure.
 ------------------------------------------------------------------------------
 function newpassword(session, oldpw, newpw, flag, user, engineID)
   local authKeyChange, privKeyChange
+
   local doauth, dopriv = false, false
   -- Be sure we run a version 3 session
   -- Do we really need this? Don't think so (leu)
@@ -1115,7 +1118,6 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
     t = session:details()
     engineID = t.contextEngineID
   end
-
   -- check password lengths
   if type(oldpw) ~= "string" and string.len(oldpw) < 8 then
     return FAIL(BADARG, "oldpw")
@@ -1135,7 +1137,7 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
   if not oldKu then return nil, oldKuLen end
   local newKu, newKuLen = createkey(session, newpw, authProto)
   if not newKu then return nil, newKuLen end
-
+  
   -- create old and new localized keys
   local oldKul, oldKulLen = createlocalkey(session, oldKu, authProto, engineID)
   if not oldKul then return nil, oldKulLen end
@@ -1157,6 +1159,7 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
     keychg, keychglen = keychange(session, oldKul, newKul, authProto)
     if not keychg then return FAIL("snmp: cannot create keychange") end
   end
+
   if dopriv then
     keychgpriv, keychgprivlen = keychange(session, oldKulPriv, newKulPriv, authProto)
     if not keychgpriv then return FAIL("snmp: cannot create keychange priv") end
@@ -1182,7 +1185,6 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
 		      key2octet(keychgpriv, keychgprivlen),
 		      snmp.TYPE_OCTETSTR)
   end
-
   -- set request
   vl, err, errindex = session:set(vl)
   if err then
@@ -1247,6 +1249,7 @@ function createuser(session, user, clonefrom, engineID)
 			      string.len(engineID), key2oid(engineID),
 			      string.len(clonefrom), key2oid(clonefrom)))
     table.insert(vl, vb)
+
     local vl, err, errindex = session:set(vl)
     if err then
       if errindex then
@@ -1383,7 +1386,6 @@ function createsectogroup(session, secmodel, secname, groupname)
 	   rowStatus.createAndGo) ..
     newvar(vacmOid.groupName..instance(secmodel, secname),
 	   groupname)
-
   -- set request
   local vl, err, errindex = session:set(vl)
   return retvarlist(vl, err, errindex)
@@ -1543,8 +1545,8 @@ end
 -- @param config table - Configuration (overrides parent's configuration)
 -- @return New session if o.k. Nil + error message otherwise.
 ------------------------------------------------------------------------------
-function clone(parent, config)
-  local new = {}
+function __clone(parent, config)
+  local new = {parent=parent}
   config = config or {}
   -- sanity checks
   if config.version then
@@ -1570,7 +1572,6 @@ function clone(parent, config)
   end
   return open(new)
 end
-
 
 ------------------------------------------------------------------------------
 -- Table with session properties accessible using session.NAME using
@@ -1683,7 +1684,7 @@ function open (session)
 
     -- encryption protocol: DES (default) or AES
     if not session.privType then
-      session.privproto = config.defPrivType or "DES"
+      session.privpType = config.defPrivType or "DES"
     end
 
     -- privacy passphrase: any
@@ -1840,7 +1841,14 @@ function open (session)
   session.asynch_get = asynch_get
   session.asynch_getnext = asynch_getnext
   session.asynch_getbulk = asynch_getbulk
-  session.close = close
+  session.close = function(self)
+     -- We need to remove the running user from library's userList.
+     -- Otherwise a new session with new passowrd to the same machine (engineID) fails.
+     if session.version == SNMPv3 then
+        self:removeuser(rawget(self,"user"))
+     end
+     return close(session)
+  end
   session.set = set
   session.asynch_set = asynch_set
   session.inform = inform
@@ -1849,7 +1857,7 @@ function open (session)
   session.newvar = function(session, name, value, type) 
 		     return newvar(name, value, type, session) 
 		   end
-  session.clone = clone
+--  session.clone = clone
   session.newpassword = newpassword
   session.createuser = createuser
   session.deleteuser = deleteuser
@@ -1861,6 +1869,7 @@ function open (session)
   session.deleteview = deleteview
   session.createaccess = createaccess
   session.deleteaccess = deleteaccess
+  session.removeuser = removeuser
   -- 
   -- A cache with weak values for SNMP object type cacheing.
   --
@@ -1873,10 +1882,10 @@ function open (session)
 			     if sessionproperties[key] then
 			       return sessionproperties[key](self)
 			     else
-			       local name = string.gsub(key, "_","%.")
+			       local name = string.gsub(key, "_",".")
 			       local rv, err = self:walk(name)
 			       try(not err, err)
-			       if table.getn(rv) == 1 then
+			       if #rv == 1 then
 				 -- No successor and single: return scalar 
 				 return rv[1].value
 			       else
@@ -1891,7 +1900,7 @@ function open (session)
 			   end,
 		 -- Syntactic sugar: sess.OBJECT = val <=> sess:set(OBJECT)
 		 __newindex = function(self, key, value)
-				local name = string.gsub(key, "_","%.")
+				local name = string.gsub(key, "_",".")
 				-- Value is a table. Set all values - recursive.
 				if type(value) == "table" then
 				  for k,v in pairs(v) do
@@ -1902,7 +1911,7 @@ function open (session)
 				end
 			      end,
 		 __newindex2 = function(self, key, value)
-				local name = string.gsub(key, "_","%.")
+				local name = string.gsub(key, "_",".")
 				-- Value is a table. Set all values - recursive.
 				if type(value) == "table" then
 				  for k,v in pairs(v) do

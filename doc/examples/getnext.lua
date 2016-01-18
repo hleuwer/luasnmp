@@ -1,6 +1,6 @@
 require "snmp"
 
-hub1 = assert(snmp.open{peer = "goofy"})
+hub1 = assert(snmp.open{peer = "obelix"})
 
 repeat
   vb, err = snmp.getnext (hub1, vb or {oid = "1"})

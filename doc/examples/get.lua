@@ -27,7 +27,7 @@ end
 -- Open session.
 --
 hub1, err = snmp.open{
-  peer = "goofy", 
+  peer = "obelix", 
   community = "private", 
   trap = trap_cb,
   callback = default_cb,

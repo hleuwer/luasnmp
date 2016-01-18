@@ -29,7 +29,7 @@ end
 -- Open session.
 --
 hub1, err = snmp.open{
-  peer = "goofy", 
+  peer = "obelix", 
   community = "private", 
   trap = trap_cb,
   callback = default_cb,
@@ -39,7 +39,7 @@ assert(hub1, err)
 --
 -- Clone a session
 --
-hub2 = assert(hub1:clone{peer = "10.0.0.1"})
+hub2 = assert(snmp.open{peer = "10.0.0.1", trap = trap_cb, callback = default_cb})
 
 --
 -- Synchronous request

@@ -30,8 +30,8 @@ function poll(agents)
 end
 
 local agents = {
-  { session = snmp.open{peer = "goofy"}, name = "goofy" },  
-  { session = snmp.open{peer = "192.168.99.1"}, name = "192.168.99.1"},  
+  { session = snmp.open{peer = "obelix"}, name = "goofy" },  
+  { session = snmp.open{peer = "192.168.2.105"}, name = "192.168.2.105"},  
   { session = snmp.open{peer = "localhost"}, name = "localhost" }
 }
 

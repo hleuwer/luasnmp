@@ -8,3 +8,7 @@ LuaSNMP - TODO
 
 * Tests
 -  test SHA1 authentication 
+
+* Support of NET-SNMP's TLS and SSH transport layers.
+
+* Support of IPv6

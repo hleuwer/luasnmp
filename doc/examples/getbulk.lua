@@ -2,7 +2,7 @@ local snmp = require "snmp"
 
 local ifNum = 3
 
-hub1 = assert(snmp.open{peer = "goofy"})
+hub1 = assert(snmp.open{peer = "obelix"})
 
 ifList, err, index = hub1:getbulk(0, ifNum, {"ifDescr","ifType"})
 assert(ifList, err)

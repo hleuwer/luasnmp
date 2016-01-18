@@ -1,81 +1,63 @@
 local snmp = require "snmp"
 local mib = snmp.mib
+require "pl"
+local pretty = pretty.write
+local tostring2 = tostring
 
--- stdlib compatibility 5.0 versus 5.1
-local tostring2, pretty
-if _VERSION == "Lua 5.1" then
-   -- 5.1: use general stdlib, here only base modules
-   tostring2 = tostring
-   require "base"
-   pretty = prettytostring
+----------------------------------------------------------------------
+-- Logging init
+----------------------------------------------------------------------
+local log
+local loglevel = string.upper(arg[1] or "INFO")
+if string.find(_VERSION, "5.2") then
+   local logger = require "logging.console"
+   log = logger("%message")
 else
-   -- 5.0: use own stdlib
-   require "stdlib"
+   require "logging.console"
+   log = logging.console("%message")
 end
-
-require "logging.console"
-
+log:setLevel(loglevel)
 ----------------------------------------------------------------------
 -- CUSTOMIZATION
 -- Adopt below variables to your platform setup
 -- true means yes, false means no
 ----------------------------------------------------------------------
 -- Peers: customize!
-PEER = "localhost"
---PEER = "daniel"
---PEER = "goofy"
+PEER = os.getenv("peer") or "localhost"
 
 -- User: customize!
-USER = "leuwer"
-PASSPHRASE = "leuwer2006"
---USER = "ronja"
---PASSPHRASE = "ronja2006"
+USER = os.getenv("user") or "leuwer"
+PASSPHRASE = os.getenv("password") or "leuwer2006"
 PRIVPASSPHRASE = PASSPHRASE
 
 -- Communities: customize!
-COMMUNITY = "private"
---COMMUNITY = "public"
-
--- Traps: customize!
--- a) test only traps
-traponly = traponly or false
-informonly = informonly or false
--- b) automatic trap testing only on local machine
-if PEER == "localhost" then
-  trapyes = trapyes or false
---  trapyes = true
-else
-  trapyes = trapyes or false
-end
-
--- c) use -d option to snmptrap command used to send trap
---trapdebug = "-d"
-trapdebug = ""
+-- Note: 'SET' tests may fail with community 'public' => use 'private'
+COMMUNITY = os.getenv("community") or "private"
 
 -- MIB only - no SNMP access to agent: customize!
-mibonly = mibonly or false
+mibonly = (os.getenv("mibonly") == "yes")
 
 -- Versions to test: customize!
-testv1 = testv1 or true
-testv2 = testv2 or true
-testv3 = testv3 or true
+testv1 = (os.getenv("v1") ~= "no") and true 
+testv2 = (os.getenv("v2") ~= "no") and true
+testv3 = (os.getenv("v3") ~= "no") and true
 
 -- Encryption: customize!
-encrypt = true
+encrypt = (os.getenv("encrypt") == "yes")
 
 ----------------------------------------------------------------------
 -- Logging
 ----------------------------------------------------------------------
-local loglevel = string.upper(arg[1] or "INFO")
-local log = logging.console("%message")
-log:setLevel(loglevel)
 testpath = ""
 local info = function(fmt, ...) 
-	       log:info(string.format(testpath..fmt.."\n", unpack(arg))) 
-	     end
+   arg = {select(1,...)}
+   log:info(string.format(testpath..fmt.."\n", unpack(arg))) 
+end
+local _debug = debug
 local debug = function(fmt, ...) 
-		log:debug(string.format(fmt.."\n", unpack(arg))) 
-	      end
+   arg = {select(1,...)}
+   log:debug(string.format(fmt.."\n", unpack(arg))) 
+end
 ----------------------------------------------------------------------
 -- STDLIB compatibility stuff
 ----------------------------------------------------------------------
@@ -83,7 +65,7 @@ local debug = function(fmt, ...)
 ----------------------------------------------------------------------
 -- Trap-sink Daemon setup
 ----------------------------------------------------------------------
-info("Initialising SNMP")
+info("\nInitialising SNMP")
 if snmp.gettrapd() == "snmptrapd" then
   info("  You are using `%s' as trap-sink daemon. Be sure it's running!",
        snmp.gettrapd())
@@ -124,7 +106,9 @@ local function test_mib()
   debug("  DEFAULT: '" .. mib.default(obj).. "'")
   debug("  ENUM: ")
   if mib.enums(obj) then 
-    table.foreach(mib.enums(obj), function(k,v) debug("  "..v) end )
+     for k,v in pairs(mib.enums(obj)) do
+        debug("  " .. v)
+     end
   end
   local poid = mib.parent(obj)
   debug("  PARENT OID: %s", poid)
@@ -132,9 +116,9 @@ local function test_mib()
   debug("  PARENT NAME: '%s'", mib.name(poid))
   debug("  PARENT FULLNAME: '%s'", mib.fullname(poid))
   debug("  SUCCESSOR: ")
-  table.foreach(mib.successor(poid), function(k,v) 
-				       debug("  "..v.."\t'".. mib.name(v).."'") 
-				     end)
+  for _,v in pairs(mib.successor(poid)) do
+     debug("  "..v.."\t'".. mib.name(v).."'") 
+  end
   info("MIB ACCESS ok.")
 end
 
@@ -215,52 +199,6 @@ local function test_cb(vb, status, index, reqid, session, magic)
 end
 
 local inform_done, trap_done = false, false
-
-----------------------------------------------------------------------
--- Asynch inform callback
-----------------------------------------------------------------------
-local function inform_cb(vb, status, index, reqid, session, magic)
-  debug("  DEFAULT INFORM CALLBACK: inform sent by : reqid=%d", reqid)
-  debug("  status = %s index = %s", status or "nil", index or "nil")
-  debug("  type(vb) = %s", type(vb))
-  if vb and type(vb) == "table" then
-    if vb.oid then
-      debug("  %s ", session.sprintvar(vb))
-      debug("  value=%s", session.sprintval(vb))
-    else
-      for _,v in pairs(vb) do
-	if v then
-	  debug("  %s", session.sprintvar(v))
-	  debug("  value=%s", session.sprintval(v))
-	end
-      end
-    end    
-  else
-    debug("  Asynch_get with error: %s", err)
-  end
-  if type(magic) == "function" then 
-     debug("  magic param is a function - calling it ...")
-     magic() 
-  end
-  inform_done = true
-end
-
-----------------------------------------------------------------------
--- Trap  callback
-----------------------------------------------------------------------
-local function trap_cb(vlist, ip, host, session)
-  debug("  DEFAULT TRAP CALLBACK: trap sent by : %s (%s)", host, ip )
-  debug("    SESSION name: '%s'", session.name)
-  debug("    session version: %s", session:getversion())
-  for _,vb in ipairs(vlist) do
-     debug("   1 method session.sprintvar(vb): %s", session.sprintvar(vb))
-     debug("   2 method tosting(vb)            %s", tostring(vb))
-     debug("   3 method snmp.sprintvar2:       %s", snmp.sprintvar2(vb))
-     debug("   4 method snmp.sprintval:        %s", snmp.sprintval(vb))
-     debug("   5 method snmp.sprintval2:       %s", snmp.sprintval2(vb))
-  end
-  trap_done = true
-end
 
 ----------------------------------------------------------------------
 -- Test SNMP access
@@ -351,7 +289,7 @@ local function test_get(sess)
   info("SNMP GET ...")
   -- simple get with success
   info(" Simple get with success ...")
-  local vb, err, index = snmp.get(sess, "sysORID.1")
+  local vb, err = snmp.get(sess, "sysORID.1")
   assert(vb, err)
   debug("  %s", snmp.sprintvar(vb))
   assert(mib.isoid(vb.value))
@@ -427,8 +365,9 @@ local function test_get(sess)
   local gotone = false
   local reqid = snmp.asynch_get(sess, "sysContact.0", 
 				function(...)
-				  gotone = true
-				  test_cb(unpack(arg))
+                                   arg = {select(1, ...)}
+                                   gotone = true
+                                   test_cb(unpack(arg))
 				end, "here i am")
   debug("  asynch_get with reqid: %d", reqid)
   while not gotone do
@@ -619,12 +558,8 @@ local function test_meta(sess)
   sess.sysContact_0 = oldval
   debug("  3 %s", sess.sysContact_0)
   assert(sess.sysContact_0 == oldval)
-  if _VERSION == "Lua 5.1" then
-     debug("   collecting (5.1)...")
-     collectgarbage("collect")
-  else
-    collectgarbage(0)
-  end
+  debug("   collecting (5.1)...")
+  collectgarbage("collect")
   sess.sysContact_0 = oldval
   debug("  3 %s", sess.sysContact_0)
   sess.sysContact_0 = oldval
@@ -647,105 +582,6 @@ local function test_perf(sess,n,str)
 end
 
 ----------------------------------------------------------------------
--- NOTE: This test does not work, since the session has not been configured
---       to send on trap port 162 => we need a dedicated trap session.
-local function test_inform1(sess)
-  info("INFORM (1) (sess sync) ...")
-  local vb = sess:get("sysContact.0")
-  vb, err = sess:inform("sysName.0", vb)
-  assert(vb, err)
-  info("INFORM (1) o.k.")
-end
-
-----------------------------------------------------------------------
-local function test_inform3(sess,port)
-   info("INFORM (3) (trapsess async) ...")
-   local trapsess, err = snmp.open{
-      name = "trapsess_async",
-      community = COMMUNITY,
-      peer = PEER,
-      version = snmp.SNMPv2C,
-      port = port,
-      callback = test_cb,
-      timeout = 5
-   }
-   assert(trapsess, err)
-   local vb = sess:get("sysContact.0")
-   local ok = false
-   local reqid, err = trapsess:asynch_inform("sysName.0", {vb}, inform_cb, 
-					     function() 
-						ok = true 
-					     end)
-   assert(reqid, err)
-   debug("  asynch inform reqid=%d", reqid)
-   trapsess:wait()
-   assert(ok, "failed")
-   trapsess:close()
-   info("INFORM (3) o.k.")
-end
-
-----------------------------------------------------------------------
-local function test_inform2(sess, port)
-  info("INFORM (2) (trapsess sync) ...")
-  local trapsess, err = snmp.open{
-     name = "trapsess_sync",
-     community = COMMUNITY,
-     peer = PEER,
-     version = snmp.SNMPv2C,
-     port = port,
-     timeout = 5
-  }
-  assert(trapsess, err)
-  local vb1 = sess:get("sysContact.0")
-  local vb2 = sess:get("sysLocation.0")
-  local vb, err
-  vb, err = trapsess:inform("sysName.0", {vb1,vb2})
-  assert(vb, err)
-  for _,v in ipairs(vb) do
-    debug("  %s", sess.sprintvar(v))
-  end
-  assert(vb[3].value == vb1.value)
-  assert(vb[4].value == vb2.value)
-  trapsess:close()
-  info("INFORM (2) o.k.")
-end
-
-----------------------------------------------------------------------
-local function test_trap(sess)
-  info("TRAP ...")
-  if sess.version == snmp.SNMPv1 then
-    local trapcmd = "snmptrap "..trapdebug.." -v 1 -c "..COMMUNITY.." localhost:162 2 1 sysName.0 s 'hello'"
-    debug("  Sending traps via %s", trapcmd)
-    os.execute(trapcmd.." &")
-    while trap_done == false do
-      local x = snmp.event()
-    end
-    trap_done = false
-    debug(" captured SNMP version 1 trap")
-  elseif sess.version == snmp.SNMPv2c then
-    local trapcmd = "snmptrap "..trapdebug.." -v 2c -c "..COMMUNITY.." localhost:162  '' 0 sysName.0 s 'hello'"
-    debug("  Sending traps via %s", trapcmd)
-    os.execute(trapcmd.." &")
-    while trap_done == false do
-      snmp.event()
-    end
-    trap_done = false
-    debug(" captured SNMP version 2c trap")
-  elseif sess.version == snmp.SNMPv3 then
-    local trapcmd = "snmptrap "..trapdebug.." -e 0x0102030405 -v 3 -u ".. USER ..
-      " -a MD5 -A "..PASSPHRASE.." -l authNoPriv localhost:162 '' 0 sysName.0 s hello"
-    debug("  Sending traps via %s", trapcmd)
-    os.execute(trapcmd.." &")
-    while trap_done == false do
-      snmp.event()
-    end
-    trap_done = false
-    debug(" captured SNMP version 3 trap")
-  end
-  info("TRAP  o.k.")
-end
-
-----------------------------------------------------------------------
 local function test_walk(sess, var)
   info("SNMP WALK ...")
   vlist, err = sess:walk(var)
@@ -755,53 +591,26 @@ local function test_walk(sess, var)
     sum = sum + 1
     debug("  (%3d) %s : %s", sum, v.oid, sess.sprintvar(v))
   end
-  debug("  %d varbinds found", table.getn(vlist))
+  debug("  %d varbinds found", #vlist)
   info("SNMP WALK o.k.")
 end
 
 ----------------------------------------------------------------------
-local function test_vbindtostring(sess, skip)
-  info("VBIND METATABLE ...")
-  local oldval = sess.sysContact_0
-  local newval = "herbert.leuwer@t-online.de"
-  sess.sysContact_0 = newval
-  vb, err = sess:get("sysContact.0") 
-  sess.sysContact_0 = oldval
-  debug("  newval = %s", tostring(vb))
-  debug("  oldval = %s", tostring(sess.sysContact_0))
-  if not skip then
-    if sess.sprintvar == snmp.sprint_variable then
+local function test_vbindtostring(sess)
+   info("VBIND METATABLE (tostring) ...")
+   local oldval = sess.sysContact_0
+   local newval = "herbert.leuwer@t-online.de"
+   sess.sysContact_0 = newval
+   vb, err = sess:get("sysContact.0") 
+   sess.sysContact_0 = oldval
+   debug("  newval = %s", tostring(vb))
+   debug("  oldval = %s", tostring(sess.sysContact_0))
+   if sess.sprintvar == snmp.sprint_variable then
       assert(tostring(vb) == "SNMPv2-MIB::sysContact.0 = STRING: "..newval)
-    else
+   else
       assert(tostring(vb) == "sysContact.0 (Integer32) = "..newval)
-    end
-    info("VBIND METATABLE o.k.")
---  else
---    assert(tostring(vb) == "vb = {['value'] = 'herbert.leuwer@t-online.de', ['type'] = 16, ['oid'] = '1.3.6.1.2.1.1.4.0'}")
---    debug("  %s", tostring(vb()))
-  end
-  if skip then return end
-  local _inform = inform_cb
-  if sess.version == snmp.SNMPv1 then
-    _inform = nil
-  end
-  local newsess, err = sess:clone()
-  assert(newsess, err)
---  local newsess, err = snmp.open{
---    name = "newsess",
---    community = COMMUNITY,
---    peer = PEER,
---    version = sess.version,
---    callback = nil,
---    inform = _inform,
---    trap = trap_cb,
---    sprintvar = function(vb) return "vb = "..tostring2(vb) end,
---    callvar = function(self) self.fullname = mib.fullname(self.oid) return self end
---  }
-  assert(newsess, err)
-  test_vbindtostring(newsess, true)
-  newsess:close()
-  info("VBIND METATABLE o.k.")
+   end
+   info("VBIND METATABLE o.k.")
 end
 
 ----------------------------------------------------------------------
@@ -894,57 +703,89 @@ end
 end
 
 ----------------------------------------------------------------------
-local function test_newpassword(sess)
-  info("PASSWORD CHNAGE SNMP V3...")
+local function test_multiple_sessions(sess)
+  info("MULTIPLE SNMP V3 SESSIONS ...")
   local user = "ronja"
-  local oldpw = "ronja2006"
-  local newpw = "mydog2006"
+  local pw = "ronja2006"
 
-  local sessold, err = snmp.open{
+  debug("  Creating local session")
+  local sesslocal, err = snmp.open{
     peer = "localhost",
     version = snmp.SNMPv3,
     user = user,
+    password = pw
+  }
+  assert(sesslocal, err)
+  
+  local vb = assert(sess:get("sysContact.0"))
+  debug("  %s", tostring(vb))
+  if vb.value == "duda" then
+     sess.sysContact_0 = "root"
+  else
+     sess.sysContact_0 = "duda"
+  end
+
+  local vb = assert(sesslocal:get("sysContact.0"))
+  debug("  %s", tostring(vb))
+
+  debug("  Closing local session")
+  sesslocal:close()
+  info("MULTIPLE SNMP V3 SESSIONS o.k.")
+end
+
+----------------------------------------------------------------------
+local function test_newpassword(sess)
+  info("PASSWORD CHANGE SNMP V3 Test ...")
+  local localuser = "ronja"
+  local oldpw = "ronja2006"
+  local newpw = "mydog2006"
+
+  debug("  Creating local session 1")
+  local sesslocal, err = snmp.open{
+    peer = "localhost",
+    version = snmp.SNMPv3,
+    user = localuser,
     password = oldpw
   }
-  assert(sessold, err)
-  local vb, err = sess:get("sysContact.0")
-  assert(vb, err)
-  debug ("  %s", tostring(vb))
-  local ref = vb.value
+  assert(sesslocal, err)
 
-  debug("  Changing password from own session (implicit user)")
-  local vl, err = sessold:newpassword(oldpw, newpw, "a")
+  local vb1 = assert(sesslocal:get("sysContact.0"))
+  debug("     get: %s", tostring(vb1))
+
+  debug("  Changing password from local (=own) session (implicit user)")
+  local vl, err = sesslocal:newpassword(oldpw, newpw, "a")
+  debug("%s", pretty(vl))
   assert(vl, err)
-  for _,v in ipairs(vl) do 
-    debug("  %s", tostring(v)) 
-  end
-  local sessnew, err = sessold:clone{password = newpw}
-  vb, err = sessnew:get("sysContact.0")
-  assert(vb, err)
-  assert(vb.value == ref)
+
+  debug("  Closing local session 1")
+  sesslocal:close()
+
+  debug("  Reopen local session 2 with same user but new password")
+  local sesslocal, err = snmp.open{
+    peer = "localhost",
+    version = snmp.SNMPv3,
+    user = localuser,
+    password = newpw
+  }
+  assert(sesslocal, err)
+
+  local vb2, err, status = sesslocal:get("sysContact.0")
+  assert(vb2, err)
+
+  debug("  Closing local session 2")
+  sesslocal:close()
 
   debug("  Changing password back from foreign session (explicit user)")
-  vl, err = sess:newpassword(newpw, oldpw, "a", user)
+  vl, err = sess:newpassword(newpw, oldpw, "a", "ronja")
   assert(vl, err)
   for _,v in ipairs(vl) do
     debug("  %s", tostring(v)) 
   end
-  debug("  Reopen a session with old password")
-  sessold2, err = sessold:clone()
-  assert(sessold2, err)
 
-  vb, err = sessold2:get("sysContact.0")
-  assert(vb,err)
-  debug ("  %s", tostring(vb))
-  assert(vb.value == ref)
+  debug("  Compare values from both local sessions")
+  assert(vb1.value == vb2.value)
 
-  debug("  Closing intermediate sessions")
-  local rv, err = sessold:close()
-  assert(rv, err)
-
-  rv, err = sessnew:close()
-  assert(rv, err)
-  info("PASSWORD CHNAGE SNMP V3.o.k.")
+  info("PASSWORD CHANGE SNMP V3 Test o.k.")
 end
 
 ----------------------------------------------------------------------
@@ -1022,29 +863,40 @@ local mindent = 0
 local function sprintvl(vl, indent) 
   local s = ""
   mindent = indent or mindent
-  table.foreach(vl, function(i,vb)
-		      s = s ..string.format("%s%s\n", string.rep(" ",mindent), tostring(vb))
-		    end)
+  for i,vb in ipairs(vl) do
+     s = s ..string.format("%s%s\n", string.rep(" ",mindent), tostring(vb))
+  end
   return s
 end
 
 ----------------------------------------------------------------------
 local function test_vacm(sess)
   info("VIEW BASED ACCESS")
+  local user = "olivia"
+  local newpw = "gonzo2006"
+  local clonefromuser = "ronja"
+  local clonefromuserpw = "ronja2006"
 
   local check = snmp.check
 
   -- Create a user
-  local vl = check(sess:createuser("olivia", "ronja"))
+  debug("  Creating user %q as clone from %q", user, clonefromuser)
+  local vl, err = check(sess:createuser(user, clonefromuser))
   
-  vl = check(sess:newpassword("ronja2006", "gonzo2006", "a", "olivia"))
+  debug("  Changing password of user %q", user)
+  vl = check(sess:newpassword(clonefromuserpw, newpw, "a", user))
   debug("  %s", sprintvl(vl, 2))
 
+  local oid = "usmUserStatus"..snmp.mkindex(sess.contextEngineID, user)
+  local vb ,err = check(sess:get("usmUserStatus"..snmp.mkindex(sess.contextEngineID, user)))
+  debug("  %s", tostring(vb))
+  assert(vb.value == snmp.rowStatus.active)
+
   debug("  Create sectogroup")
-  vl, err = sess:createsectogroup("usm", "olivia", "rwgroup")
+  vl, err = sess:createsectogroup("usm", user, "rwgroup")
   if err then
     debug("  %s", err)
-    vl = check(sess:deleteuser("olivia"))
+    vl = check(sess:deleteuser(user))
     sess:close()
     os.exit(1)
   else
@@ -1069,11 +921,11 @@ local function test_vacm(sess)
   debug("  %s", tostring(vb))
 
   debug("  Cleanup - Delete sectogroup")
-  vb = check(sess:deletesectogroup("usm", "olivia"))
+  vb = check(sess:deletesectogroup("usm", user))
   debug("  %s", tostring(vb))
 
   debug("  Cleanup - Delete user")
-  vb = check(sess:deleteuser("olivia"))
+  vb = check(sess:deleteuser(user))
   info("VIEW BASED ACCESS o.k.")
 end
 
@@ -1100,46 +952,53 @@ if testv3 == true then
   table.insert(sessions, {func = test_sessv3, encrypt = encrypt})
 end
 
+local function remove_conf_file(sess)
+   if sess.version == snmp.SNMPv3 then
+      local fname = os.getenv("HOME").."/.snmp/snmpapp.conf"
+      local f = io.open(fname, "r")
+      if f ~= nil then
+         print(string.format("NOTE: Existence of '%s' may lead to test failures!", fname))
+         io.stdout:write(string.format("Move this file to '%s.backup'? (y):", fname))
+         io.stdout:flush()
+         c = io.stdin:read("*l")
+         if c == '' or string.find(c:lower(), "y") then
+            os.execute(string.format("mv -f %s %s.backup", fname, fname))
+            print(string.format("File '%s' renamed to '%s.backup'", fname, fname))
+         end
+      end
+   end
+end
+
 for _,param in ipairs(sessions) do
    testpath = ""
    sess = param.func(param.encrypt)
+--   remove_conf_file(sess)
    testpath = sess:getversion().." "
-   if traponly == false then
-      if informonly == false then
-	 test_get(sess)
-	 test_set(sess)
-	 test_meta(sess)
-	 if sess.version ~= snmp.SNMPv1 then
-	    test_mib_retrieve(sess)
-	 end
-	 test_perf(sess,10,"sysContact.0")
-      end
-      if trapyes == true and sess.version ~= snmp.SNMPv1 then
-	 test_inform2(sess, 162)
-	 test_inform3(sess, 162)
-      end
+
+   test_get(sess)
+   test_set(sess)
+   test_meta(sess)
+   if sess.version ~= snmp.SNMPv1 then
+--      test_mib_retrieve(sess)
    end
-   if trapyes == true and informonly == false then
-      test_trap(sess)
-   end
-   if traponly == false and informonly == false then
-      test_walk(sess, {oid="ifType"})
-      test_walk(sess, mib.oid("ifType"))
-      test_walk(sess, {oid=mib.oid("ifType")})
-      test_walk(sess)
-      test_walk(sess, "1")
-      test_vbindtostring(sess)
-      test_vbindequal(sess)
-      test_vbindconcat(sess)
-      test_vbindcreate(sess)
-      test_misc(sess)
-      if sess.version == snmp.SNMPv3 then
-	 test_newpassword(sess)
-	 test_createuser(sess)
-	 test_createcloneuser(sess)
-	 test_cloneuser(sess)
-	 test_vacm(sess)
-      end
+   test_perf(sess, 10, "sysContact.0")
+   test_walk(sess, {oid="ifType"})
+   test_walk(sess, mib.oid("ifType"))
+   test_walk(sess, {oid=mib.oid("ifType")})
+   test_walk(sess)
+   test_walk(sess, "1")
+   test_vbindtostring(sess)
+   test_vbindequal(sess)
+   test_vbindconcat(sess)
+   test_vbindcreate(sess)
+   test_misc(sess)
+   if sess.version == snmp.SNMPv3 then
+      test_multiple_sessions(sess)
+      test_newpassword(sess)
+      test_createuser(sess)
+      test_createcloneuser(sess)
+      test_cloneuser(sess)
+      test_vacm(sess)
    end
    sess:close()
 end

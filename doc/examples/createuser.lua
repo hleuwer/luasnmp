@@ -17,7 +17,7 @@ local clonefromuser = "ronja"
 
 -- Open a working session
 local sess, err = snmp.open{
-  peer = "goofy",
+  peer = "localhost",
   version = snmp.SNMPv3,
   user = "leuwer",
   password = "leuwer2006"

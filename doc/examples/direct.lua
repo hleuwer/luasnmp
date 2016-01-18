@@ -1,6 +1,6 @@
 local snmp = require "snmp"
 
-hub1 = assert(snmp.open{peer = "goofy", community = "private"})
+hub1 = assert(snmp.open{peer = "localhost", community = "private"})
 
 -- Sets an re-stores sysContact.0
 local oldval = hub1.sysContact_0

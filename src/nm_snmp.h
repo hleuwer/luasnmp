@@ -12,6 +12,7 @@
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/library/snmp_client.h>
+#include <net-snmp/library/snmpusm.h>
 
 #include "nm_snmpdefs.h"
 #include "nm_util.h"

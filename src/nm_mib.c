@@ -170,7 +170,8 @@ static int nm_mib_lfname(lua_State *L, int full) {
   /* Traduz o oid para um nome */
   res = nm_mib_getname(name,objid,objidlen,full);
   lua_pushstring(L, name);
-  return 1;
+  lua_pushnumber(L, res);
+  return 2;
 }
 
 /*-----------------------------------------------------------------------------
@@ -723,7 +724,7 @@ static int nm_mib_init(lua_State *L) {
 #if 0
 static const luaL_reg funcs[] = {
 #else
-const luaL_reg mibfuncs[] = {
+const luaL_Reg mibfuncs[] = {
 #endif
   {"init", nm_mib_init},
   {"_load", nm_mib_load},

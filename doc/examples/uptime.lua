@@ -1,6 +1,6 @@
 local snmp = require "snmp"
 
-hub1 = assert(snmp.open{peer = "goofy"})
+hub1 = assert(snmp.open{peer = "obelix"})
 
 vb = assert(hub1:get("sysUpTime.0"))
 print(vb)

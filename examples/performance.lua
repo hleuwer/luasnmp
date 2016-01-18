@@ -5,6 +5,7 @@ local snmp = require "snmp"
 print("gcinfo - snmp   :", gcinfo())
 local socket = require "socket"
 print("gcinfo - socket :", gcinfo())
+
 local sess, err = snmp.open{
   peer = "localhost", version = snmp.SNMPv2c, community="public"
 }
@@ -30,6 +31,7 @@ function perf_shell(n, obj)
   local obj = obj or "ifSpeed.1"
   local n = n or 1e3
   local cmd = "bash -c 'for ((i="..n..";i--;));do snmpget -v 2c -c public localhost "..obj.." > /dev/null; done'"
+  print(cmd)
   os.execute(cmd)
 end
 
