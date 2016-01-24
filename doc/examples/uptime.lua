@@ -9,4 +9,4 @@ time = snmp.uptimeV2S(vb.value)
 ticks = snmp.uptimeS2V(time)
 
 print(time)
-table.foreach(ticks, print)
+for k,v in pairs(ticks) do print(k,v) end

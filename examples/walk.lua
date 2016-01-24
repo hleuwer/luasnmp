@@ -11,7 +11,8 @@ local mib=snmp.mib
 
 function walk(host, commStr, subtree)
 
-  -- Open an SNMP session with host using SNMPv1
+   -- Open an SNMP session with host using SNMPv1
+  print(string.format("Open session to %q with community %q", host,commStr)) 
   local s,err = snmp.open{peer = host, version = SNMPv2, community=commStr}
   if not s then
     print(string.format("walk: unable to open session with %s\n%s\n",err))
@@ -56,11 +57,12 @@ function walk(host, commStr, subtree)
   until err or mibEnd
   
   -- Close the SNMP session
+  print(string.format("Closing session ..."))
   s:close(s)
   
 end
 
-if table.getn(arg) < 3 then
+if #arg < 3 then
   print("usage: lua walk.lua HOST COMMUNITY SUBTREE")
   os.exit(1)
 end

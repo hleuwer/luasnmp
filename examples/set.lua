@@ -9,8 +9,8 @@ local hub, err  = assert(snmp.open{peer = arg[1] or "localhost", community="priv
 -- Retrieve symbolic values for ifAdminStatus
 local rstatus = mib.enums("ifAdminStatus")
 local status = mib.renums("ifAdminStatus")
-table.foreach(rstatus, print)
-table.foreach(status, print)
+for k,v in pairs(rstatus) do print(k,v) end
+for k,v in pairs(status) do print(k,v) end
 
 -- Print just the value
 --print(rstatus[hub.ifAdminStatus_3])

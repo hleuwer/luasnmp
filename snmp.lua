@@ -1541,6 +1541,8 @@ end
 
 ------------------------------------------------------------------------------
 -- Clones a valid session.
+-- Note: We disable session cloning because it leads to mangling of NET-SNMPs
+--       user list and hence doesn't work reliable enough. (NET-SNMP 5.7)
 -- @param parent table - Parent session.
 -- @param config table - Configuration (overrides parent's configuration)
 -- @return New session if o.k. Nil + error message otherwise.

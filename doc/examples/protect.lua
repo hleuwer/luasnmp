@@ -39,13 +39,13 @@ local function pdoit()
   -- Do some work: no failure here
   --
   local vl = try(sess:get{"sysContact.0","sysDescr.0"})
-  table.foreach(vl, print)
+  for k,v in ipairs(vl) do print(k,v) end
 
   --
   -- Do some work: no failure here
   --
   local vl = try(snmp.walk(sess, "ifDescr"))
-  table.foreach(vl, print)
+  for k,v in ipairs(vl) do print(k,v) end
 
   --
   -- Do some work: no failure here

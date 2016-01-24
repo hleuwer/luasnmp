@@ -13,5 +13,6 @@ while i < last do
   print(ifList[i].value..": "..types[ifList[i+1].value])
   i = i + 2
 end
-
-table.foreach(ifList, print)
+for _,v in ipairs(ifList) do
+   print(v)
+end

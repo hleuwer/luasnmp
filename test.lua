@@ -24,6 +24,7 @@ log:setLevel(loglevel)
 ----------------------------------------------------------------------
 -- Peers: customize!
 PEER = os.getenv("peer") or "localhost"
+SYSTEM = io.popen("uname"):read()
 
 -- User: customize!
 USER = os.getenv("user") or "leuwer"
@@ -66,6 +67,7 @@ end
 -- Trap-sink Daemon setup
 ----------------------------------------------------------------------
 info("\nInitialising SNMP")
+info("System: "..SYSTEM)
 if snmp.gettrapd() == "snmptrapd" then
   info("  You are using `%s' as trap-sink daemon. Be sure it's running!",
        snmp.gettrapd())
@@ -82,12 +84,19 @@ local function test_mib()
   debug("Loading MIBS")
 
   -- Load a few additional mibs
-  local mp = "/usr/share/mibs/ietf/"
-  assert(mib.load("ATM-TC-MIB") or mib.load(mp.."ATM-TC-MIB"))
-  assert(mib.load("ATM-MIB") or mib.load(mp.."ATM-MIB"))
+  local mp
+  if SYSTEM == "Darwin" then
+     mp = "/usr/share/snmp/mibs/"
+     ext = ".txt"
+  else
+     mp = "/usr/share/mibs/ietf/"
+     ext = ""
+  end
+  assert(mib.load("TCP-MIB") or mib.load(mp.."UDP-MIB"..ext))
+  assert(mib.load("UDP-MIB") or mib.load(mp.."UDP-MIB"..ext))
   assert(mib.fullname("sysContact") == "iso.org.dod.internet.mgmt.mib-2.system.sysContact")
   assert(mib.oid("ifTable") == "1.3.6.1.2.1.2.2")
-  local obj = "atmVccAalType"
+  local obj = "sysContact.0"
   local oid, err = mib.oid(obj)
   assert(oid, err)
 
@@ -103,7 +112,8 @@ local function test_mib()
   debug("  ACCESS: " .. mib.access(obj))
   tn, ts = mib.type(obj)
   debug("  TYPE: '" .. ts .."' ["..tn.."]" )
-  debug("  DEFAULT: '" .. mib.default(obj).. "'")
+  local def = mib.default(obj)
+  debug("  DEFAULT: '" .. (def or 'none').. "'")
   debug("  ENUM: ")
   if mib.enums(obj) then 
      for k,v in pairs(mib.enums(obj)) do
@@ -558,8 +568,8 @@ local function test_meta(sess)
   sess.sysContact_0 = oldval
   debug("  3 %s", sess.sysContact_0)
   assert(sess.sysContact_0 == oldval)
-  debug("   collecting (5.1)...")
-  collectgarbage("collect")
+--  debug("   collecting (5.1)...")
+--  collectgarbage("collect")
   sess.sysContact_0 = oldval
   debug("  3 %s", sess.sysContact_0)
   sess.sysContact_0 = oldval
@@ -985,8 +995,12 @@ for _,param in ipairs(sessions) do
    test_walk(sess, {oid="ifType"})
    test_walk(sess, mib.oid("ifType"))
    test_walk(sess, {oid=mib.oid("ifType")})
-   test_walk(sess)
-   test_walk(sess, "1")
+   if SYSTEM == "Darwin" then
+      test_walk(sess, mib.oid("ifTable"))
+   else
+      test_walk(sess)
+      test_walk(sess, "1")
+   end
    test_vbindtostring(sess)
    test_vbindequal(sess)
    test_vbindconcat(sess)

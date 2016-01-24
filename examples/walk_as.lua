@@ -71,7 +71,7 @@ function walk(host,commStr,subtree)
    s:close()
 end
 
-if table.getn(arg) < 3 then
+if #arg < 3 then
   print("usage: lua walk.lua HOST COMMUNITY SUBTREE")
   os.exit(1)
 end

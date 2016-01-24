@@ -1,5 +1,7 @@
-#! /usr/local/bin/lua50
 print()
+local function gcinfo()
+   return collectgarbage("count")
+end
 print("gcinfo - initial:", gcinfo())
 local snmp = require "snmp"
 print("gcinfo - snmp   :", gcinfo())

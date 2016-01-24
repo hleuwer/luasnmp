@@ -586,7 +586,7 @@ int f_create_vb(lua_State *L, struct variable_list *var) {
         pbuf = (u_char *) strbuf;
         pval = var->val.string;
         for (ind = 0; ind < var->val_len; ind++) {
-          sprintf((char *) pbuf,"%02hx:",*pval++);
+          sprintf((char *) pbuf,"%02hx:",(unsigned short)*pval++);
           pbuf += strlen((char *)pbuf);
         }
         pbuf--;

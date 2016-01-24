@@ -37,7 +37,7 @@ assert(hub1, err)
 --
 -- Clone a session
 --
-hub2 = assert(hub1:clone{peer = "localhost"})
+hub2 = assert(snmp.open{peer=hub1.peer, community=hub1.community, callback=hub1.callback})
 
 --
 -- Synchronous request

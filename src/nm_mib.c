@@ -712,13 +712,16 @@ static int nm_mib_indexes(lua_State *L) {
  *----------------------------------------------------------------------------*/
 
 static int nm_mib_init(lua_State *L) {
+#ifdef Darwin
+  netsnmp_init_mib();
+#else
   init_mib();
+#endif
   return 0;
 }
 
 /*-----------------------------------------------------------------------------
  * nm_mib_register
- *
  * Registra as funcoes "C" chamadas pelas primitivas MIB
  *----------------------------------------------------------------------------*/
 #if 0

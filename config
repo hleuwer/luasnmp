@@ -1,5 +1,5 @@
 # Your system. Expands to 'GNU/Linux' or 'Cygwin'
-SYSTEM = $(shell uname -o)
+SYSTEM = $(shell uname)
 
 # Module name
 MODULE=luasnmp
@@ -37,20 +37,34 @@ ifeq ($(SYSTEM), Cygwin)
   EXT = dll
   LIBS=-llua$(LV)
 
-  # Repository (SVN)
-  REPOSITORY=file:///J:/leuwer/svn/lua/lua-modules/trunk
 else
-  # Lua installation
-  LUA = /usr
-  LUAINC=$(LUA)/include/lua$(LV)
-  LUABIN=$(LUA)/bin/lua$(LV)
-  LUALIB=$(LUA)/lib
-  EXT = so
-  LIBS=
-
-  # Repository (SVN)
-  REPOSITORY=file:///windows/d/leuwer/svn/lua/lua-modules/trunk
+  ifeq ($(SYSTEM), Darwin)
+    # Lua installation
+    LUA = /opt/local
+    EXT = so
+    ifeq ($(LV), 5.3)
+       LUABIN=$(LUA)/bin/lua
+       LUAINC=$(LUA)/include
+       LUALIB=$(LUA)/lib
+       LIBS=-L$(LUALIB) -llua
+    else
+       LUABIN=$(LUA)/bin/lua$(LV)
+       LUAINC=$(LUA)/include/lua-$(LV)
+       LUALIB=$(LUA)/lib/lua-$(LV)
+       LIBS=-L$(LUALIB) -llua-$(LV)    
+    endif
+  else
+    # Lua installation
+    LUA = /usr
+    LUAINC=$(LUA)/include/lua$(LV)
+    LUABIN=$(LUA)/bin/lua$(LV)
+    LUALIB=$(LUA)/lib
+    EXT = so
+    LIBS=
+  endif
 endif
+
+PLATFORM=-D$(SYSTEM)
 
 # Compat-5.1 location
 #DEFCOMPAT=-DLUA_COMPAT_ALL
@@ -62,7 +76,7 @@ VERSION=1.0.7
 LUASNMP_SO=snmp.$(EXT).$(VERSION)
 
 # Compiler and Linker
-DEF = -DUSE_SNMPTRAPD $(DEFCOMPAT) -DVERSION='"$(VERSION)"' -DSYSTEM='"$(SYSTEM)"'
+DEF = -DUSE_SNMPTRAPD $(DEFCOMPAT) -DVERSION='"$(VERSION)"' -DSYSTEM='"$(SYSTEM)"' $(PLATFORM)
 NETSNMP_DEF =
 CC = gcc
 ifeq ($(DEBUG), 1)

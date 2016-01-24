@@ -45,29 +45,11 @@ testtrapd:
 
 
 .PHONY: tag tag-git tag-cvs tag-svn
-tag: tag-git
-
-tag-git::
+tag:
 	git tag -F latest
 
-tag-cvs::
-	cvs tag -F latest
-
 .PHONY: dist dist-git dist-cvs dist-svn
-dist: dist-git
-
-dist-git:
+dist:
 	mkdir -p $(EXPORTDIR)
 	git archive --format=tar --prefix=$(DISTNAME)/ HEAD | gzip >$(EXPORTDIR)/$(DISTARCH)
-
-dist-cvs::
-	mkdir -p $(EXPORTDIR)/$(DISTNAME)
-	cvs export -r latest -d $(EXPORTDIR)/$(DISTNAME) $(CVSMODULE)
-	cd $(EXPORTDIR); tar -cvzf $(DISTNAME).tar.gz $(DISTNAME)/*
-	rm -rf $(EXPORTDIR)/$(DISTNAME)
-
-dist-svn::
-	svn export $(REPOSITORY)/$(SVNMODULE) $(EXPORTDIR)/$(DISTNAME)
-	cd $(EXPORTDIR); tar -cvzf $(DISTARCH) $(DISTNAME)/*
-	rm -rf $(EXPORTDIR)/$(DISTNAME)
 
