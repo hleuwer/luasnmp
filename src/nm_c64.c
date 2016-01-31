@@ -7,6 +7,17 @@
 
 #define MASK32 0x00000000ffffffffULL
 
+static unsigned long long _pow(double base, double exp)
+{
+  unsigned long long _base = (unsigned long long) base;
+  unsigned long long _exp = (unsigned long long) exp;
+  unsigned long long n = 1;
+  unsigned long long i;
+  for (i = 0; i < _exp; i++)
+    n *= _base;
+  
+  return n;
+}
 /*
  * Push a 64 bit value as new userdata onto the stack.
  */
@@ -183,7 +194,7 @@ static int c64_op2(lua_State *L, c64_ops_t op)
     c64_new(L, c);
     break;
   case C64_POW:
-    c = u2c(pow(a, b));
+    c = u2c(_pow(a, b));
     c64_new(L, c);
     break;
   case C64_DIV:

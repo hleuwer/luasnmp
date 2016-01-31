@@ -746,12 +746,14 @@ function walk(sess, var)
   if not sess then return FAIL(BADSESSION) end
   local var = var or "mib-2"
   if type(var) == "table" then
-    root = {oid = mib.oid(var.oid)}
+    oid = mib.oid(var.oid)
   elseif type(var) == "string" then
-    root = {oid = mib.oid(var)}
+    oid = mib.oid(var)
   else 
     return FAIL(BADARG, "var")
   end
+  if not oid then return nil, errtb[BADOID] end
+  root = {oid = oid}
   if sess.includeroot then
     vb, err = sess:get(root)
     if err then return nil, err end
