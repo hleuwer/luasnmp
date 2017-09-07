@@ -51,13 +51,15 @@ encrypt = (os.getenv("encrypt") == "yes")
 ----------------------------------------------------------------------
 testpath = ""
 local info = function(fmt, ...) 
-   arg = {select(1,...)}
-   log:info(string.format(testpath..fmt.."\n", unpack(arg))) 
+--   arg = {select(1,...)}
+--   log:info(string.format(testpath..fmt.."\n", unpack(arg))) 
+   log:info(string.format(testpath..fmt.."\n", ...)) 
 end
 local _debug = debug
 local debug = function(fmt, ...) 
-   arg = {select(1,...)}
-   log:debug(string.format(fmt.."\n", unpack(arg))) 
+--   arg = {select(1,...)}
+--   log:debug(string.format(fmt.."\n", unpack(arg))) 
+   log:debug(string.format(fmt.."\n", ...)) 
 end
 ----------------------------------------------------------------------
 -- STDLIB compatibility stuff
@@ -375,9 +377,10 @@ local function test_get(sess)
   local gotone = false
   local reqid = snmp.asynch_get(sess, "sysContact.0", 
 				function(...)
-                                   arg = {select(1, ...)}
+--                                   arg = {select(1, ...)}
                                    gotone = true
-                                   test_cb(unpack(arg))
+                                   test_cb(...)
+--                                   test_cb(unpack(arg))
 				end, "here i am")
   debug("  asynch_get with reqid: %d", reqid)
   while not gotone do

@@ -2367,7 +2367,11 @@ static int nm_snmp_sprint_variable(lua_State *L){
 static int nm_snmp_inittrap(lua_State *L) {
 
 #ifdef USE_SNMPTRAPD
+#if (LUA_VERSION_NUM > 502)
+  nm_snmp_trap_port = luaL_optinteger(L, 1, SNMP_TRAP_PORT);
+#else
   nm_snmp_trap_port = luaL_optint(L, 1, SNMP_TRAP_PORT);
+#endif
   return 0;
 #else
 

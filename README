@@ -17,8 +17,7 @@ LuaSNMP
   See "* LuaSNMP under MS Windows" below for details on issues when using LuaSNMP
   with Microsoft Windows.
 
-  You must have Lua version 5.1 or 5.2 to use it. Lua 5.3 is currently not yet actively
-  supported. 
+  You must have Lua version 5.1, 5.2 or 5.3 to use it.
   Lua can be downloaded from its home page:
 	  http://www.tecgraf.puc-rio.br/lua/
 
@@ -42,10 +41,16 @@ LuaSNMP
 * Installation
   ------------
 
+  Note, that the makefile configuration defines Lua 5.2 as the default Lua version.
+  In order to build LuaSNMP for other Lua versions you either have to change
+  the variables V and LV in the makefile configuration file config or specify
+  the destined Lua version in the command line, e.g. make V=53 LV=5.3.
+
   In order to build LuaSNMP on a Linux, Unix or Cygwin/Mingw based
   POSIX like system:
+  
 
-  1. Make sure you have Lua (version 5.0 or later).
+  1. Make sure you have Lua (version 5.1 or later).
 
   2. LuaSNMP comes with a makefile and a simple config file to adopt
      the make process to your target system.
@@ -64,16 +69,20 @@ LuaSNMP
   4. Compile the package
 
      Type 
-	make
+	make or make LV=5.3 or make LV=5.1
 
      If make succeeds you get for Linux/MacOS (Windows):
 
      * a Lua extension library "snmp.so.1.0" (core.dll) in the src sub-directory.
      * a copy "core.so" (core.dll) of the same Lua extension library in ./snmp
 
-  5. Type "make install" as user root in order to install all relevant
+  5. Type
+       make install or make LV=5.3 install or make LV=5.1 install
+
+     as user root in order to install all relevant
      files in standard places. The directory /usr/local is the default
      install prefix.
+
 
      
 * Trap-sink Daemon

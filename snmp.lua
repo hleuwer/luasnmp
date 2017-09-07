@@ -8,8 +8,17 @@ local snmp = require "snmp.core"
 local mib = snmp.mib
 require "pl"
 local pretty = pretty.write
-module("snmp", package.seeall)
 
+-- Lua version compatibility
+local unpack = unpack or table.unpack
+
+if string.find(_VERSION, "5.1") then
+   module("snmp", package.seeall)
+else
+   _ENV = setmetatable(snmp, {
+                          __index = _G
+   })
+end
 ------------------------------------------------------------------------------
 -- Default Exception Handler
 ------------------------------------------------------------------------------

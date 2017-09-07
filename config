@@ -6,6 +6,7 @@ MODULE=luasnmp
 
 # Lua Version to use:
 LV = 5.2
+V = $(subst .,,$(LV))
 
 # Debugging 1 or 0
 DEBUG = 0
@@ -40,18 +41,18 @@ ifeq ($(SYSTEM), Cygwin)
 else
   ifeq ($(SYSTEM), Darwin)
     # Lua installation
-    LUA = /opt/local
+    LUA = /usr/local
     EXT = so
     ifeq ($(LV), 5.3)
-       LUABIN=$(LUA)/bin/lua
-       LUAINC=$(LUA)/include
+       LUABIN=$(LUA)/bin/lua$V
+       LUAINC=$(LUA)/include/lua/$(LV)
        LUALIB=$(LUA)/lib
-       LIBS=-L$(LUALIB) -llua
+       LIBS=
     else
-       LUABIN=$(LUA)/bin/lua$(LV)
-       LUAINC=$(LUA)/include/lua-$(LV)
-       LUALIB=$(LUA)/lib/lua-$(LV)
-       LIBS=-L$(LUALIB) -llua-$(LV)    
+       LUABIN=$(LUA)/bin/lua$V
+       LUAINC=$(LUA)/include/lua/$(LV)
+       LUALIB=$(LUA)/lib/lua
+       LIBS=
     endif
   else
     # Lua installation
@@ -84,7 +85,11 @@ ifeq ($(DEBUG), 1)
 else
   CFLAGS = $(DEF) $(shell net-snmp-config --cflags) -I$(LUAINC) -fPIC -Wall -O2
 endif
-LDFLAGS = $(shell net-snmp-config --ldflags) -O -shared -fPIC
+ifeq (Darwin, $(SYSTEM))
+  LDFLAGS= $(OPT) -dynamiclib -undefined dynamic_lookup -L$(LUALIB)
+else
+  LDFLAGS = $(shell net-snmp-config --ldflags) -O -shared -fPIC
+endif
 LIBS += $(shell net-snmp-config --libs) -lcrypto
 LD = gcc
 
