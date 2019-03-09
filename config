@@ -5,7 +5,7 @@ SYSTEM = $(shell uname)
 MODULE=luasnmp
 
 # Lua Version to use:
-LV = 5.2
+LV = 5.3
 V = $(subst .,,$(LV))
 
 # Debugging 1 or 0
