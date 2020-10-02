@@ -43,6 +43,7 @@ else
     # Lua installation
     LUA = /usr/local
     EXT = so
+    LIBDIR = /opt/local/lib
     ifeq ($(LV), 5.3)
        LUABIN=$(LUA)/bin/lua$V
        LUAINC=$(LUA)/include/lua/$(LV)
@@ -86,7 +87,7 @@ else
   CFLAGS = $(DEF) $(shell net-snmp-config --cflags) -I$(LUAINC) -fPIC -Wall -O2
 endif
 ifeq (Darwin, $(SYSTEM))
-  LDFLAGS= $(OPT) -dynamiclib -undefined dynamic_lookup -L$(LUALIB)
+  LDFLAGS= $(OPT) -dynamiclib -undefined dynamic_lookup -L$(LUALIB) -L$(LIBDIR)
 else
   LDFLAGS = $(shell net-snmp-config --ldflags) -O -shared -fPIC
 endif
