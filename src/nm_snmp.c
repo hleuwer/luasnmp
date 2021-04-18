@@ -1406,7 +1406,7 @@ static int nm_snmp_getreq(lua_State *L, int req_type, int req_mode) {
 	  char errs[32];
 	  lua_remove(L, -1);
 	  lua_pushnil(L);
-	  sprintf(errs, "snmp: bad name in index %d", ind);
+	  snprintf(errs, sizeof(errs), "snmp: bad name in index %d", ind);
 	  lua_pushstring(L, errs);
 	  snmp_free_pdu(pdu);
 	  return 2;
@@ -1600,7 +1600,7 @@ static int nm_snmp_set_info_req(lua_State *L, int req_type, int req_mode) {
       if ((varlist = f_create_vlist(L, errs)) == NULL) {
         char eerrs[64];
         lua_pushnil(L);
-        sprintf(eerrs, "%s in index %d", errs, ind);
+        snprintf(eerrs, sizeof(eerrs), "%s in index %d", errs, ind);
         lua_pushstring(L, eerrs);
         snmp_free_pdu(pdu);
         return 2;
