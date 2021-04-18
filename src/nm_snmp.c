@@ -695,18 +695,6 @@ static int nm_snmp_gettrapd(lua_State *L)
   return 1;
 }
 
-static void nm_snmp_init_session(netsnmp_session *session)
-{
-  memset(session, 0, sizeof(netsnmp_session));
-  session->remote_port = SNMP_DEFAULT_REMPORT;
-  session->timeout = SNMP_DEFAULT_TIMEOUT;
-  session->retries = SNMP_DEFAULT_RETRIES;
-  session->version = SNMP_DEFAULT_VERSION;
-  session->securityModel = SNMP_DEFAULT_SECMODEL;
-  session->rcvMsgMaxSize = SNMP_MAX_MSG_SIZE;
-  session->flags |= SNMP_FLAGS_DONT_PROBE;
-}
-
 /*-----------------------------------------------------------------------------
  *  nm_snmp_open
  *
@@ -731,10 +719,7 @@ static int nm_snmp_open(lua_State *L) {
   }
 
   /* Base parameters for the session */
-#ifdef REMOVE_THIS
-  memset((char *)&nm_cmu_session,0,sizeof(CmuSession));
-#endif
-  nm_snmp_init_session(&nm_cmu_session);
+  snmp_sess_init(&nm_cmu_session);
   lua_pushstring(L, "version");
   lua_gettable(L, -2);
   version = lua_tonumber(L, -1);
