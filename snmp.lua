@@ -6,8 +6,6 @@
 
 local snmp = require "snmp.core"
 local mib = snmp.mib
-require "pl"
-local pretty = pretty.write
 
 -- Lua version compatibility
 local unpack = unpack or table.unpack
