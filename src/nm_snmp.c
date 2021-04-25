@@ -2429,6 +2429,13 @@ static int nm_snmp_init(lua_State *L){
     lua_settop(L, -1);
     return 0;
   }
+
+  /* option allowing to NOT load mibs */
+  lua_getglobal(L, "LUA_SNMP_MIBS");
+  int LUA_SNMP_MIBS = (int)(lua_isnil(L, -1) ||
+                            lua_toboolean(L, -1));
+  lua_pop(L, 1);
+
   for (i=1; ;i++){
     lua_rawgeti(L, 1, i);
     if (lua_isnil(L, -1))
@@ -2464,6 +2471,11 @@ static int nm_snmp_init(lua_State *L){
   lua_remove(L, -2);
   lua_settable(L, LUA_REGISTRYINDEX);
   vbindmetatable = 1;
+  /* do not load mibs if global LUA_SNMP_MIBS is 0 */
+  if (!LUA_SNMP_MIBS) {
+    setenv("MIBS", "", 1);
+    setenv("MIBDIRS", "", 1);
+  }
   snmp_sess_init(&nm_cmu_session);
   init_snmp("snmpapp");
   return 0;
