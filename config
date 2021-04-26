@@ -55,6 +55,10 @@ else
        LUALIB=$(LUA)/lib/lua
        LIBS=
     endif
+    # net-snmp path - NetSNMP from MacPorts version 5.9
+    NETSNMP_CONFIG=/opt/local/bin/net-snmp-config
+    # net-snmp path - MacOs built-in NetSNMP version 5.6
+    # NETSNMP_CONFIG=/usr/bin/net-snmp-config
   else
     # Lua installation
     LUA = /usr
@@ -63,6 +67,8 @@ else
     LUALIB=$(LUA)/lib
     EXT = so
     LIBS=
+    # net-snmp path
+    NETSNMP_CONFIG=/usr/bin/net-snmp-config
   endif
 endif
 
@@ -82,16 +88,19 @@ DEF = -DUSE_SNMPTRAPD $(DEFCOMPAT) -DVERSION='"$(VERSION)"' -DSYSTEM='"$(SYSTEM)
 NETSNMP_DEF =
 CC = gcc
 ifeq ($(DEBUG), 1)
-  CFLAGS = $(DEF) $(shell net-snmp-config --cflags) -I$(LUAINC) -fPIC -Wall -ggdb
+#  CFLAGS = $(DEF) $(shell net-snmp-config --cflags) -I$(LUAINC) -fPIC -Wall -ggdb
+  CFLAGS = $(DEF) $(shell $(NETSNMP_CONFIG) --cflags) -I$(LUAINC) -fPIC -Wall -ggdb
 else
-  CFLAGS = $(DEF) $(shell net-snmp-config --cflags) -I$(LUAINC) -fPIC -Wall -O2
+#  CFLAGS = $(DEF) $(shell net-snmp-config --cflags) -I$(LUAINC) -fPIC -Wall -O2
+  CFLAGS = $(DEF) $(shell $(NETSNMP_CONFIG) --cflags) -I$(LUAINC) -fPIC -Wall -O2
 endif
 ifeq (Darwin, $(SYSTEM))
   LDFLAGS= $(OPT) -dynamiclib -undefined dynamic_lookup -L$(LUALIB) -L$(LIBDIR)
 else
-  LDFLAGS = $(shell net-snmp-config --ldflags) -O -shared -fPIC
+  LDFLAGS = $(shell $(NETSNMP_CONFIG) --ldflags) -O -shared -fPIC
 endif
-LIBS += $(shell net-snmp-config --libs) -lcrypto
+#LIBS += $(shell net-snmp-config --libs) -lcrypto
+LIBS += $(shell $(NETSNMP_CONFIG) --libs) -lcrypto
 LD = gcc
 
 # Distribution stuff

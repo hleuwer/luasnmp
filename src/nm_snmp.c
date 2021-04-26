@@ -694,7 +694,7 @@ static int nm_snmp_gettrapd(lua_State *L)
 #endif
   return 1;
 }
-
+#if 0
 static void nm_snmp_init_session(netsnmp_session *session)
 {
   memset(session, 0, sizeof(netsnmp_session));
@@ -706,7 +706,7 @@ static void nm_snmp_init_session(netsnmp_session *session)
   session->rcvMsgMaxSize = SNMP_MAX_MSG_SIZE;
   session->flags |= SNMP_FLAGS_DONT_PROBE;
 }
-
+#endif
 /*-----------------------------------------------------------------------------
  *  nm_snmp_open
  *
@@ -731,10 +731,14 @@ static int nm_snmp_open(lua_State *L) {
   }
 
   /* Base parameters for the session */
+#if 0
 #ifdef REMOVE_THIS
   memset((char *)&nm_cmu_session,0,sizeof(CmuSession));
 #endif
   nm_snmp_init_session(&nm_cmu_session);
+#else
+  snmp_sess_init(&nm_cmu_session);
+#endif
   lua_pushstring(L, "version");
   lua_gettable(L, -2);
   version = lua_tonumber(L, -1);
@@ -940,12 +944,12 @@ static int nm_snmp_open(lua_State *L) {
       memcpy((char *)&peer_addr.s_addr, hp->h_addr, hp->h_length);
     }
   }
-
+#ifdef REMOVE_THIS_2
   lua_pushstring(L, "port");
   lua_gettable(L, -2);
   nm_cmu_session.remote_port = lua_tonumber(L, -1);
   lua_remove(L, -1);
-
+#endif
   lua_pushstring(L, "localport");
   lua_gettable(L, -2);
   nm_cmu_session.local_port = lua_tonumber(L, -1);
@@ -1023,9 +1027,10 @@ static int nm_snmp_open(lua_State *L) {
   nm_cmu_session.callback = nm_snmp_callback;
   nm_session->L = L;
   nm_cmu_session.callback_magic = (void *)nm_session;
-
+#ifdef REMOVE_THIS_2
   netsnmp_ds_set_int(NETSNMP_DS_LIBRARY_ID, NETSNMP_DS_LIB_DEFAULT_PORT, 
   		     nm_cmu_session.remote_port);
+#endif
   nm_session->cmu_session = snmp_open(&nm_cmu_session);
   if (nm_cmu_session.securityEngineID)
     free(nm_cmu_session.securityEngineID);
@@ -1406,7 +1411,7 @@ static int nm_snmp_getreq(lua_State *L, int req_type, int req_mode) {
 	  char errs[32];
 	  lua_remove(L, -1);
 	  lua_pushnil(L);
-	  sprintf(errs, "snmp: bad name in index %d", ind);
+	  snprintf(errs, sizeof(errs),"snmp: bad name in index %d", ind);
 	  lua_pushstring(L, errs);
 	  snmp_free_pdu(pdu);
 	  return 2;
@@ -1600,7 +1605,7 @@ static int nm_snmp_set_info_req(lua_State *L, int req_type, int req_mode) {
       if ((varlist = f_create_vlist(L, errs)) == NULL) {
         char eerrs[64];
         lua_pushnil(L);
-        sprintf(eerrs, "%s in index %d", errs, ind);
+        snprintf(eerrs, sizeof(eerrs), "%s in index %d", errs, ind);
         lua_pushstring(L, eerrs);
         snmp_free_pdu(pdu);
         return 2;
