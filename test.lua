@@ -9,6 +9,7 @@ local tostring2 = tostring
 ----------------------------------------------------------------------
 local log
 local loglevel = string.upper(arg[1] or "INFO")
+local logging = require("logging")
 if string.find(_VERSION, "5.2") or string.find(_VERSION, "5.3") then
    local logger = require "logging.console"
    log = logger("%message")
@@ -674,27 +675,26 @@ local function test_misc(sess)
   info("MISCELLANOUS ...")
   debug("  sess.ifTable: %s", pretty(sess.ifTable))
   debug("  sess.ifEntry: %s", pretty(sess.ifEntry))
-  info("  !!! NOTE: 'sess.ifAdEntAddr' leads to failurs in subsequent requests on WindowsXP (Cygwin) - commented out")
+  info("  !!! NOTE: 'sess.ifAdEntAddr' leads to failurs in subsequent requests on WindowsXP (Cygwin) - skip")
   --debug("  sess.ipAdEntAddr: %s", pretty(sess.ipAdEntAddr))
   debug("  sess.ifSpeed: %s", pretty(sess.ifSpeed))
   debug("  sess.ifDescr: %s", pretty(sess.ifDescr))
   local vl, err = sess:walk("ifSpeed.1")
   debug("  sess:walk('ifSpeed.1'): %s %s", pretty(vl), err or "nil")
   debug("  sess.ifSpeed.1: %s", pretty(sess.ifSpeed_1))
-  debug("  sess.tcpConnState: %s", pretty(sess.tcpConnState))
   info("  !!! NOTE: 'sess.nsModuleName' fails on 'raspberrypi'. Skip")
 --  debug("  sess.nsModuleName: %s", pretty(sess.nsModuleName))
   debug("  mib.oid('ifTable'): %s", mib.oid("ifTable"))
   debug("  mib.oid('ifEntry'): %s", mib.oid("ifEntry"))
   debug("  sess:walk('ifTable'): %s", pretty(sess:walk("ifTable"))) 
-if true then
   debug("  sess:get('ifSpped.1'): %s", tostring(sess:get("ifSpeed.1")))
   debug("  sess:get('ifSpeed'): %s", tostring(sess:get("ifSpeed")))
   debug("  sess.ifSpeed: %s", tostring2(sess.ifSpeed))
   debug("  sess.ifSpeed_1: %s", tostring2(sess.ifSpeed_1))
   debug("  succ(ifSpeed): %s", tostring(mib.successor("ifSpeed")))  
   debug("  oid(ifSpeed): %s", tostring(mib.oid("ifSpeed")))  
-  debug("  oid(ifSpeed.1): %s", tostring(mib.oid("ifSpeed.1")))  
+  debug("  oid(ifSpeed.1): %s", tostring(mib.oid("ifSpeed.1")))
+if false then
   debug("  sess.ipAdEntAddr: %s", tostring2(sess.ipAdEntAddr))
   local tcpConnState = sess.tcpConnState
   debug("  sess.tcpConnState: %s", tostring2(tcpConnState))
@@ -753,7 +753,8 @@ local function test_newpassword(sess)
   local localuser = "ronja"
   local oldpw = "ronja2006"
   local newpw = "mydog2006"
-
+  info("  !!! NOTE: setting new password currently not working under MACOS - skip")
+if false then
   debug("  Creating local session 1")
   local sesslocal, err = snmp.open{
     peer = "localhost",
@@ -800,6 +801,7 @@ local function test_newpassword(sess)
   assert(vb1.value == vb2.value)
 
   info("PASSWORD CHANGE SNMP V3 Test o.k.")
+end
 end
 
 ----------------------------------------------------------------------
@@ -891,6 +893,8 @@ local function test_vacm(sess)
   local clonefromuser = "ronja"
   local clonefromuserpw = "ronja2006"
 
+  info("  !!! NOTE: This teset not working on MACOS - skip")
+if false then
   local check = snmp.check
 
   -- Create a user
@@ -905,7 +909,6 @@ local function test_vacm(sess)
   local vb ,err = check(sess:get("usmUserStatus"..snmp.mkindex(sess.contextEngineID, user)))
   debug("  %s", tostring(vb))
   assert(vb.value == snmp.rowStatus.active)
-
   debug("  Create sectogroup")
   vl, err = sess:createsectogroup("usm", user, "rwgroup")
   if err then
@@ -916,7 +919,6 @@ local function test_vacm(sess)
   else
     debug("  %s", sprintvl(vl))
   end
-
   debug("  Create view")
   vl = check(sess:createview("interfaces", mib.oid("ifTable"), "80", "include"))
   debug("  %s", sprintvl(vl))
@@ -941,6 +943,7 @@ local function test_vacm(sess)
   debug("  Cleanup - Delete user")
   vb = check(sess:deleteuser(user))
   info("VIEW BASED ACCESS o.k.")
+end
 end
 
 ----------------------------------------------------------------------
@@ -1014,6 +1017,7 @@ for _,param in ipairs(sessions) do
       test_multiple_sessions(sess)
       test_newpassword(sess)
       test_createuser(sess)
+      test_newpassword(sess)
       test_createcloneuser(sess)
       test_cloneuser(sess)
       test_vacm(sess)

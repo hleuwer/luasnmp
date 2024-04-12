@@ -43,7 +43,7 @@ else
     # Lua installation
     LUA = /usr/local
     EXT = so
-    LIBDIR = /opt/local/lib
+    LIBDIR = /usr/local/lib
     ifeq ($(LV), 5.3)
        LUABIN=$(LUA)/bin/lua$V
        LUAINC=$(LUA)/include/lua/$(LV)
@@ -55,8 +55,9 @@ else
        LUALIB=$(LUA)/lib/lua
        LIBS=
     endif
+    NETSNMP_CONFIG=/usr/local/Cellar/net-snmp/5.9.4/bin/net-snmp-config
     # net-snmp path - NetSNMP from MacPorts version 5.9
-    NETSNMP_CONFIG=/opt/local/bin/net-snmp-config
+    # NETSNMP_CONFIG=/usr/bin/net-snmp-config
     # net-snmp path - MacOs built-in NetSNMP version 5.6
     # NETSNMP_CONFIG=/usr/bin/net-snmp-config
   else
@@ -78,7 +79,7 @@ PLATFORM=-D$(SYSTEM)
 #DEFCOMPAT=-DLUA_COMPAT_ALL
 DEFCOMPAT=
 # Current Version of LuaSNMP
-VERSION=1.0.8
+VERSION=1.1.0
 
 # Targets
 LUASNMP_SO=snmp.$(EXT).$(VERSION)

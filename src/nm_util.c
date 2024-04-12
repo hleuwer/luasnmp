@@ -53,8 +53,7 @@ int vbindmetatable = -1;
 /*-----------------------------------------------------------------------------
  * Compare MIB labels, ignoring case
  *----------------------------------------------------------------------------*/
-static int mib_label_cmp(l1, l2)
-    char *l1, *l2;
+static int mib_label_cmp(char *l1, char *l2)
 {
     char c1, c2;
     for ( ; *l1 && *l2 ; l1++, l2++) {

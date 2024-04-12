@@ -1117,10 +1117,9 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
     authKeyChange = keyOid.auth
     privKeyChange = keyOid.priv
   end
-
   -- Engine ID to use
   if not engineID then
-    local t = session:details()
+     local t = session:details()
     if t.contextEngineIDLen == 0 then
       -- we need an engineID and don't have one: probe with empty get-request
       local vb, err = session:get(nil)
@@ -1187,7 +1186,6 @@ function newpassword(session, oldpw, newpw, flag, user, engineID)
 		      snmp.TYPE_OCTETSTR)
     table.insert(vl, vb)
   end
-
   if dopriv then
     local vb = newvar(string.format("%s.%d.%s.%d.%s",
  				    privKeyChange,
