@@ -797,13 +797,18 @@ static int nm_snmp_open(lua_State *L) {
     lua_pushstring(L, "privType");
     lua_gettable(L, -2);
     if (!lua_isnil(L, -1)){
-      if (!strcmp(lua_tostring(L, -1), "DES")){
+      if (0) {}
+#if defined(USM_PRIV_PROTO_DES_LEN) && !defined(NETSNMP_DISABLE_DES)
+      else if (!strcmp(lua_tostring(L, -1), "DES")){
 	nm_cmu_session.securityPrivProto = usmDESPrivProtocol;
 	nm_cmu_session.securityPrivProtoLen = USM_PRIV_PROTO_DES_LEN;
-      } else if (!strcmp(lua_tostring(L, -1), "AES")){
+      }
+#endif
+      else if (!strcmp(lua_tostring(L, -1), "AES")){
 	nm_cmu_session.securityPrivProto = usmAESPrivProtocol;
 	nm_cmu_session.securityPrivProtoLen = USM_PRIV_PROTO_AES_LEN;
-      } else if (!strcmp(lua_tostring(L, -1), "NOAUTH")){
+      }
+      else if (!strcmp(lua_tostring(L, -1), "NOAUTH")){
 	nm_cmu_session.securityPrivProto = usmNoPrivProtocol;
 	nm_cmu_session.securityPrivProtoLen = USM_PRIV_PROTO_NOPRIV_LEN;
       }
