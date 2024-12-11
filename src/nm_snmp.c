@@ -1608,7 +1608,7 @@ static int nm_snmp_set_info_req(lua_State *L, int req_type, int req_mode) {
       if (lua_isnil(L, -1))
         break;
       if ((varlist = f_create_vlist(L, errs)) == NULL) {
-        char eerrs[64];
+        char eerrs[256];
         lua_pushnil(L);
         snprintf(eerrs, sizeof(eerrs), "%s in index %d", errs, ind);
         lua_pushstring(L, eerrs);
