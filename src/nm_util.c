@@ -859,7 +859,7 @@ struct variable_list *f_create_vl(lua_State *L, int prim_type) {
     if (!lua_isstring(L, -1))
       return NULL;
     strval = (char *)lua_tostring(L, -1);
-    if ((*((unsigned long *) strbuf) = inet_addr(strval)) == -1)
+    if ((*((uint32_t *) strbuf) = inet_addr(strval)) == -1)
       return NULL;
     len = sizeof(long);
     break;
