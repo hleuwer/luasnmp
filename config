@@ -5,7 +5,7 @@ SYSTEM = $(shell uname)
 MODULE=luasnmp
 
 # Lua Version to use:
-LV = 5.3
+LV = 5.2
 V = $(subst .,,$(LV))
 
 # Debugging 1 or 0
@@ -22,6 +22,10 @@ INSTALL = install -p
 INSTALL_EXEC = $(INSTALL) -m 0755
 INSTALL_DATA = $(INSTALL) -m 0644
 INSTALL_COPY = cp -p -r
+
+# Luarocks stuff
+RV?=1.1.1-1
+ROCKSPEC=luasnmp-$(RV).rockspec
 
 # == YOU PROBABLY DO NOT NEED TO CHANGE ANYTHING BELOW  =======================
 

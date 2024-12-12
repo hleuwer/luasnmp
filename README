@@ -82,7 +82,14 @@ LuaSNMP
      as user root in order to install all relevant
      files in standard places. The directory /usr/local is the default
      install prefix.
+     
 
+* Installation via Luarocks
+  -------------------------
+  LuaSNMP can be installed via Luarocks.
+
+  Type
+     sudo luarocks --lua-version=5.x install luasnmp LV=5.x
 
      
 * Trap-sink Daemon

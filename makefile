@@ -30,6 +30,11 @@ install-doc:
 uninstall-doc:
 	rm -rf $(INSTALL_DOC)
 
+.PHONY: rock
+
+rock::
+	luarocks --lua-version=$(LV) pack $(ROCKSPEC)
+
 .PHONY: test testd testtrap testtrapd testtraponly testtraponlyd
 test:
 	$(LUABIN) test.lua
