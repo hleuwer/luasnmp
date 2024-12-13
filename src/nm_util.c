@@ -861,7 +861,7 @@ struct variable_list *f_create_vl(lua_State *L, int prim_type) {
     strval = (char *)lua_tostring(L, -1);
     if ((*((uint32_t *) strbuf) = inet_addr(strval)) == -1)
       return NULL;
-    len = sizeof(long);
+    len = sizeof(uint32_t);
     break;
 
   case NM_TYPE_TIMETICKS:
